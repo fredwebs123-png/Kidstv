@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kidstv home, Lucy</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#fff}a:hover{color:#ffe6f4}
+</style>
+</helmet>
+<div style="width: 1920px; height: 1080px; position: relative; overflow: hidden; font-family: 'Nunito', system-ui, sans-serif; color: #ffffff; background: #ff8fc0;">
+
+  <svg width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true" style="position: absolute; left: 0; top: 0;">
+    <defs>
+      <linearGradient id="lsky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f45fa6"></stop>
+        <stop offset="0.35" stop-color="#ff8db4"></stop>
+        <stop offset="0.6" stop-color="#ffb9a8"></stop>
+        <stop offset="0.78" stop-color="#ffe0b0"></stop>
+      </linearGradient>
+      <radialGradient id="lsun" cx="1500" cy="640" r="560" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#fff7d2"></stop>
+        <stop offset="0.14" stop-color="#ffe8a8" stop-opacity="0.95"></stop>
+        <stop offset="0.5" stop-color="#ffc4a0" stop-opacity="0.3"></stop>
+        <stop offset="1" stop-color="#ffc4a0" stop-opacity="0"></stop>
+      </radialGradient>
+      <linearGradient id="lfar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7a3cf"></stop><stop offset="1" stop-color="#e57fbf"></stop></linearGradient>
+      <linearGradient id="lmid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d462b2"></stop><stop offset="1" stop-color="#a8409a"></stop></linearGradient>
+      <linearGradient id="lnear" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a2f86"></stop><stop offset="1" stop-color="#4a1554"></stop></linearGradient>
+      <linearGradient id="lhaze" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0e8" stop-opacity="0"></stop><stop offset="0.5" stop-color="#fff0e8" stop-opacity="0.5"></stop><stop offset="1" stop-color="#fff0e8" stop-opacity="0"></stop></linearGradient>
+      <linearGradient id="lscrim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a0b3e" stop-opacity="0"></stop><stop offset="1" stop-color="#3a0b3e" stop-opacity="0.72"></stop></linearGradient>
+      <linearGradient id="ltop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a1e5e" stop-opacity="0.4"></stop><stop offset="1" stop-color="#8a1e5e" stop-opacity="0"></stop></linearGradient>
+      <filter id="lsoft"><feGaussianBlur stdDeviation="12"></feGaussianBlur></filter>
+      <filter id="lgrain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter>
+    </defs>
+    <rect width="1920" height="1080" fill="url(#lsky)"></rect>
+    <rect width="1920" height="1080" fill="url(#lsun)"></rect>
+    <circle cx="1500" cy="640" r="120" fill="#fff6d8"></circle>
+    <g fill="#ffeef6" opacity="0.8" filter="url(#lsoft)">
+      <ellipse cx="380" cy="300" rx="240" ry="36"></ellipse>
+      <ellipse cx="1500" cy="250" rx="200" ry="30"></ellipse>
+      <ellipse cx="900" cy="560" rx="260" ry="30"></ellipse>
+    </g>
+    <g transform="translate(300 420)">
+      <path d="M0 -70 C 46 -70, 62 -30, 50 4 C 40 30, 14 44, 0 56 C -14 44, -40 30, -50 4 C -62 -30, -46 -70, 0 -70 Z" fill="#8fd8ff"></path>
+      <path d="M0 -70 C 20 -70, 26 -30, 20 4 C 16 30, 6 44, 0 56 C -6 44, -16 30, -20 4 C -26 -30, -20 -70, 0 -70 Z" fill="#ffffff"></path>
+      <path d="M-14 58 L-10 78 M14 58 L10 78" stroke="#7a3a5a" stroke-width="3"></path>
+      <rect x="-14" y="78" width="28" height="18" rx="5" fill="#b76a4a"></rect>
+    </g>
+    <g transform="translate(1700 300) scale(0.6)">
+      <path d="M0 -70 C 46 -70, 62 -30, 50 4 C 40 30, 14 44, 0 56 C -14 44, -40 30, -50 4 C -62 -30, -46 -70, 0 -70 Z" fill="#c69bff"></path>
+      <path d="M0 -70 C 20 -70, 26 -30, 20 4 C 16 30, 6 44, 0 56 C -6 44, -16 30, -20 4 C -26 -30, -20 -70, 0 -70 Z" fill="#ffe27a"></path>
+      <path d="M-14 58 L-10 78 M14 58 L10 78" stroke="#7a3a5a" stroke-width="4"></path>
+      <rect x="-14" y="78" width="28" height="18" rx="5" fill="#b76a4a"></rect>
+    </g>
+    <path d="M0 600 C 260 548, 480 560, 700 590 S 1100 640, 1340 600 S 1720 548, 1920 580 L1920 1080 L0 1080 Z" fill="url(#lfar)"></path>
+    <rect x="0" y="560" width="1920" height="150" fill="url(#lhaze)"></rect>
+    <path d="M0 700 C 240 650, 520 670, 780 712 S 1220 752, 1480 704 S 1800 668, 1920 690 L1920 1080 L0 1080 Z" fill="url(#lmid)"></path>
+    <path d="M0 830 C 320 778, 640 796, 940 836 S 1480 880, 1920 816 L1920 1080 L0 1080 Z" fill="url(#lnear)"></path>
+    <rect width="1920" height="360" fill="url(#ltop)"></rect>
+    <rect y="580" width="1920" height="500" fill="url(#lscrim)"></rect>
+    <rect width="1920" height="1080" filter="url(#lgrain)" opacity="0.07"></rect>
+  </svg>
+
+  <div style="position: absolute; left: 96px; top: 80px; display: flex; align-items: center; gap: 18px; padding: 10px 26px 10px 10px; border-radius: 60px; background: rgba(255, 255, 255, 0.18); box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.28);">
+    <div style="width: 84px; height: 84px; border-radius: 50%; box-shadow: 0 0 0 5px #ffffff; overflow: hidden;">
+      <svg width="84" height="84" viewBox="0 0 100 100" role="img" aria-label="Lucy, rainbow">
+        <defs><linearGradient id="lA2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9fd0"></stop><stop offset="1" stop-color="#ff4f9a"></stop></linearGradient></defs>
+        <circle cx="50" cy="50" r="50" fill="url(#lA2)"></circle>
+        <path d="M20 66 A30 30 0 0 1 80 66" stroke="#ffffff" stroke-width="8" fill="none" stroke-linecap="round"></path>
+        <path d="M29 66 A21 21 0 0 1 71 66" stroke="#ffe27a" stroke-width="8" fill="none" stroke-linecap="round"></path>
+        <path d="M38 66 A12 12 0 0 1 62 66" stroke="#8fe3ff" stroke-width="8" fill="none" stroke-linecap="round"></path>
+        <circle cx="20" cy="70" r="8" fill="#ffffff"></circle><circle cx="28" cy="72" r="6" fill="#ffffff"></circle>
+        <circle cx="80" cy="70" r="8" fill="#ffffff"></circle><circle cx="72" cy="72" r="6" fill="#ffffff"></circle>
+      </svg>
+    </div>
+    <span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 38px;">Lucy</span>
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+  </div>
+
+  <div style="position: absolute; right: 96px; top: 92px; display: flex; align-items: center; gap: 14px; font-size: 32px; font-weight: 800; color: rgba(255, 255, 255, 0.95);">
+    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"></circle><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4"></path></svg>
+    <span>22°</span>
+  </div>
+
+  <div style="position: absolute; left: 0; right: 0; top: 120px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+    <p style="margin: 0; font-size: 34px; font-weight: 800; color: rgba(255, 255, 255, 0.9); letter-spacing: 0.02em;">Thursday 29 October</p>
+    <span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 330px; line-height: 0.88; letter-spacing: -0.02em; color: #ffffff; text-shadow: 0 14px 54px rgba(120, 20, 80, 0.4);">4:20</span>
+    <p style="margin: 6px 0 0; font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 54px; text-shadow: 0 6px 24px rgba(120, 20, 80, 0.4);">Hi Lucy! Ready for a show?</p>
+  </div>
+
+  <div style="position: absolute; left: 0; right: 0; top: 650px; display: flex; justify-content: center; gap: 30px;">
+    <div style="width: 360px; height: 202px; border-radius: 30px; position: relative; overflow: hidden; background: linear-gradient(135deg, #ffd66b 0%, #ff8a5b 100%); box-shadow: 0 18px 40px rgba(60, 10, 50, 0.45);">
+      <div style="position: absolute; right: -30px; top: -30px; width: 180px; height: 180px; border-radius: 50%; background: rgba(255, 255, 255, 0.2);"></div>
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 22px; background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(90, 30, 10, 0.65) 100%); display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-family: 'Fredoka', sans-serif; font-size: 32px; font-weight: 600; line-height: 1;">Peppa Pig</span>
+        <div style="height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.3);"><div style="width: 50%; height: 6px; border-radius: 3px; background: #ffffff;"></div></div>
+      </div>
+    </div>
+    <div style="width: 360px; height: 202px; border-radius: 30px; position: relative; overflow: hidden; background: linear-gradient(135deg, #5ec8ff 0%, #2f7de0 100%); box-shadow: 0 0 0 6px #ffffff, 0 0 0 14px {{accent}}, 0 24px 54px rgba(60, 10, 50, 0.5); transform: scale(1.08);">
+      <div style="position: absolute; left: -30px; bottom: -50px; width: 200px; height: 200px; border-radius: 50%; background: rgba(255, 255, 255, 0.18);"></div>
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 22px; background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(8, 20, 60, 0.65) 100%); display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-family: 'Fredoka', sans-serif; font-size: 32px; font-weight: 600; line-height: 1;">Bluey</span>
+        <div style="height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.3);"><div style="width: 20%; height: 6px; border-radius: 3px; background: #ffffff;"></div></div>
+      </div>
+    </div>
+    <div style="width: 360px; height: 202px; border-radius: 30px; position: relative; overflow: hidden; background: linear-gradient(135deg, #b6f08a 0%, #3cb371 100%); box-shadow: 0 18px 40px rgba(60, 10, 50, 0.45);">
+      <div style="position: absolute; right: 30px; top: 24px; width: 110px; height: 110px; border-radius: 50%; background: rgba(255, 255, 255, 0.22);"></div>
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 22px; background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(10, 50, 20, 0.65) 100%); display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-family: 'Fredoka', sans-serif; font-size: 32px; font-weight: 600; line-height: 1;">Cocomelon</span>
+        <div style="height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.3);"><div style="width: 70%; height: 6px; border-radius: 3px; background: #ffffff;"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 56px; display: flex; justify-content: center;">
+    <div style="display: flex; align-items: center; gap: 18px; padding: 16px 20px; border-radius: 44px; background: rgba(255, 255, 255, 0.12); box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.2), 0 20px 50px rgba(40, 6, 40, 0.3);">
+      <div style="width: 104px; height: 104px; border-radius: 30px; background: rgba(255, 255, 255, 0.18); box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.25); display: flex; align-items: center; justify-content: center;">
+        <svg width="54" height="40" viewBox="0 0 54 40" role="img" aria-label="YouTube"><rect width="54" height="40" rx="12" fill="#ff2d2d" fill-opacity="0.92"></rect><path d="M22 12 L35 20 L22 28 Z" fill="#ffffff"></path></svg>
+      </div>
+      <div style="width: 104px; height: 104px; border-radius: 30px; background: rgba(20, 50, 140, 0.4); box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.25); display: flex; align-items: center; justify-content: center;">
+        <span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 26px;">Disney+</span>
+      </div>
+      <div style="width: 104px; height: 104px; border-radius: 30px; background: rgba(0, 0, 0, 0.32); box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.22); display: flex; align-items: center; justify-content: center;">
+        <span style="font-weight: 800; font-size: 20px; letter-spacing: 0.04em; color: #ff2a36;">NETFLIX</span>
+      </div>
+      <div style="width: 104px; height: 104px; border-radius: 30px; background: rgba(20, 120, 230, 0.38); box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.25); display: flex; align-items: center; justify-content: center;">
+        <span style="font-weight: 800; font-size: 22px; line-height: 0.95; text-align: center;">prime<br>video</span>
+      </div>
+      <div style="width: 1.5px; height: 64px; background: rgba(255, 255, 255, 0.28);"></div>
+      <div style="width: 104px; height: 104px; border-radius: 30px; background: rgba(255, 255, 255, 0.1); box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+        <span style="font-size: 15px; font-weight: 800;">Grown-ups</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#ff5fa8","options":["#8e5cff","#ff5fa8","#2fc4b2"]},"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#ff5fa8' };
+  }
+}
+</script>
+</body>
+</html>

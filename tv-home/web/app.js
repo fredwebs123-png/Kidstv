@@ -52,7 +52,7 @@
   // Default order: the kids' apps (kids.js, home.kids.home_apps), then YouTube, then Netflix, then
   // the rest the way a household reaches for them.
   var APP_ORDER = (window.KIDS ? window.KIDS.homeOrder() : []).concat([
-    "com.google.android.youtube.tvkids", "com.google.android.youtube.tv", "com.netflix.ninja", "au.net.abc.iview", "com.disney.disneyplus",
+    "com.google.android.youtube.tv", "com.netflix.ninja", "au.net.abc.iview", "com.disney.disneyplus",
     "au.com.stan.and", "au.com.streamotion.ares.tv", "com.amazon.amazonvideo.livingroom",
     "com.sbs.ondemand.tv", "com.apple.atve.androidtv.appletv", "com.cbs.ca", "au.com.ninenow.ctv",
     "com.swm.live", "au.com.tenplay", "au.com.kayosports.tv", "au.com.foxtel.atv", "com.wbd.stream",
@@ -1174,7 +1174,7 @@
     touched = true;
     if (zone === "settings") { setMove(dx, dy); return; }
     if (zone === "smart") { window.smartHome.move(dx, dy); return; }
-    if (zone === "gear") { if (dy) { gi = Math.max(0, Math.min(1, gi + dy)); renderGear(); } return; }
+    if (zone === "gear") { if (dy) { gi = Math.max(0, Math.min(gearItems().length - 1, gi + dy)); renderGear(); } return; }
     if (lift) { moveLift(dx, dy); return; }
     // Night with More apps open: the cards step aside, so up and down skip them
     var cards = NIGHT && expanded ? [] : shelfEls;
@@ -1278,7 +1278,12 @@
     touched = true;
     if (zone === "settings") { setActivate(); return; }
     if (zone === "smart") { window.smartHome.ok(); return; }
-    if (zone === "gear") { if (gi === 0) openSettings(); else openTvSettings(); return; }
+    if (zone === "gear") {
+      if (gi === 0) openSettings();
+      else if (gi === 1) openTvSettings();
+      else { closeGear(); paintFocus(); window.KIDS.changePin(); }
+      return;
+    }
     if (lift) { dropLift(); return; }
     if (zone === "menu") { setSleep(SLEEP_CHOICES[menuI]); paintFocus(); return; }
     if (zone === "pmenu") {
@@ -1351,7 +1356,7 @@
   }
   function renderGear() {
     var pop = $("gear-pop");
-    var items = [[ICONS.sliders, t("gear_home"), t("gear_home_sub")], [ICONS.gear, t("gear_tv"), t("gear_tv_sub")]];
+    var items = gearItems();
     pop.innerHTML = items.map(function (it, i) {
       return '<div class="grow' + (i === gi ? " focus" : "") + '" role="menuitem"><i>' + it[0] + "</i><span><b>" + esc(it[1]) +
         "</b><small>" + esc(it[2]) + "</small></span></div>";
@@ -1365,6 +1370,12 @@
       pop.style.left = Math.max(5 * rem, Math.min(innerWidth - w - 5 * rem, b.left + b.width / 2 - w / 2)) + "px";
       pop.style.top = Math.max(3.75 * rem, b.top - pop.offsetHeight - 2.25 * rem) + "px";
     }
+  }
+  function gearItems() {
+    var items = [[ICONS.sliders, t("gear_home"), t("gear_home_sub")], [ICONS.gear, t("gear_tv"), t("gear_tv_sub")]];
+    // Kidstv: change the grown-ups PIN
+    if (window.KIDS && window.KIDS.canChangePin()) items.push([ICONS.person, "Grown-ups PIN", "Change the four numbers"]);
+    return items;
   }
   function closeGear() {
     $("gear-pop").classList.remove("on");

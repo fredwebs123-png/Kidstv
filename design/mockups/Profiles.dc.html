@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kidstv, who's watching</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#fff}a:hover{color:#ffe6f4}
+</style>
+</helmet>
+<div style="width: 1920px; height: 1080px; position: relative; overflow: hidden; font-family: 'Nunito', system-ui, sans-serif; color: #ffffff; background: #3a2580;">
+
+  <svg width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true" style="position: absolute; left: 0; top: 0;">
+    <defs>
+      <linearGradient id="psky" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#2d1c6e"></stop>
+        <stop offset="0.5" stop-color="#6a3fc4"></stop>
+        <stop offset="1" stop-color="#e57fb5"></stop>
+      </linearGradient>
+      <radialGradient id="pglowA" cx="520" cy="560" r="420" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#b48cff" stop-opacity="0.55"></stop><stop offset="1" stop-color="#b48cff" stop-opacity="0"></stop></radialGradient>
+      <radialGradient id="pglowB" cx="960" cy="560" r="380" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff7fbd" stop-opacity="0.3"></stop><stop offset="1" stop-color="#ff7fbd" stop-opacity="0"></stop></radialGradient>
+      <radialGradient id="pglowC" cx="1400" cy="560" r="380" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4fe0cc" stop-opacity="0.3"></stop><stop offset="1" stop-color="#4fe0cc" stop-opacity="0"></stop></radialGradient>
+      <filter id="pgrain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter>
+    </defs>
+    <rect width="1920" height="1080" fill="url(#psky)"></rect>
+    <rect width="1920" height="1080" fill="url(#pglowA)"></rect>
+    <rect width="1920" height="1080" fill="url(#pglowB)"></rect>
+    <rect width="1920" height="1080" fill="url(#pglowC)"></rect>
+    <path d="M0 900 C 360 850, 720 870, 1040 910 S 1600 950, 1920 880 L1920 1080 L0 1080 Z" fill="#26145a" opacity="0.6"></path>
+    <g fill="#ffffff" opacity="0.85">
+      <path d="M260 180 l6 18 l18 6 l-18 6 l-6 18 l-6 -18 l-18 -6 l18 -6 z"></path>
+      <path d="M1640 160 l5 15 l15 5 l-15 5 l-5 15 l-5 -15 l-15 -5 l15 -5 z"></path>
+      <path d="M1500 860 l4 12 l12 4 l-12 4 l-4 12 l-4 -12 l-12 -4 l12 -4 z"></path>
+      <circle cx="420" cy="860" r="3"></circle><circle cx="980" cy="140" r="3"></circle><circle cx="1200" cy="220" r="2"></circle><circle cx="140" cy="560" r="2"></circle><circle cx="1800" cy="520" r="3"></circle>
+    </g>
+    <rect width="1920" height="1080" filter="url(#pgrain)" opacity="0.07"></rect>
+  </svg>
+
+  <div style="position: absolute; right: 112px; top: 72px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 72px; line-height: 1; text-shadow: 0 8px 28px rgba(20, 8, 60, 0.4);">4:20 <span style="font-size: 32px;">pm</span></div>
+
+  <div style="position: absolute; left: 0; right: 0; top: 196px; display: flex; flex-direction: column; align-items: center; gap: 92px;">
+    <h1 style="margin: 0; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 88px; line-height: 1; text-shadow: 0 8px 30px rgba(20, 8, 60, 0.4);">Who's watching?</h1>
+    <div style="display: flex; align-items: flex-start; gap: 120px;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 34px;">
+        <div style="width: 300px; height: 300px; border-radius: 50%; padding: 10px; box-sizing: border-box; background: #ffffff; transform: scale(1.1); box-shadow: 0 0 0 10px #8e5cff, 0 34px 80px rgba(20, 8, 60, 0.55), 0 0 120px rgba(180, 140, 255, 0.6);">
+          <svg width="280" height="280" viewBox="0 0 100 100" role="img" aria-label="Blake, butterfly">
+            <defs><linearGradient id="pbA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b48cff"></stop><stop offset="1" stop-color="#6c3ce0"></stop></linearGradient></defs>
+            <circle cx="50" cy="50" r="50" fill="url(#pbA)"></circle>
+            <ellipse cx="33" cy="40" rx="15" ry="19" transform="rotate(-28 33 40)" fill="#ffffff"></ellipse>
+            <ellipse cx="67" cy="40" rx="15" ry="19" transform="rotate(28 67 40)" fill="#ffffff"></ellipse>
+            <ellipse cx="36" cy="64" rx="10" ry="12" transform="rotate(25 36 64)" fill="#ffd6f2"></ellipse>
+            <ellipse cx="64" cy="64" rx="10" ry="12" transform="rotate(-25 64 64)" fill="#ffd6f2"></ellipse>
+            <rect x="46.5" y="34" width="7" height="38" rx="3.5" fill="#3a1f86"></rect>
+            <path d="M48 35 C 44 26, 40 24, 37 23 M52 35 C 56 26, 60 24, 63 23" stroke="#3a1f86" stroke-width="2.5" fill="none" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 56px; margin-top: 14px;">Blake</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 34px; opacity: 0.82;">
+        <div style="width: 300px; height: 300px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.35), 0 24px 60px rgba(20, 8, 60, 0.45);">
+          <svg width="300" height="300" viewBox="0 0 100 100" role="img" aria-label="Lucy, rainbow">
+            <defs><linearGradient id="plA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9fd0"></stop><stop offset="1" stop-color="#ff4f9a"></stop></linearGradient></defs>
+            <circle cx="50" cy="50" r="50" fill="url(#plA)"></circle>
+            <path d="M20 66 A30 30 0 0 1 80 66" stroke="#ffffff" stroke-width="8" fill="none" stroke-linecap="round"></path>
+            <path d="M29 66 A21 21 0 0 1 71 66" stroke="#ffe27a" stroke-width="8" fill="none" stroke-linecap="round"></path>
+            <path d="M38 66 A12 12 0 0 1 62 66" stroke="#8fe3ff" stroke-width="8" fill="none" stroke-linecap="round"></path>
+            <circle cx="20" cy="70" r="8" fill="#ffffff"></circle><circle cx="28" cy="72" r="6" fill="#ffffff"></circle>
+            <circle cx="80" cy="70" r="8" fill="#ffffff"></circle><circle cx="72" cy="72" r="6" fill="#ffffff"></circle>
+          </svg>
+        </div>
+        <span style="font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 50px; margin-top: 14px;">Lucy</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 34px; opacity: 0.82;">
+        <div style="width: 300px; height: 300px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.35), 0 24px 60px rgba(20, 8, 60, 0.45);">
+          <svg width="300" height="300" viewBox="0 0 100 100" role="img" aria-label="Sora, little chick">
+            <defs><linearGradient id="psA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6fe6d4"></stop><stop offset="1" stop-color="#16a69a"></stop></linearGradient></defs>
+            <circle cx="50" cy="50" r="50" fill="url(#psA)"></circle>
+            <circle cx="50" cy="44" r="20" fill="#ffd84d"></circle>
+            <circle cx="44" cy="41" r="3" fill="#3a2a10"></circle><circle cx="57" cy="41" r="3" fill="#3a2a10"></circle>
+            <path d="M47 48 L53 48 L50 53 Z" fill="#ff8a3d"></path>
+            <path d="M26 58 L34 52 L42 60 L50 52 L58 60 L66 52 L74 58 L72 78 C 66 88, 34 88, 28 78 Z" fill="#ffffff"></path>
+          </svg>
+        </div>
+        <span style="font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 50px; margin-top: 14px;">Sora</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

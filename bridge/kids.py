@@ -29,9 +29,9 @@ def clean(k):
     if isinstance(k.get("home_apps"), list):
         out["home_apps"] = [p for p in dict.fromkeys(k["home_apps"])
                             if isinstance(p, str) and re.fullmatch(r"[A-Za-z0-9_.]{1,200}", p)][:10]
-    if "pin" in k:
-        pin = str(k.get("pin") or "")
-        out["pin"] = pin if re.fullmatch(r"\d{4}", pin) else ""
+    if "pin" in k:   # false: no lock; four digits: the first PIN; anything else: made on the TV
+        pin = k.get("pin")
+        out["pin"] = False if pin is False or pin == "" else str(pin) if re.fullmatch(r"\d{4}", str(pin)) else None
     if k.get("bedtime") is False or k.get("bedtime") is None and "bedtime" in k:
         out["bedtime"] = None
     elif isinstance(k.get("bedtime"), dict):

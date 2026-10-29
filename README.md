@@ -1,7 +1,7 @@
 # Kidstv
 
 A TV home screen made for Blake, Lucy and Sora: their own colours and emoji, only their apps
-(YouTube Kids, Disney+, Netflix and Prime Video) on the home row, a grown-up PIN in front of
+(YouTube with their Kids profiles, Disney+, Netflix and Prime Video) on the home row, a grown-up PIN in front of
 everything else, and a "Goodnight!" screen at bedtime. **What is different and how to change it:
 [docs/KIDS.md](docs/KIDS.md).**
 

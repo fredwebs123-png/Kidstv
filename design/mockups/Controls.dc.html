@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kidstv grown-ups controls</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#e8ecf4}a:hover{color:#ffffff}
+</style>
+</helmet>
+<div style="width: 1920px; height: 1080px; position: relative; overflow: hidden; font-family: 'Manrope', system-ui, sans-serif; color: #eef1f7; background: #0b0d12;">
+
+  <svg width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true" style="position: absolute; left: 0; top: 0;">
+    <defs>
+      <radialGradient id="cA" cx="1600" cy="120" r="800" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3b4a8a" stop-opacity="0.4"></stop><stop offset="1" stop-color="#3b4a8a" stop-opacity="0"></stop></radialGradient>
+      <filter id="cgrain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter>
+    </defs>
+    <rect width="1920" height="1080" fill="url(#cA)"></rect>
+    <rect width="1920" height="1080" filter="url(#cgrain)" opacity="0.05"></rect>
+  </svg>
+
+  <div style="position: absolute; left: 96px; top: 96px; bottom: 96px; width: 480px; display: flex; flex-direction: column; gap: 10px;">
+    <h1 style="margin: 0 0 34px 18px; font-size: 52px; font-weight: 700; letter-spacing: -0.02em;">Controls</h1>
+    <div style="display: flex; align-items: center; gap: 20px; height: 84px; padding: 0 26px; border-radius: 24px; background: #ffffff; color: #0b0d12; box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg>
+      <span style="font-size: 28px; font-weight: 700;">Bedtime</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 20px; height: 84px; padding: 0 26px; border-radius: 24px; color: rgba(238, 241, 247, 0.78);">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"></rect><rect x="13.5" y="3.5" width="7" height="7" rx="2"></rect><rect x="3.5" y="13.5" width="7" height="7" rx="2"></rect><rect x="13.5" y="13.5" width="7" height="7" rx="2"></rect></svg>
+      <span style="font-size: 28px; font-weight: 600;">The girls' apps</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 20px; height: 84px; padding: 0 26px; border-radius: 24px; color: rgba(238, 241, 247, 0.78);">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3.5"></circle><path d="M2.5 20c.7-3.6 3.3-5.5 6.5-5.5s5.8 1.9 6.5 5.5"></path><circle cx="17" cy="9.5" r="2.5"></circle><path d="M17.5 14.5c2.2.3 3.6 1.9 4 4.5"></path></svg>
+      <span style="font-size: 28px; font-weight: 600;">Blake, Lucy and Sora</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 20px; height: 84px; padding: 0 26px; border-radius: 24px; color: rgba(238, 241, 247, 0.78);">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+      <span style="font-size: 28px; font-weight: 600;">Grown-ups PIN</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 20px; height: 84px; padding: 0 26px; border-radius: 24px; color: rgba(238, 241, 247, 0.78);">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="3"></rect><path d="M2.5 16l5.5-5.5 4.5 4.5 3-3 6 6"></path></svg>
+      <span style="font-size: 28px; font-weight: 600;">Look and scenes</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 20px; height: 84px; padding: 0 26px; border-radius: 24px; color: rgba(238, 241, 247, 0.78);">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="19" height="13" rx="2"></rect><path d="M9 20.5h6M12 16.5v4"></path></svg>
+      <span style="font-size: 28px; font-weight: 600;">TV settings</span>
+    </div>
+  </div>
+
+  <div style="position: absolute; left: 676px; right: 112px; top: 96px; display: flex; flex-direction: column; gap: 18px;">
+    <p style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(238, 241, 247, 0.5);">Controls  ›  Bedtime</p>
+    <h2 style="margin: 0 0 18px; font-size: 64px; font-weight: 300; letter-spacing: -0.03em;">When the TV says goodnight</h2>
+
+    <div style="display: flex; gap: 40px;">
+      <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: center; height: 108px; padding: 0 34px; border-radius: 26px; background: rgba(255, 255, 255, 0.06); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);">
+          <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 30px; font-weight: 700;">School nights</span><span style="font-size: 20px; font-weight: 500; color: rgba(238, 241, 247, 0.55);">Sunday to Thursday</span></div>
+          <span style="font-size: 36px; font-weight: 600;">7:30 pm</span>
+        </div>
+        <div style="display: flex; align-items: center; height: 108px; padding: 0 34px; border-radius: 26px; background: #ffffff; color: #0b0d12; box-shadow: 0 0 0 4px {{accent}}, 0 20px 50px rgba(0, 0, 0, 0.45);">
+          <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 30px; font-weight: 700;">Friday and Saturday</span><span style="font-size: 20px; font-weight: 500; color: rgba(11, 13, 18, 0.55);">Left and right change the time</span></div>
+          <span style="display: flex; align-items: center; gap: 16px; font-size: 36px; font-weight: 700;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5.5L8.5 12 15 18.5"></path></svg>
+            8:00 pm
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5.5L15.5 12 9 18.5"></path></svg>
+          </span>
+        </div>
+        <div style="display: flex; align-items: center; height: 108px; padding: 0 34px; border-radius: 26px; background: rgba(255, 255, 255, 0.06); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);">
+          <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 30px; font-weight: 700;">The TV wakes up</span><span style="font-size: 20px; font-weight: 500; color: rgba(238, 241, 247, 0.55);">Every morning</span></div>
+          <span style="font-size: 36px; font-weight: 600;">7:00 am</span>
+        </div>
+        <div style="display: flex; align-items: center; height: 108px; padding: 0 34px; border-radius: 26px; background: rgba(255, 255, 255, 0.06); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);">
+          <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 30px; font-weight: 700;">Stop a show at bedtime</span><span style="font-size: 20px; font-weight: 500; color: rgba(238, 241, 247, 0.55);">Goes back to the Goodnight screen</span></div>
+          <span style="width: 92px; height: 52px; border-radius: 26px; background: #34c77b; position: relative;"><span style="position: absolute; right: 6px; top: 6px; width: 40px; height: 40px; border-radius: 50%; background: #ffffff;"></span></span>
+        </div>
+        <div style="display: flex; align-items: center; height: 108px; padding: 0 34px; border-radius: 26px; background: rgba(255, 255, 255, 0.06); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);">
+          <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 30px; font-weight: 700;">Extra time a grown-up can give</span><span style="font-size: 20px; font-weight: 500; color: rgba(238, 241, 247, 0.55);">With the PIN, on the Goodnight screen</span></div>
+          <span style="font-size: 30px; font-weight: 600; color: rgba(238, 241, 247, 0.85);">15 · 30 min · Until morning</span>
+        </div>
+      </div>
+
+      <div style="width: 420px; display: flex; flex-direction: column; gap: 18px;">
+        <div style="width: 420px; height: 236px; border-radius: 26px; overflow: hidden; position: relative; background: linear-gradient(180deg, #0e0832 0%, #2a1a6e 60%, #5a3a9e 100%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1), 0 20px 50px rgba(0, 0, 0, 0.45);">
+          <svg width="420" height="236" viewBox="0 0 420 236" aria-hidden="true" style="position: absolute; left: 0; top: 0;">
+            <circle cx="340" cy="56" r="26" fill="#fff1c4"></circle><circle cx="330" cy="50" r="23" fill="#1a0f4a"></circle>
+            <circle cx="60" cy="40" r="1.5" fill="#ffffff"></circle><circle cx="140" cy="24" r="1.2" fill="#ffffff"></circle><circle cx="220" cy="60" r="1.5" fill="#ffffff"></circle><circle cx="260" cy="20" r="1" fill="#ffffff"></circle>
+            <path d="M0 176 C 80 160, 160 166, 230 178 S 360 190, 420 170 L420 236 L0 236 Z" fill="#1e114a"></path>
+          </svg>
+          <div style="position: absolute; left: 0; right: 0; top: 92px; text-align: center; font-size: 24px; font-weight: 700;">Goodnight, Blake, Lucy and Sora</div>
+        </div>
+        <p style="margin: 0; font-size: 22px; line-height: 1.45; font-weight: 500; color: rgba(238, 241, 247, 0.6);">Tonight is Thursday, so the Goodnight screen comes on at 7:30 pm and any show that is still on stops.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#8e5cff","options":["#8e5cff","#ff5fa8","#2fc4b2"]},"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#8e5cff' };
+  }
+}
+</script>
+</body>
+</html>

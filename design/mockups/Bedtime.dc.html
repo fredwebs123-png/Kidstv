@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kidstv bedtime</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#fff}a:hover{color:#efe6ff}
+</style>
+</helmet>
+<div style="width: 1920px; height: 1080px; position: relative; overflow: hidden; font-family: 'Nunito', system-ui, sans-serif; color: #ffffff; background: #140c3a;">
+
+  <svg width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true" style="position: absolute; left: 0; top: 0;">
+    <defs>
+      <linearGradient id="bsky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#0e0832"></stop>
+        <stop offset="0.5" stop-color="#2a1a6e"></stop>
+        <stop offset="0.8" stop-color="#5a3a9e"></stop>
+      </linearGradient>
+      <radialGradient id="bmoon" cx="1560" cy="250" r="360" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#fff4c8" stop-opacity="0.55"></stop>
+        <stop offset="0.3" stop-color="#d8c2ff" stop-opacity="0.2"></stop>
+        <stop offset="1" stop-color="#d8c2ff" stop-opacity="0"></stop>
+      </radialGradient>
+      <linearGradient id="bfar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a2f8e"></stop><stop offset="1" stop-color="#36206e"></stop></linearGradient>
+      <linearGradient id="bmid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c1a62"></stop><stop offset="1" stop-color="#1e114a"></stop></linearGradient>
+      <linearGradient id="bnear" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#170c3e"></stop><stop offset="1" stop-color="#0b0624"></stop></linearGradient>
+      <filter id="bgrain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter>
+      <mask id="bcres"><rect width="1920" height="1080" fill="#ffffff"></rect><circle cx="1515" cy="218" r="96" fill="#000000"></circle></mask>
+    </defs>
+    <rect width="1920" height="1080" fill="url(#bsky)"></rect>
+    <rect width="1920" height="1080" fill="url(#bmoon)"></rect>
+    <circle cx="1560" cy="250" r="110" fill="#fff1c4" mask="url(#bcres)"></circle>
+    <g fill="#ffffff">
+      <circle cx="120" cy="90" r="2"></circle><circle cx="260" cy="200" r="2.5"></circle><circle cx="400" cy="70" r="1.5"></circle><circle cx="560" cy="160" r="2"></circle><circle cx="700" cy="60" r="2.5"></circle><circle cx="820" cy="210" r="1.5"></circle><circle cx="960" cy="110" r="2"></circle><circle cx="1100" cy="60" r="1.5"></circle><circle cx="1240" cy="170" r="2.5"></circle><circle cx="1360" cy="80" r="1.5"></circle><circle cx="1780" cy="120" r="2"></circle><circle cx="1860" cy="300" r="2.5"></circle><circle cx="180" cy="340" r="1.5"></circle><circle cx="340" cy="420" r="2"></circle><circle cx="1720" cy="430" r="1.5"></circle><circle cx="1300" cy="360" r="2"></circle><circle cx="620" cy="380" r="1.5"></circle>
+    </g>
+    <g fill="#fff1c4">
+      <path d="M300 130 l6 18 l18 6 l-18 6 l-6 18 l-6 -18 l-18 -6 l18 -6 z"></path>
+      <path d="M1040 230 l5 15 l15 5 l-15 5 l-5 15 l-5 -15 l-15 -5 l15 -5 z"></path>
+      <path d="M1820 520 l4 12 l12 4 l-12 4 l-4 12 l-4 -12 l-12 -4 l12 -4 z"></path>
+      <path d="M140 520 l4 12 l12 4 l-12 4 l-4 12 l-4 -12 l-12 -4 l12 -4 z"></path>
+    </g>
+    <path d="M0 640 C 260 590, 520 606, 780 640 S 1260 690, 1520 640 S 1820 600, 1920 620 L1920 1080 L0 1080 Z" fill="url(#bfar)"></path>
+    <path d="M0 760 C 300 712, 600 730, 880 768 S 1420 810, 1920 744 L1920 1080 L0 1080 Z" fill="url(#bmid)"></path>
+    <g>
+      <rect x="1290" y="690" width="84" height="74" rx="6" fill="#1e114a"></rect><path d="M1278 694 L1332 646 L1386 694 Z" fill="#1a0e42"></path>
+      <rect x="1306" y="712" width="20" height="20" rx="3" fill="#ffd27a"></rect><rect x="1338" y="712" width="20" height="20" rx="3" fill="#ffd27a" opacity="0.6"></rect>
+    </g>
+    <path d="M0 900 C 360 860, 720 874, 1040 908 S 1600 940, 1920 880 L1920 1080 L0 1080 Z" fill="url(#bnear)"></path>
+    <rect width="1920" height="1080" filter="url(#bgrain)" opacity="0.08"></rect>
+  </svg>
+
+  <div style="position: absolute; left: 0; right: 0; top: 150px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+    <span style="font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 200px; line-height: 0.9; color: rgba(255, 244, 214, 0.95); text-shadow: 0 0 60px rgba(255, 230, 170, 0.25);">8:05 <span style="font-size: 54px;">pm</span></span>
+    <div style="display: flex; gap: 40px; margin-top: 60px;">
+      <svg width="120" height="120" viewBox="0 0 100 100" role="img" aria-label="Blake, butterfly, asleep">
+        <defs><linearGradient id="zbA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9b78e8"></stop><stop offset="1" stop-color="#5a32b8"></stop></linearGradient></defs>
+        <circle cx="50" cy="50" r="50" fill="url(#zbA)"></circle>
+        <ellipse cx="33" cy="40" rx="15" ry="19" transform="rotate(-28 33 40)" fill="#efe6ff"></ellipse>
+        <ellipse cx="67" cy="40" rx="15" ry="19" transform="rotate(28 67 40)" fill="#efe6ff"></ellipse>
+        <ellipse cx="36" cy="64" rx="10" ry="12" transform="rotate(25 36 64)" fill="#f3d2ec"></ellipse>
+        <ellipse cx="64" cy="64" rx="10" ry="12" transform="rotate(-25 64 64)" fill="#f3d2ec"></ellipse>
+        <rect x="46.5" y="34" width="7" height="38" rx="3.5" fill="#2e1870"></rect>
+      </svg>
+      <svg width="120" height="120" viewBox="0 0 100 100" role="img" aria-label="Lucy, rainbow, asleep">
+        <defs><linearGradient id="zlA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e88ac0"></stop><stop offset="1" stop-color="#c04585"></stop></linearGradient></defs>
+        <circle cx="50" cy="50" r="50" fill="url(#zlA)"></circle>
+        <path d="M20 66 A30 30 0 0 1 80 66" stroke="#fbe9f4" stroke-width="8" fill="none" stroke-linecap="round"></path>
+        <path d="M29 66 A21 21 0 0 1 71 66" stroke="#f2d88a" stroke-width="8" fill="none" stroke-linecap="round"></path>
+        <path d="M38 66 A12 12 0 0 1 62 66" stroke="#a8dcf0" stroke-width="8" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg width="120" height="120" viewBox="0 0 100 100" role="img" aria-label="Sora, little chick, asleep">
+        <defs><linearGradient id="zsA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5cc8b8"></stop><stop offset="1" stop-color="#16867c"></stop></linearGradient></defs>
+        <circle cx="50" cy="50" r="50" fill="url(#zsA)"></circle>
+        <circle cx="50" cy="44" r="20" fill="#f2cf52"></circle>
+        <path d="M40 42 Q44 45 48 42 M52 42 Q56 45 60 42" stroke="#3a2a10" stroke-width="2.5" fill="none" stroke-linecap="round"></path>
+        <path d="M47 48 L53 48 L50 53 Z" fill="#ff8a3d"></path>
+        <path d="M26 58 L34 52 L42 60 L50 52 L58 60 L66 52 L74 58 L72 78 C 66 88, 34 88, 28 78 Z" fill="#f4f0ff"></path>
+      </svg>
+    </div>
+    <h1 style="margin: 48px 0 0; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 92px; line-height: 1.05; text-shadow: 0 8px 40px rgba(10, 4, 40, 0.6);">Goodnight, Blake, Lucy and Sora</h1>
+    <p style="margin: 22px 0 0; font-size: 40px; font-weight: 700; color: rgba(236, 226, 255, 0.85);">Sweet dreams. The TV wakes up at 7:00 am.</p>
+  </div>
+
+  <p style="position: absolute; left: 0; right: 0; bottom: 56px; margin: 0; text-align: center; font-size: 24px; font-weight: 700; color: rgba(220, 208, 255, 0.6);">Grown-ups: press OK</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

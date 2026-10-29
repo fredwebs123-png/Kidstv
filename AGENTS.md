@@ -177,13 +177,14 @@ recommend C (A if they only want the home screen). Write the choice down; the re
 This fork is set up for three girls, Blake, Lucy and Sora, with `home.kids` in
 `config.example.json` ([docs/KIDS.md](docs/KIDS.md)). Keep their people, colours and emoji. Ask:
 
-- "What 4 digit PIN should grown-ups use for More apps, Settings and extra time at bedtime?"
-  Never leave it at 1234. It goes in `home.kids.pin`.
+- The grown-ups PIN is made on the TV the first time More apps, Settings or bedtime extra time
+  is opened (leave `home.kids.pin` as `null`). Tell them so; never ask for it or write it down.
 - "What time is bedtime, school nights and Friday and Saturday nights, and when may the TV wake up?"
   (`home.kids.bedtime`: `from`, `weekend_from`, `until`).
 - "Do Blake, Lucy and Sora have Kids profiles in Netflix, Disney+ and Prime Video? What are they
   called?" They go in each girl's `app_profiles`.
-- Check YouTube Kids is installed on the TV; if not, they install it from the Play Store first.
+- There is no YouTube Kids TV app any more: YouTube Kids is a profile inside the YouTube app
+  (docs/KIDS.md, "YouTube"). Help them set up a Kids profile for each girl.
 
 ### 2.3 How the home looks
 

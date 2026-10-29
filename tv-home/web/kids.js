@@ -2,7 +2,8 @@
 // window.KIDS. It adds:
 //   - each girl's own colour and emoji (the head icon, the list, the focus ring follow whoever is picked)
 //   - a home row of only the kids' apps; everything else waits behind More apps
-//   - a grown-up PIN in front of More apps and Settings
+//   - a grown-up PIN in front of More apps and Settings, made on the TV the first time it is needed
+//     (and changed from the Settings tile), kept on the TV only, never in git
 //   - the bedtime screen: from bedtime until morning the home shows "Goodnight" and opens nothing,
 //     until a grown-up types the PIN and gives some extra time
 // Settings are home.kids in config.json (docs/KIDS.md); anything left out uses DEFAULTS below.
@@ -13,10 +14,13 @@
     enabled: true,
     // by person id (people in config.json); any emoji the TV's font has
     emoji: { blake: "🦋", lucy: "🌈", sora: "🐣" },
-    // the only apps on the home row, in this order; the rest are behind More apps (PIN)
-    home_apps: ["com.google.android.youtube.tvkids", "com.disney.disneyplus", "com.netflix.ninja", "com.amazon.amazonvideo.livingroom"],
-    // four digits; "" turns the grown-up lock off
-    pin: "1234",
+    // the only apps on the home row, in this order; the rest are behind More apps (PIN).
+    // YouTube, not YouTube Kids: Google retired the YouTube Kids TV app in 2024, and each girl's
+    // YouTube Kids profile now lives inside the YouTube app.
+    home_apps: ["com.google.android.youtube.tv", "com.disney.disneyplus", "com.netflix.ninja", "com.amazon.amazonvideo.livingroom"],
+    // null: a grown-up makes the PIN on the TV the first time; "1234": start with this one;
+    // false: no grown-up lock at all
+    pin: null,
     // 24 hour times. weekend_from is Friday and Saturday nights (leave it out for the same every night)
     bedtime: { from: "19:30", until: "07:00", weekend_from: "20:00" },
     // how long a right PIN keeps More apps and Settings open
@@ -29,7 +33,8 @@
   var C = {};
   Object.keys(DEFAULTS).forEach(function (k) { C[k] = given[k] !== undefined ? given[k] : DEFAULTS[k]; });
   var ON = C.enabled !== false;
-  var PIN = /^\d{4}$/.test(String(C.pin)) ? String(C.pin) : "";
+  var LOCK = C.pin !== false && C.pin !== "";
+  var CFG_PIN = /^\d{4}$/.test(String(C.pin)) ? String(C.pin) : "";
   var BED = parseBedtime(C.bedtime);
   var APPS = Array.isArray(C.home_apps) ? C.home_apps.filter(function (p) { return typeof p === "string"; }) : [];
   var EMOJI = C.emoji && typeof C.emoji === "object" ? C.emoji : {};
@@ -66,13 +71,28 @@
   }
 
   // ---------- saved on this TV ----------
-  function get(k) { try { return JSON.parse(localStorage.getItem("kids." + k) || "null"); } catch (e) { return null; } }
-  function set(k, v) { try { localStorage.setItem("kids." + k, JSON.stringify(v)); } catch (e) {} }
+  // In the page's storage and the launcher's (TVOS.keep), like app.js does, so the live home and the
+  // copy the launcher keeps for when the computer is off share the PIN and the extra time.
+  var TV = window.TVOS || null;
+  function get(k) {
+    var v = null;
+    try { if (TV && TV.kept) v = TV.kept("kids." + k); } catch (e) {}
+    if (v == null) try { v = localStorage.getItem("kids." + k); } catch (e) {}
+    try { return v == null ? null : JSON.parse(v); } catch (e) { return null; }
+  }
+  function set(k, v) {
+    var j = JSON.stringify(v);
+    try { localStorage.setItem("kids." + k, j); } catch (e) {}
+    try { if (TV && TV.keep) TV.keep("kids." + k, j); } catch (e) {}
+  }
+  // the PIN made on this TV wins over one from config.json
+  function pin() { var p = get("pin"); return typeof p === "string" && /^\d{4}$/.test(p) ? p : CFG_PIN; }
   var unlockedUntil = 0;
 
   // ---------- what the screen is showing ----------
   var people = [], ui = null, mode = null;   // mode: null, "bed", "pad", "extra"
-  var pad = { digits: "", i: 0, done: null, title: "" }, extraI = 0;
+  // the pad: what it says, and what happens when four digits are in (full returns false: shake, clear)
+  var pad = { digits: "", i: 4, title: "", sub: "", full: null }, extraI = 0;
   var EXTRA = [{ m: 15, label: "15 more minutes" }, { m: 30, label: "30 more minutes" }, { m: 0, label: "Until morning" }];
   var KEYS = [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"], ["x", "0", "del"]];
 
@@ -92,7 +112,7 @@
       '<div class="kbed-text"><p class="kbed-moon" id="kbed-moon"></p><h1 id="kbed-title"></h1><p id="kbed-sub"></p></div>' +
       '<p class="kbed-hint">Grown-ups: press OK</p></div>' +
       '<div class="kpad" id="kpad" role="dialog" aria-modal="true"><div class="kpad-box">' +
-      '<h2 id="kpad-title"></h2><div class="kdots" id="kdots"></div><div class="kkeys" id="kkeys"></div>' +
+      '<h2 id="kpad-title"></h2><p class="kpad-sub" id="kpad-sub"></p><div class="kdots" id="kdots"></div><div class="kkeys" id="kkeys"></div>' +
       '<div class="kextra" id="kextra"></div></div></div>';
     document.body.appendChild(ui);
   }
@@ -105,6 +125,7 @@
   }
   function renderPad() {
     $("kpad-title").textContent = mode === "extra" ? "How much more TV?" : pad.title;
+    $("kpad-sub").textContent = mode === "extra" ? "" : pad.sub;
     var dots = "";
     for (var k = 0; k < 4; k++) dots += '<i class="' + (k < pad.digits.length ? "on" : "") + '"></i>';
     $("kdots").innerHTML = dots;
@@ -135,22 +156,40 @@
   }
 
   // ---------- the PIN pad ----------
-  function askPin(title, done) {
-    pad = { digits: "", i: 4, done: done, title: title };   // start on 5, the middle
+  function openPad(title, sub, full) {
+    pad = { digits: "", i: 4, title: title, sub: sub || "", full: full };   // start on 5, the middle
     show("pad");
+  }
+  function unlock() { unlockedUntil = Date.now() + Math.max(1, +C.unlock_minutes || 5) * 60000; }
+  // the PIN, then done(); with no PIN yet a grown-up makes one first
+  function askPin(done) {
+    if (!pin()) { makePin(done, ""); return; }
+    openPad("Grown-ups only", "Type the PIN with the remote's numbers", function (d) {
+      if (d !== pin()) return false;
+      unlock();
+      done();
+    });
+  }
+  // two rounds: the new PIN, then the same again
+  function makePin(done, sub) {
+    openPad("Make a grown-ups PIN", sub || "Four numbers the girls don't know", function (first) {
+      openPad("Type it once more", "The same four numbers", function (again) {
+        if (again !== first) { makePin(done, "Those didn't match. Let's start again."); return; }
+        set("pin", first);
+        unlock();
+        done();
+      });
+    });
   }
   function typeDigit(d) {
     if (pad.digits.length >= 4) return;
     pad.digits += d;
     renderPad();
     if (pad.digits.length < 4) return;
+    var full = pad.full, digits = pad.digits;
     setTimeout(function () {
-      if (pad.digits === PIN) {
-        unlockedUntil = Date.now() + Math.max(1, +C.unlock_minutes || 5) * 60000;
-        var done = pad.done;
-        pad.done = null;
-        done();
-      } else {
+      if (pad.full !== full) return;   // closed meanwhile
+      if (full(digits) === false) {
         pad.digits = "";
         $("kdots").classList.add("wrong");
         setTimeout(function () { $("kdots").classList.remove("wrong"); }, 500);
@@ -203,7 +242,9 @@
     if (e.type !== "keydown" || e.repeat) return;
     var arrow = ARROW[e.key] || ARROW_CODE[e.keyCode];
     if (mode === "bed") {
-      if (isOk(e) && PIN) askPin("Grown-ups only", function () { extraI = 0; show("extra"); });
+      if (!isOk(e)) return;
+      var extra = function () { extraI = 0; show("extra"); };
+      if (LOCK) askPin(extra); else extra();
       return;
     }
     if (mode === "extra") {
@@ -248,8 +289,14 @@
     },
     // a grown-up area: runs go() now if there is no PIN or it was typed a moment ago, else asks
     grownUp: function (go) {
-      if (!ON || !PIN || Date.now() < unlockedUntil) { go(); return; }
-      askPin("Grown-ups only", function () { hide(); go(); });
+      if (!ON || !LOCK || Date.now() < unlockedUntil) { go(); return; }
+      askPin(function () { hide(); go(); });
+    },
+    // the Settings tile's "Grown-ups PIN": the old PIN (if there is one), then a new one twice
+    canChangePin: function () { return ON && LOCK; },
+    changePin: function () {
+      var fresh = function () { makePin(function () { hide(); }, "Four new numbers"); };
+      if (!pin()) fresh(); else askPin(fresh);
     },
     // true while the bedtime screen or the PIN pad is up (nothing opens underneath)
     busy: function () { return !!mode; },

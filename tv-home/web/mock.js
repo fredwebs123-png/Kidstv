@@ -48,7 +48,6 @@
 
   // ---------- the TV's apps ----------
   var apps = [
-    ["com.google.android.youtube.tvkids", "YouTube Kids", "#ff3d33"],
     ["com.google.android.youtube.tv", "YouTube", "#f2f2f2"], ["com.netflix.ninja", "Netflix", "#ffffff"],
     ["au.net.abc.iview", "ABC iview", "#2bbfb6"], ["com.disney.disneyplus", "Disney+", "#0b3f4f"],
     ["au.com.stan.and", "Stan", "#0b6cf2"], ["au.com.streamotion.ares.tv", "Binge", "#3a1d8c"],

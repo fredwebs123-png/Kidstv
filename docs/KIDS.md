@@ -6,10 +6,21 @@ does still works (README.md). On top of it:
 | What | How it works |
 |---|---|
 | **Each girl has her own colour and emoji** | Blake 🦋 purple, Lucy 🌈 pink, Sora 🐣 teal. Her emoji is on the round head icon at the top left, and the focus ring around the apps turns her colour when she is picked. |
-| **Only the kids' apps on the home row** | YouTube Kids, Disney+, Netflix and Prime Video, in that order. Every other app is behind **More apps**. |
-| **Grown-ups only: More apps and Settings** | Both ask for a 4 digit PIN. Type it with the number keys on the remote, or move around the on-screen keypad with the arrows and press OK. The right PIN keeps them open for 5 minutes. |
+| **Only the kids' apps on the home row** | YouTube, Disney+, Netflix and Prime Video, in that order. Every other app is behind **More apps**. |
+| **Grown-ups only: More apps and Settings** | Both ask for a 4 digit PIN. The first time, the TV asks a grown-up to **make** the PIN (typed twice). Type it with the number keys on the remote, or move around the on-screen keypad with the arrows and press OK. The right PIN keeps them open for 5 minutes. Change it from the Settings tile, **Grown-ups PIN**. |
 | **Bedtime** | From 7:30 pm (8:00 pm on Friday and Saturday nights) until 7:00 am the home shows **"Goodnight, Blake, Lucy and Sora!"** over the starry night, and opens nothing. A grown-up presses OK, types the PIN and picks **15 more minutes**, **30 more minutes** or **Until morning**. |
 | **Kid scenes** | Three drawn scenes take turns behind the big clock: Rainbow day, Candy sunset and Starry night. The hills sit in front of the clock's digits. |
+
+## YouTube, with a YouTube Kids profile for each girl
+
+Google retired the separate YouTube Kids app on TVs in 2024 (that is why the Play Store does not
+have it). YouTube Kids now lives **inside the normal YouTube app** as a profile:
+
+1. On the TV, open YouTube and sign in with your Google account.
+2. Pick your account picture, then **Set up YouTube Kids**, and make a profile for each girl (her
+   age decides what she sees). Profiles made on your phone show up too.
+3. Each girl then picks her own profile under "Who's watching?". Google's own steps:
+   [support.google.com/youtubekids](https://support.google.com/youtubekids/?p=ytk_tvs).
 
 ## Change it
 
@@ -27,8 +38,8 @@ All of it lives in `config.json` (copy `config.example.json`), under `people` an
   "kids": {
     "enabled": true,
     "emoji": { "blake": "🦋", "lucy": "🌈", "sora": "🐣" },
-    "home_apps": ["com.google.android.youtube.tvkids", "com.disney.disneyplus", "com.netflix.ninja", "com.amazon.amazonvideo.livingroom"],
-    "pin": "1234",
+    "home_apps": ["com.google.android.youtube.tv", "com.disney.disneyplus", "com.netflix.ninja", "com.amazon.amazonvideo.livingroom"],
+    "pin": null,
     "bedtime": { "from": "19:30", "until": "07:00", "weekend_from": "20:00" },
     "unlock_minutes": 5
   }
@@ -42,7 +53,11 @@ All of it lives in `config.json` (copy `config.example.json`), under `people` an
 - **`emoji`**: by person id. Any emoji the TV's font has.
 - **`home_apps`**: Android package names, in order (the name in the app's Play Store web address,
   after `id=`). Leave the list empty (`[]`) to put every app on the home row, as couch-tv does.
-- **`pin`**: four digits. **Change it from 1234 before you install.** `""` turns the grown-up lock off.
+- **`pin`**: `null` (the default): a grown-up makes the PIN on the TV the first time it is needed,
+  and it is kept on the TV only, never in `config.json` or git. Four digits (`"2468"`): start with
+  that one. `false`: no grown-up lock at all. A PIN made or changed on the TV wins over this.
+  Forgot it? Clear the home app's storage from Android's own Settings, Apps (that resets the
+  home's other settings too).
 - **`bedtime`**: 24 hour times. `weekend_from` is Friday and Saturday nights; leave it out for the
   same time every night. `"bedtime": null` turns bedtime off.
 - **`unlock_minutes`**: how long a right PIN keeps More apps and Settings open (1 to 120).
