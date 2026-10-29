@@ -13,6 +13,7 @@ The mockups for the Sony Google TV home, one file per screen (1920x1080):
 | `mockups/MakePin.dc.html` | The first time: make the PIN |
 | `mockups/Grownups.dc.html` | The grown-ups home |
 | `mockups/Controls.dc.html` | Grown-ups controls (bedtime) |
+| `mockups/Style.dc.html` | The style guide: safe area, colour, focus, type, glass |
 
 The live, editable copy is the Kidstv mockups canvas on claude.ai; these are its source files,
 kept here so the designs are versioned with the code. They open on that canvas (they need its
