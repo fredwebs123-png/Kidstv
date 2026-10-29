@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+    <defs>
+      <linearGradient id="bsky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#0e0832"></stop>
+        <stop offset="0.5" stop-color="#2a1a6e"></stop>
+        <stop offset="0.8" stop-color="#5a3a9e"></stop>
+      </linearGradient>
+      <radialGradient id="bmoon" cx="1560" cy="250" r="360" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#fff4c8" stop-opacity="0.55"></stop>
+        <stop offset="0.3" stop-color="#d8c2ff" stop-opacity="0.2"></stop>
+        <stop offset="1" stop-color="#d8c2ff" stop-opacity="0"></stop>
+      </radialGradient>
+      <linearGradient id="bfar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a2f8e"></stop><stop offset="1" stop-color="#36206e"></stop></linearGradient>
+      <linearGradient id="bmid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c1a62"></stop><stop offset="1" stop-color="#1e114a"></stop></linearGradient>
+      <linearGradient id="bnear" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#170c3e"></stop><stop offset="1" stop-color="#0b0624"></stop></linearGradient>
+      <filter id="bgrain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter>
+      <mask id="bcres"><rect width="1920" height="1080" fill="#ffffff"></rect><circle cx="1515" cy="218" r="96" fill="#000000"></circle></mask>
+    </defs>
+    <rect width="1920" height="1080" fill="url(#bsky)"></rect>
+    <rect width="1920" height="1080" fill="url(#bmoon)"></rect>
+    <circle cx="1560" cy="250" r="110" fill="#fff1c4" mask="url(#bcres)"></circle>
+    <g fill="#ffffff">
+      <circle cx="120" cy="90" r="2"></circle><circle cx="260" cy="200" r="2.5"></circle><circle cx="400" cy="70" r="1.5"></circle><circle cx="560" cy="160" r="2"></circle><circle cx="700" cy="60" r="2.5"></circle><circle cx="820" cy="210" r="1.5"></circle><circle cx="960" cy="110" r="2"></circle><circle cx="1100" cy="60" r="1.5"></circle><circle cx="1240" cy="170" r="2.5"></circle><circle cx="1360" cy="80" r="1.5"></circle><circle cx="1780" cy="120" r="2"></circle><circle cx="1860" cy="300" r="2.5"></circle><circle cx="180" cy="340" r="1.5"></circle><circle cx="340" cy="420" r="2"></circle><circle cx="1720" cy="430" r="1.5"></circle><circle cx="1300" cy="360" r="2"></circle><circle cx="620" cy="380" r="1.5"></circle>
+    </g>
+    <g fill="#fff1c4">
+      <path d="M300 130 l6 18 l18 6 l-18 6 l-6 18 l-6 -18 l-18 -6 l18 -6 z"></path>
+      <path d="M1040 230 l5 15 l15 5 l-15 5 l-5 15 l-5 -15 l-15 -5 l15 -5 z"></path>
+      <path d="M1820 520 l4 12 l12 4 l-12 4 l-4 12 l-4 -12 l-12 -4 l12 -4 z"></path>
+      <path d="M140 520 l4 12 l12 4 l-12 4 l-4 12 l-4 -12 l-12 -4 l12 -4 z"></path>
+    </g>
+    <path d="M0 640 C 260 590, 520 606, 780 640 S 1260 690, 1520 640 S 1820 600, 1920 620 L1920 1080 L0 1080 Z" fill="url(#bfar)"></path>
+    <path d="M0 760 C 300 712, 600 730, 880 768 S 1420 810, 1920 744 L1920 1080 L0 1080 Z" fill="url(#bmid)"></path>
+    <path d="M0 900 C 360 860, 720 874, 1040 908 S 1600 940, 1920 880 L1920 1080 L0 1080 Z" fill="url(#bnear)"></path>
+    <rect width="1920" height="1080" filter="url(#bgrain)" opacity="0.08"></rect>
+  </svg>

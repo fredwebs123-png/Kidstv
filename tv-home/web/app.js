@@ -327,6 +327,9 @@
     fitDate();
     document.body.classList.toggle("night", h >= 21 || h < 6);
     if (NIGHT) glassClock(hm);
+    // Kidstv: the big clock in front, and the bedtime screen's
+    if (window.KIDS) window.KIDS.clock(hm, CLOCK24 ? "" : (h < 12 ? t("am") : t("pm")), day,
+      w ? wxIcon(w) + esc(tempText(w.temp)) + '<span class="ww"> ' + esc(wxText(w)) + "</span>" : "");
     if (quickReady) renderQuick();
   }
 
@@ -744,7 +747,9 @@
     return PALETTE[h % PALETTE.length];
   }
   function avatarHTML(p) {
-    var emoji = window.KIDS ? window.KIDS.emoji(p) : "";   // Kidstv: each girl's own emoji
+    var badge = window.KIDS ? window.KIDS.badge(p) : "";   // Kidstv: each girl's drawn badge
+    if (badge) return '<span class="avatar badge">' + badge + "</span>";
+    var emoji = window.KIDS ? window.KIDS.emoji(p) : "";   // or her emoji
     return '<span class="avatar' + (emoji ? " emoji" : "") + '" style="background:' + esc(colourOf(p)) + '">' +
       esc(emoji || (p.name || "?").trim().charAt(0).toUpperCase()) + "</span>";
   }
@@ -752,7 +757,10 @@
 
   function renderPeople() {
     var el = $("people"), n = peopleCount();
-    if (window.KIDS && !NOBODY) window.KIDS.accent(colourOf(PEOPLE[whoIndex()]));   // her colour on the focus ring
+    if (window.KIDS && !NOBODY) {   // her colour on the focus ring, her picture and her name in the greeting
+      window.KIDS.accent(colourOf(PEOPLE[whoIndex()]));
+      window.KIDS.who(PEOPLE[whoIndex()]);
+    }
     el.classList.toggle("none", n < 2);
     el.classList.toggle("head", n >= 3);
     if (n >= 3) {
@@ -2272,13 +2280,17 @@
     mark("app-start");
     clock();
     setInterval(clock, 15000);
-    if (NIGHT) {
+    if (window.KIDS) window.KIDS.start(NIGHT);
+    // Kidstv's own look draws its own picture and clock, so the scenes are left out
+    if (NIGHT && !(window.KIDS && window.KIDS.ownLook())) {
       buildScenes();
       // ?scene=fog starts on that scene, for previews (?scene=own: the first of the household's
       // photos; ?scene=<id>: one of your own scenes)
       var first = (Q.match(/[?&]scene=([a-z0-9]+)/) || [])[1];
       showScene(Math.max(0, SCENES.map(function (s) { return s.own ? "own" : s.id; }).indexOf(first)));
       if (SCENES.length > 1) setInterval(nextScene, SCENE_MS);
+    }
+    if (NIGHT) {
       // the clock font must be in before the glass is measured
       if (document.fonts) document.fonts.load("300 10px Antonio").then(function () { glassShown = ""; clock(); });
       refreshWeather();

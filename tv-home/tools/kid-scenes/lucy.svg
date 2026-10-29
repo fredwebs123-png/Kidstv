@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+    <defs>
+      <linearGradient id="lsky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f45fa6"></stop>
+        <stop offset="0.35" stop-color="#ff8db4"></stop>
+        <stop offset="0.6" stop-color="#ffb9a8"></stop>
+        <stop offset="0.78" stop-color="#ffe0b0"></stop>
+      </linearGradient>
+      <radialGradient id="lsun" cx="1500" cy="640" r="560" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#fff7d2"></stop>
+        <stop offset="0.14" stop-color="#ffe8a8" stop-opacity="0.95"></stop>
+        <stop offset="0.5" stop-color="#ffc4a0" stop-opacity="0.3"></stop>
+        <stop offset="1" stop-color="#ffc4a0" stop-opacity="0"></stop>
+      </radialGradient>
+      <linearGradient id="lfar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7a3cf"></stop><stop offset="1" stop-color="#e57fbf"></stop></linearGradient>
+      <linearGradient id="lmid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d462b2"></stop><stop offset="1" stop-color="#a8409a"></stop></linearGradient>
+      <linearGradient id="lnear" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a2f86"></stop><stop offset="1" stop-color="#4a1554"></stop></linearGradient>
+      <linearGradient id="lhaze" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0e8" stop-opacity="0"></stop><stop offset="0.5" stop-color="#fff0e8" stop-opacity="0.5"></stop><stop offset="1" stop-color="#fff0e8" stop-opacity="0"></stop></linearGradient>
+      <linearGradient id="lscrim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a0b3e" stop-opacity="0"></stop><stop offset="1" stop-color="#3a0b3e" stop-opacity="0.72"></stop></linearGradient>
+      <linearGradient id="ltop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a1e5e" stop-opacity="0.4"></stop><stop offset="1" stop-color="#8a1e5e" stop-opacity="0"></stop></linearGradient>
+      <filter id="lsoft"><feGaussianBlur stdDeviation="12"></feGaussianBlur></filter>
+      <filter id="lgrain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter>
+    </defs>
+    <rect width="1920" height="1080" fill="url(#lsky)"></rect>
+    <rect width="1920" height="1080" fill="url(#lsun)"></rect>
+    <circle cx="1500" cy="640" r="120" fill="#fff6d8"></circle>
+    <g fill="#ffeef6" opacity="0.8" filter="url(#lsoft)">
+      <ellipse cx="380" cy="300" rx="240" ry="36"></ellipse>
+      <ellipse cx="1500" cy="250" rx="200" ry="30"></ellipse>
+      <ellipse cx="900" cy="560" rx="260" ry="30"></ellipse>
+    </g>
+    <g transform="translate(300 420)">
+      <path d="M0 -70 C 46 -70, 62 -30, 50 4 C 40 30, 14 44, 0 56 C -14 44, -40 30, -50 4 C -62 -30, -46 -70, 0 -70 Z" fill="#8fd8ff"></path>
+      <path d="M0 -70 C 20 -70, 26 -30, 20 4 C 16 30, 6 44, 0 56 C -6 44, -16 30, -20 4 C -26 -30, -20 -70, 0 -70 Z" fill="#ffffff"></path>
+      <path d="M-14 58 L-10 78 M14 58 L10 78" stroke="#7a3a5a" stroke-width="3"></path>
+      <rect x="-14" y="78" width="28" height="18" rx="5" fill="#b76a4a"></rect>
+    </g>
+    <g transform="translate(1700 300) scale(0.6)">
+      <path d="M0 -70 C 46 -70, 62 -30, 50 4 C 40 30, 14 44, 0 56 C -14 44, -40 30, -50 4 C -62 -30, -46 -70, 0 -70 Z" fill="#c69bff"></path>
+      <path d="M0 -70 C 20 -70, 26 -30, 20 4 C 16 30, 6 44, 0 56 C -6 44, -16 30, -20 4 C -26 -30, -20 -70, 0 -70 Z" fill="#ffe27a"></path>
+      <path d="M-14 58 L-10 78 M14 58 L10 78" stroke="#7a3a5a" stroke-width="4"></path>
+      <rect x="-14" y="78" width="28" height="18" rx="5" fill="#b76a4a"></rect>
+    </g>
+    <path d="M0 600 C 260 548, 480 560, 700 590 S 1100 640, 1340 600 S 1720 548, 1920 580 L1920 1080 L0 1080 Z" fill="url(#lfar)"></path>
+    <rect x="0" y="560" width="1920" height="150" fill="url(#lhaze)"></rect>
+    <path d="M0 700 C 240 650, 520 670, 780 712 S 1220 752, 1480 704 S 1800 668, 1920 690 L1920 1080 L0 1080 Z" fill="url(#lmid)"></path>
+    <path d="M0 830 C 320 778, 640 796, 940 836 S 1480 880, 1920 816 L1920 1080 L0 1080 Z" fill="url(#lnear)"></path>
+    <rect width="1920" height="360" fill="url(#ltop)"></rect>
+    <rect y="580" width="1920" height="500" fill="url(#lscrim)"></rect>
+    <rect width="1920" height="1080" filter="url(#lgrain)" opacity="0.07"></rect>
+  </svg>

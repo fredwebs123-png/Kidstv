@@ -9,7 +9,7 @@ does still works (README.md). On top of it:
 | **Only the kids' apps on the home row** | YouTube, Disney+, Netflix and Prime Video, in that order. Every other app is behind **More apps**. |
 | **Grown-ups only: More apps and Settings** | Both ask for a 4 digit PIN. The first time, the TV asks a grown-up to **make** the PIN (typed twice). Type it with the number keys on the remote, or move around the on-screen keypad with the arrows and press OK. The right PIN keeps them open for 5 minutes. Change it from the Settings tile, **Grown-ups PIN**. |
 | **Bedtime** | From 7:30 pm (8:00 pm on Friday and Saturday nights) until 7:00 am the home shows **"Goodnight, Blake, Lucy and Sora!"** over the starry night, and opens nothing. A grown-up presses OK, types the PIN and picks **15 more minutes**, **30 more minutes** or **Until morning**. |
-| **Kid scenes** | Three drawn scenes take turns behind the big clock: Rainbow day, Candy sunset and Starry night. The hills sit in front of the clock's digits. |
+| **Each girl's own picture and a big clock** | Blake's lavender hills, Lucy's candy sunset, Sora's mint meadow, behind a big rounded clock in front of everything, the date and weather above it and "Good afternoon, Blake" under it. The app tiles sit smaller, a little see-through, in a frosted bar. The designs are in `design/mockups`. |
 
 ## YouTube, with a YouTube Kids profile for each girl
 
@@ -88,9 +88,22 @@ The home can only show the bedtime screen when the TV is on the home. So:
 - The phone remote is the grown-ups' remote: it can open any app, at any time.
 - The TV's own Settings (Android) are still reachable from the TV's Settings button on some remotes.
 
-## Make the scenes again
+## Make the girls' pictures again
 
-The three kid scenes are drawn, not photographed. To change their colours, edit
+Each girl's picture (and the bedtime one) is drawn as an SVG in `tv-home/tools/kid-scenes/`, the
+same drawing as in the mockups. After changing one, make the pictures the TV shows:
+
+```sh
+node tv-home/tools/render-kid-scenes.js
+```
+
+That writes `tv-home/web/backgrounds/kid-<name>.jpg` (it needs Playwright). A girl with no picture
+of her own gets Blake's. With the Classic look, or `home.kids.enabled: false`, the scenes below
+come back.
+
+## The older kid scenes
+
+Three more drawn scenes, used only when the girls' own look is off. To change their colours, edit
 `tv-home/tools/make-kids-scenes.py` and run:
 
 ```sh

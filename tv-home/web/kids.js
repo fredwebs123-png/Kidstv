@@ -27,6 +27,22 @@
     unlock_minutes: 5
   };
   var KID_SCENES = ["rainbow", "candy", "stars"];
+  // Each girl's badge (the same drawings as design/mockups), by person id. Anyone else: her emoji.
+  var BADGES = {
+    blake: '<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="kbB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b48cff"/><stop offset="1" stop-color="#6c3ce0"/></linearGradient></defs>' +
+      '<circle cx="50" cy="50" r="50" fill="url(#kbB)"/><ellipse cx="33" cy="40" rx="15" ry="19" transform="rotate(-28 33 40)" fill="#fff"/><ellipse cx="67" cy="40" rx="15" ry="19" transform="rotate(28 67 40)" fill="#fff"/>' +
+      '<ellipse cx="36" cy="64" rx="10" ry="12" transform="rotate(25 36 64)" fill="#ffd6f2"/><ellipse cx="64" cy="64" rx="10" ry="12" transform="rotate(-25 64 64)" fill="#ffd6f2"/>' +
+      '<rect x="46.5" y="34" width="7" height="38" rx="3.5" fill="#3a1f86"/><path d="M48 35 C 44 26, 40 24, 37 23 M52 35 C 56 26, 60 24, 63 23" stroke="#3a1f86" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>',
+    lucy: '<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="kbL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9fd0"/><stop offset="1" stop-color="#ff4f9a"/></linearGradient></defs>' +
+      '<circle cx="50" cy="50" r="50" fill="url(#kbL)"/><path d="M20 66 A30 30 0 0 1 80 66" stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round"/>' +
+      '<path d="M29 66 A21 21 0 0 1 71 66" stroke="#ffe27a" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M38 66 A12 12 0 0 1 62 66" stroke="#8fe3ff" stroke-width="8" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="20" cy="70" r="8" fill="#fff"/><circle cx="28" cy="72" r="6" fill="#fff"/><circle cx="80" cy="70" r="8" fill="#fff"/><circle cx="72" cy="72" r="6" fill="#fff"/></svg>',
+    sora: '<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="kbS" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6fe6d4"/><stop offset="1" stop-color="#16a69a"/></linearGradient></defs>' +
+      '<circle cx="50" cy="50" r="50" fill="url(#kbS)"/><circle cx="50" cy="44" r="20" fill="#ffd84d"/><circle cx="44" cy="41" r="3" fill="#3a2a10"/><circle cx="57" cy="41" r="3" fill="#3a2a10"/>' +
+      '<path d="M47 48 L53 48 L50 53 Z" fill="#ff8a3d"/><path d="M26 58 L34 52 L42 60 L50 52 L58 60 L66 52 L74 58 L72 78 C 66 88, 34 88, 28 78 Z" fill="#fff"/></svg>'
+  };
+  // Her picture behind the home (backgrounds/kid-<name>.jpg, made by tools/render-kid-scenes.js)
+  var SCENE_OF = { blake: "blake", lucy: "lucy", sora: "sora" };
 
   var home = (window.COUCH_CONFIG && window.COUCH_CONFIG.home) || {};
   var given = home.kids && typeof home.kids === "object" ? home.kids : {};
@@ -109,7 +125,7 @@
     ui.className = "kids-layer";
     ui.innerHTML =
       '<div class="kbed" id="kbed"><div class="ktwinkle"><i></i><i></i><i></i><i></i><i></i><i></i></div>' +
-      '<div class="kbed-text"><p class="kbed-moon" id="kbed-moon"></p><h1 id="kbed-title"></h1><p id="kbed-sub"></p></div>' +
+      '<div class="kbed-text"><p class="kbed-time" id="kbed-time"></p><p class="kbed-moon" id="kbed-moon"></p><h1 id="kbed-title"></h1><p id="kbed-sub"></p></div>' +
       '<p class="kbed-hint">Grown-ups: press OK</p></div>' +
       '<div class="kpad" id="kpad" role="dialog" aria-modal="true"><div class="kpad-box">' +
       '<h2 id="kpad-title"></h2><p class="kpad-sub" id="kpad-sub"></p><div class="kdots" id="kdots"></div><div class="kkeys" id="kkeys"></div>' +
@@ -118,10 +134,13 @@
   }
 
   function renderBed() {
-    $("kbed-title").textContent = people.length ? "Goodnight, " + names() + "!" : "Goodnight!";
-    $("kbed-sub").textContent = "Time for sleep. The TV wakes up at " + clockText(BED.until) + ".";
-    // each girl's emoji, gently bobbing (the moon is already in the picture)
-    $("kbed-moon").innerHTML = people.map(function (p) { return EMOJI[p.id] ? "<span>" + esc(EMOJI[p.id]) + "</span>" : ""; }).join("");
+    $("kbed-title").textContent = people.length ? "Goodnight, " + names() : "Goodnight";
+    $("kbed-sub").textContent = "Sweet dreams. The TV wakes up at " + clockText(BED.until) + ".";
+    $("kbed-time").innerHTML = clockNow ? esc(clockNow.hm) + (clockNow.ampm ? "<small>" + esc(clockNow.ampm) + "</small>" : "") : "";
+    // each girl's badge (or emoji), gently bobbing (the moon is already in the picture)
+    $("kbed-moon").innerHTML = people.map(function (p) {
+      return BADGES[p.id] ? '<span class="kbadge">' + BADGES[p.id] + "</span>" : EMOJI[p.id] ? "<span>" + esc(EMOJI[p.id]) + "</span>" : "";
+    }).join("");
   }
   function renderPad() {
     $("kpad-title").textContent = mode === "extra" ? "How much more TV?" : pad.title;
@@ -153,6 +172,43 @@
   function hide() {
     mode = isBedtime() ? "bed" : null;
     show(mode);
+  }
+
+  // ---------- the girls' look: her picture behind, a big clock in front (design/mockups) ----------
+  var look = false, bgShown = "", bgLayer = 0, whoNow = null, clockNow = null;
+  function startLook() {
+    look = true;
+    document.documentElement.classList.add("kids-look");
+    var el = document.createElement("div");
+    el.className = "klook";
+    el.innerHTML = '<div class="kbg" id="kbg"><img alt=""><img alt=""></div>' +
+      '<div class="kclock"><p class="kdate" id="kdate"></p><p class="ktime" id="ktime"></p><p class="khello" id="khello"></p></div>';
+    document.body.insertBefore(el, document.body.firstChild);
+  }
+  function showBg(name) {
+    var url = "backgrounds/kid-" + name + ".jpg";
+    if (!look || url === bgShown) return;
+    bgShown = url;
+    var pre = new Image();
+    pre.onload = function () {
+      if (bgShown !== url) return;
+      var imgs = $("kbg").children, next = imgs[bgLayer = 1 - bgLayer], prev = imgs[1 - bgLayer];
+      next.src = url;
+      next.classList.add("on");
+      prev.classList.remove("on");
+    };
+    pre.src = url;
+  }
+  function hello() {
+    var h = new Date().getHours(), part = h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
+    return whoNow && whoNow.name ? part + ", " + whoNow.name : part;
+  }
+  function drawClock() {
+    if (!look || !clockNow) return;
+    var c = clockNow;
+    $("ktime").innerHTML = esc(c.hm) + (c.ampm ? "<small>" + esc(c.ampm) + "</small>" : "");
+    $("kdate").innerHTML = esc(c.day) + (c.wx ? '<i class="kdot"></i><span class="kwx">' + c.wx + "</span>" : "");
+    $("khello").textContent = hello();
   }
 
   // ---------- the PIN pad ----------
@@ -278,6 +334,25 @@
     onExtra: null,
     setPeople: function (list) { people = (list || []).filter(function (p) { return p && p.name && p.id !== "both"; }); if (mode === "bed") renderBed(); },
     emoji: function (p) { return ON && p && typeof EMOJI[p.id] === "string" ? EMOJI[p.id] : ""; },
+    // her drawn badge, as SVG markup (or "" for someone with none)
+    badge: function (p) { return ON && p && BADGES[p.id] ? BADGES[p.id] : ""; },
+    // app.js, once it knows the look: the girls' own look only goes with the Night look
+    start: function (night) { if (ON && night && !look) startLook(); },
+    ownLook: function () { return look; },
+    // whoever is watching now: her picture, her name in the greeting and on her shows
+    who: function (p) {
+      whoNow = p && p.id !== "both" ? p : null;
+      showBg(whoNow && SCENE_OF[whoNow.id] ? SCENE_OF[whoNow.id] : "blake");
+      var title = $("shelf-title");
+      if (look && title && whoNow) title.textContent = whoNow.name + "'s shows";
+      drawClock();
+    },
+    // app.js's clock, every 15 seconds: the time, am or pm, the day and the weather (markup)
+    clock: function (hm, ampm, day, wx) {
+      clockNow = { hm: hm, ampm: ampm, day: day, wx: wx };
+      drawClock();
+      if (mode === "bed") renderBed();
+    },
     // only the kids' apps on the home row (an empty list: every app, as couch-tv does)
     homeApp: function (pkg) { return !ON || !APPS.length || APPS.indexOf(pkg) >= 0; },
     homeOrder: function () { return ON ? APPS.slice() : []; },

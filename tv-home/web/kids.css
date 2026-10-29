@@ -1,6 +1,8 @@
 /* Kidstv: the girls' colours, the kid scenes, the bedtime screen and the grown-up PIN (kids.js).
    --kid is the colour of whoever is watching (people[].colour in config.json). */
 :root { --kid: #ff7ac0; }
+@font-face { font-family: "Fredoka"; font-style: normal; font-weight: 300 700; font-display: swap; src: url(fonts/fredoka-latin-wght-normal.woff2) format("woff2"); }
+@font-face { font-family: "Nunito"; font-style: normal; font-weight: 200 1000; font-display: swap; src: url(fonts/nunito-latin-wght-normal.woff2) format("woff2"); }
 
 /* ---------- whoever is watching: her colour on the focus ring, the head icon and the list ---------- */
 .kids.theme-night .app.focus .face { box-shadow: 0 0 0 0.3125rem var(--kid), 0 1.125rem 2.5rem rgba(0, 0, 0, 0.4); }
@@ -85,3 +87,61 @@
 .kextra:empty { display: none; }
 .kopt { padding: 1.25rem 2rem; border-radius: 2rem; font-size: 1.875rem; font-weight: 650; background: rgba(255, 255, 255, 0.12); transition: transform 150ms, background 150ms; }
 .kopt.focus { background: #fff; color: #1c1430; transform: scale(1.06); }
+
+/* ================= the girls' look (design/mockups, Style.dc.html) =================
+   Her picture behind everything, a big rounded clock in front, a frosted dock of smaller tiles.
+   Sizes are rem: 1rem is 16 px on a 1920 wide screen. */
+.kids-look .scenes, .kids-look .theme-night .date, .kids-look.theme-night .date { display: none; }
+.klook { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 0; pointer-events: none; }
+.kbg img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 900ms ease-in-out; }
+.kbg img.on { opacity: 1; }
+.kclock { position: absolute; left: 0; right: 0; top: 7.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; color: #fff; }
+.kdate { display: flex; align-items: center; gap: 0.875rem; font-family: "Nunito", sans-serif; font-weight: 800; font-size: 2rem; line-height: 2.5rem; color: rgba(255, 255, 255, 0.92); text-shadow: 0 0.125rem 1rem rgba(20, 8, 60, 0.35); }
+.kdate .kdot { width: 0.375rem; height: 0.375rem; border-radius: 50%; background: rgba(255, 255, 255, 0.6); }
+.kdate svg { width: 2rem; height: 2rem; vertical-align: -0.4rem; margin-right: 0.5rem; fill: none; stroke: #ffe08a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ktime { font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 20.625rem; line-height: 0.88; letter-spacing: -0.02em; text-shadow: 0 0.25rem 1rem rgba(10, 20, 50, 0.18), 0 0.875rem 3.375rem rgba(30, 10, 80, 0.45); }
+.ktime small { font-size: 4rem; letter-spacing: 0; margin-left: 0.75rem; }
+.khello { margin-top: 0.375rem; font-family: "Fredoka", sans-serif; font-weight: 500; font-size: 3.375rem; line-height: 4rem; text-shadow: 0 0.375rem 1.5rem rgba(30, 10, 80, 0.4); }
+/* darken the bottom so the shows and apps read well on any picture */
+.kids-look .scrim { background: linear-gradient(180deg, rgba(20, 10, 50, 0) 52%, rgba(20, 10, 50, 0.6) 100%); }
+
+/* who is watching: her badge and name in a frosted pill, top left */
+.kids-look .people.head { display: flex; align-items: center; gap: 1.125rem; padding: 0.625rem 1.625rem 0.625rem 0.625rem; border-radius: 3.75rem;
+  background: rgba(255, 255, 255, 0.16); box-shadow: inset 0 0 0 0.125rem rgba(255, 255, 255, 0.24); }
+.kids-look .people.head .avatar { width: 5.25rem; height: 5.25rem; box-shadow: 0 0 0 0.3125rem #fff; }
+.kids-look .people.head .sr { position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: nowrap;
+  font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 2.375rem; color: #fff; }
+.kids-look .people.head::after { content: ""; width: 0.75rem; height: 0.75rem; margin: -0.375rem 0 0 0.25rem; border-right: 0.1875rem solid #fff; border-bottom: 0.1875rem solid #fff; transform: rotate(45deg); }
+.kids-look .people.head.focus { box-shadow: 0 0 0 0.375rem #fff, 0 0 0 0.875rem var(--kid), 0 0.75rem 1.75rem rgba(0, 0, 0, 0.4); }
+.avatar.badge { background: none; padding: 0; overflow: hidden; }
+.avatar.badge svg { width: 100%; height: 100%; display: block; }
+.kids-look .prow { font-family: "Fredoka", sans-serif; font-weight: 500; }
+
+/* her shows */
+.kids-look .shelf-head h2 { font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 2rem; color: #fff; }
+.kids-look .ncard { border-radius: 1.875rem; }
+
+/* the dock: smaller tiles, a little see-through, in a frosted bar */
+.kids-look.theme-night .grid { grid-template-columns: repeat(12, 6.5rem); grid-auto-rows: 6.5rem; column-gap: 1.125rem; row-gap: 2.5rem;
+  padding: 1rem 1.25rem; border-radius: 2.75rem; background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 0 0.09375rem rgba(255, 255, 255, 0.2), 0 1.25rem 3.125rem rgba(20, 6, 50, 0.3); }
+.kids-look.theme-night .app { width: 6.5rem; height: 6.5rem; }
+.kids-look.theme-night .app .face { border-radius: 1.875rem; }
+.kids-look.theme-night .app:not(.focus) .face { opacity: 0.86; }
+.kids-look.theme-night .app:not(.focus) .face img { filter: none; }
+.kids-look.theme-night .app.focus { transform: scale(1.12) translateY(-0.5rem); }
+.kids-look.theme-night .app .face.tool { background: rgba(255, 255, 255, 0.14); }
+.kids-look.theme-night .app .label { font-family: "Nunito", sans-serif; font-weight: 800; }
+
+/* bedtime: the night picture, her badges asleep, a soft cream clock */
+.kids-look .kbed { background-image: url(backgrounds/kid-bedtime.jpg); }
+.kbed-text { font-family: "Fredoka", sans-serif; }
+.kbed-time { font-weight: 500; font-size: 12.5rem; line-height: 0.9; color: rgba(255, 244, 214, 0.95); text-shadow: 0 0 3.75rem rgba(255, 230, 170, 0.25); }
+.kbed-time small { font-size: 3.375rem; margin-left: 0.75rem; }
+.kbed-time:empty { display: none; }
+.kbed-moon .kbadge { width: 7.5rem; height: 7.5rem; border-radius: 50%; overflow: hidden; opacity: 0.88; }
+.kbed-moon .kbadge svg { width: 100%; height: 100%; display: block; }
+.kids-look .kbed-moon { margin: 3.5rem 0 3rem; }
+.kbed h1 { font-family: "Fredoka", sans-serif; font-weight: 600; }
+.kbed p#kbed-sub { font-family: "Nunito", sans-serif; font-weight: 700; }
+.kpad h2, .kkey, .kopt { font-family: "Fredoka", sans-serif; }

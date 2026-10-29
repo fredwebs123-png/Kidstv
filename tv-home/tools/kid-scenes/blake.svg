@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#3b2685"></stop>
+        <stop offset="0.38" stop-color="#8a5ae0"></stop>
+        <stop offset="0.62" stop-color="#e9a0d6"></stop>
+        <stop offset="0.8" stop-color="#ffd2c2"></stop>
+      </linearGradient>
+      <radialGradient id="sun" cx="1500" cy="580" r="520" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#fff4d6" stop-opacity="1"></stop>
+        <stop offset="0.12" stop-color="#ffe0b8" stop-opacity="0.95"></stop>
+        <stop offset="0.45" stop-color="#ffb8c8" stop-opacity="0.35"></stop>
+        <stop offset="1" stop-color="#ffb8c8" stop-opacity="0"></stop>
+      </radialGradient>
+      <linearGradient id="far" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c79be8"></stop><stop offset="1" stop-color="#a77ad8"></stop></linearGradient>
+      <linearGradient id="mid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b5cd0"></stop><stop offset="1" stop-color="#5e3aa8"></stop></linearGradient>
+      <linearGradient id="near" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a2a8e"></stop><stop offset="1" stop-color="#22134f"></stop></linearGradient>
+      <linearGradient id="haze" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe4ef" stop-opacity="0"></stop><stop offset="0.5" stop-color="#ffe4ef" stop-opacity="0.45"></stop><stop offset="1" stop-color="#ffe4ef" stop-opacity="0"></stop></linearGradient>
+      <linearGradient id="scrim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#140a33" stop-opacity="0"></stop><stop offset="1" stop-color="#140a33" stop-opacity="0.7"></stop></linearGradient>
+      <linearGradient id="topscrim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b0f45" stop-opacity="0.5"></stop><stop offset="1" stop-color="#1b0f45" stop-opacity="0"></stop></linearGradient>
+      <filter id="soft"><feGaussianBlur stdDeviation="10"></feGaussianBlur></filter>
+      <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter>
+    </defs>
+    <rect width="1920" height="1080" fill="url(#sky)"></rect>
+    <rect width="1920" height="1080" fill="url(#sun)"></rect>
+    <circle cx="1500" cy="580" r="96" fill="#fff6e2"></circle>
+    <g fill="#ffffff" opacity="0.9">
+      <path d="M380 180 l6 18 l18 6 l-18 6 l-6 18 l-6 -18 l-18 -6 l18 -6 z"></path>
+      <path d="M1560 120 l4 12 l12 4 l-12 4 l-4 12 l-4 -12 l-12 -4 l12 -4 z"></path>
+      <path d="M1760 330 l5 15 l15 5 l-15 5 l-5 15 l-5 -15 l-15 -5 l15 -5 z"></path>
+      <circle cx="560" cy="260" r="3"></circle><circle cx="1400" cy="300" r="2.5"></circle><circle cx="240" cy="380" r="2"></circle><circle cx="1680" cy="220" r="3"></circle>
+    </g>
+    <g fill="#fff0f6" opacity="0.75" filter="url(#soft)">
+      <ellipse cx="420" cy="470" rx="220" ry="32"></ellipse>
+      <ellipse cx="1660" cy="430" rx="180" ry="26"></ellipse>
+    </g>
+    <path d="M0 560 C 240 500, 430 515, 650 548 S 1040 610, 1290 566 S 1700 498, 1920 540 L1920 1080 L0 1080 Z" fill="url(#far)"></path>
+    <rect x="0" y="520" width="1920" height="160" fill="url(#haze)"></rect>
+    <path d="M0 668 C 260 612, 520 642, 770 684 S 1190 726, 1450 672 S 1780 628, 1920 652 L1920 1080 L0 1080 Z" fill="url(#mid)"></path>
+    <path d="M0 800 C 300 744, 610 764, 890 806 S 1400 858, 1920 786 L1920 1080 L0 1080 Z" fill="url(#near)"></path>
+    <rect width="1920" height="380" fill="url(#topscrim)"></rect>
+    <rect y="560" width="1920" height="520" fill="url(#scrim)"></rect>
+    <rect width="1920" height="1080" filter="url(#grain)" opacity="0.07"></rect>
+  </svg>
