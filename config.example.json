@@ -20,18 +20,27 @@
     }
   ],
   "people": [
-    { "id": "person1", "name": "Person 1" },
-    { "id": "person2", "name": "Person 2" },
-    { "id": "kids", "name": "Kids", "kid": true }
+    { "id": "blake", "name": "Blake", "colour": "#8e5cff", "app_profiles": ["Blake"] },
+    { "id": "lucy", "name": "Lucy", "colour": "#ff5fa8", "app_profiles": ["Lucy", "Kids"] },
+    { "id": "sora", "name": "Sora", "colour": "#2fc4b2", "app_profiles": ["Sora", "Kids"] }
   ],
+  "app_profile_fallback": ["Kids", "Children"],
   "home": {
     "look": "night",
-    "scenes": ["night", "golden", "water", "fog", "dawn"],
+    "scenes": ["rainbow", "candy", "stars"],
     "scene_seconds": 20,
     "clock": "12h",
     "dock_size": 10,
     "hide_packages": [],
-    "language": "en"
+    "language": "en",
+    "kids": {
+      "enabled": true,
+      "emoji": { "blake": "🦋", "lucy": "🌈", "sora": "🐣" },
+      "home_apps": ["com.google.android.youtube.tvkids", "com.disney.disneyplus", "com.netflix.ninja", "com.amazon.amazonvideo.livingroom"],
+      "pin": "1234",
+      "bedtime": { "from": "19:30", "until": "07:00", "weekend_from": "20:00" },
+      "unlock_minutes": 5
+    }
   },
   "phone_remote": true,
   "ask": { "enabled": false },

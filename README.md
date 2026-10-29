@@ -1,4 +1,16 @@
-# couch-tv
+# Kidstv
+
+A TV home screen made for Blake, Lucy and Sora: their own colours and emoji, only their apps
+(YouTube Kids, Disney+, Netflix and Prime Video) on the home row, a grown-up PIN in front of
+everything else, and a "Goodnight!" screen at bedtime. **What is different and how to change it:
+[docs/KIDS.md](docs/KIDS.md).**
+
+Built on [couch-tv](https://github.com/Seagey/couch-tv) by Seagey (MIT licence, see LICENSE). The
+rest of this README is couch-tv's own and still applies: setup, the phone remote, the options.
+
+---
+
+## couch-tv
 
 Your own home screen and phone remote for a Google TV, and now a Samsung TV. No ads on the home
 screen. Open source (MIT).

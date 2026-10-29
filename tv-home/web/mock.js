@@ -4,7 +4,7 @@
 // The shows in MOCK_API are SYNTHETIC history.
 //
 // Presets for previews, all optional (see docs/CONFIG.md for what each setting means):
-//   people=0..8         that many sample people (default: Person 1 and Person 2)
+//   people=0..8         that many sample people (default: Blake, Lucy and Sora)
 //   quick=sleep,look    tvs[].quick, in order (sleep, picture, look, input)
 //   picture=1           this TV has a picture mode switch (Calibrated and Dynamic)
 //   look=classic        home.look       clock=24h   home.clock     dock=6   home.dock_size
@@ -48,6 +48,7 @@
 
   // ---------- the TV's apps ----------
   var apps = [
+    ["com.google.android.youtube.tvkids", "YouTube Kids", "#ff3d33"],
     ["com.google.android.youtube.tv", "YouTube", "#f2f2f2"], ["com.netflix.ninja", "Netflix", "#ffffff"],
     ["au.net.abc.iview", "ABC iview", "#2bbfb6"], ["com.disney.disneyplus", "Disney+", "#0b3f4f"],
     ["au.com.stan.and", "Stan", "#0b6cf2"], ["au.com.streamotion.ares.tv", "Binge", "#3a1d8c"],
@@ -121,7 +122,9 @@
   ];
   var screens = [{ id: "desktop", name: "Desktop", kind: "moonlight", ready: true, note: "" }];
   var people = function () {
-    return store.get("api.people") || cfg.people || [{ id: "person1", name: "Person 1" }, { id: "person2", name: "Person 2" }];
+    // Kidstv: the girls, as in config.example.json
+    return store.get("api.people") || cfg.people || [{ id: "blake", name: "Blake", colour: "#8e5cff" },
+      { id: "lucy", name: "Lucy", colour: "#ff5fa8" }, { id: "sora", name: "Sora", colour: "#2fc4b2" }];
   };
 
   var sleepEnds = /[?&]sleep\b/.test(q) ? new Date(Date.now() + 42 * 60000).toISOString() : null;

@@ -53,7 +53,7 @@ W, H = 1920, 1080
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
 OUT = os.path.join(ROOT, "tv-home", "web", "backgrounds", "mine")
-BUILT_IN = {"night", "golden", "water", "fog", "dawn", "own", "mine"}
+BUILT_IN = {"night", "golden", "water", "fog", "dawn", "rainbow", "candy", "stars", "own", "mine"}
 
 
 def band(img, top):

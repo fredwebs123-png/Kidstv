@@ -374,6 +374,14 @@ The TV home screen's sleep button calls `POST /api/sleep {"minutes": 30}` (or 15
 and `{"minutes": 0}` to cancel; it reads `sleep.ends` from `/api/now` or the events stream to show
 the countdown. Add `"tv"` for a TV that is not the default.
 
+### `POST /api/bedtime` (Kidstv)
+Extra time a grown-up gave on the TV's bedtime screen, so the bridge does not send the TV home
+before it runs out ([docs/KIDS.md](../docs/KIDS.md)). The TV home calls it after the PIN.
+```json
+{"extra_until": "2030-01-01T20:15:00Z"}
+```
+`null` or no `extra_until` ends the extra time. Not kept over a bridge restart.
+
 ### `GET /api/picture` and `POST /api/picture`
 Picture mode, for the home screen's quick toggle. Only for a TV that has a `picture` entry in
 `config.json`, normally `{"modes": ["Calibrated", "Dynamic"]}`: two names exactly as the TV shows

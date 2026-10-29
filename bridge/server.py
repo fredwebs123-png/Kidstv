@@ -21,6 +21,7 @@ import apps
 import config
 import finder
 import history_import
+import kids
 import store
 import taste
 from tv import TV, TVUnavailable, intent_to_link
@@ -1021,6 +1022,47 @@ async def _sleep_fire():
     push_now()
 
 
+# ---------- Kidstv: bedtime (docs/KIDS.md) ----------
+# The TV home shows the bedtime screen by itself. When bedtime starts while an app is open, this
+# presses Home once that night, so the girls land on it. A grown-up's extra time (the PIN on the TV)
+# comes in as extra_until; when it runs out, Home is pressed once more.
+BEDTIME = {"extra_until": 0.0, "sent": set()}
+
+
+async def h_bedtime(request):
+    data = await body(request)
+    until = data.get("extra_until")
+    try:
+        BEDTIME["extra_until"] = datetime.fromisoformat(str(until).replace("Z", "+00:00")).timestamp() if until else 0.0
+    except ValueError:
+        raise ApiError(400, "extra_until must be an ISO time")
+    BEDTIME["sent"].clear()   # when the extra time is over, send the TV home again
+    return ok(extra_until=until or None)
+
+
+async def bedtime_loop():
+    """Every half minute, per TV: at bedtime, if an app (not the home) is in front, press Home.
+    Android TVs only: on a Samsung, Home opens Samsung's own menu, not the couch-tv home."""
+    if isinstance(TVS.get(tv.id), samsung.SamsungTV):
+        return
+    await asyncio.sleep(20)
+    while True:
+        try:
+            bed = kids.bedtime_of(config.HOME.get("kids") or {})
+            now = datetime.now(HOME_TZ)
+            if bed and kids.is_bedtime(bed, now) and time.time() >= BEDTIME["extra_until"]:
+                key = (tv.id, kids.night_of(bed, now))
+                if key not in BEDTIME["sent"] and tv.connected and tv.is_on:
+                    front = await tv.front_package() if tv.paired else None
+                    if front != "app.couchtv.launcher":
+                        log.info("%s: bedtime, back to the home (%s was open)", tv.id, front or "an app")
+                        await tv.key("home")
+                    BEDTIME["sent"].add(key)
+        except Exception as e:
+            log.warning("bedtime check failed: %s", e)
+        await asyncio.sleep(30)
+
+
 # ---------- weather for the home (Open-Meteo: free, no account, no key) ----------
 # The place comes from "weather" in config.json. Fetched at most every 30 minutes.
 WEATHER_AT = {k: config.WEATHER[k] for k in ("lat", "lon", "place")}
@@ -1887,6 +1929,7 @@ def make_app():
     r.add_get("/api/now", h_now)
     r.add_get("/api/events", h_events)
     r.add_post("/api/key", h_key)
+    r.add_post("/api/bedtime", h_bedtime)
     r.add_post("/api/text", h_text)
     r.add_get("/api/apps", h_apps)
     r.add_post("/api/launch", h_launch)
@@ -1943,6 +1986,7 @@ def make_app():
             await t.start()
             if t.paired:
                 app["loops"] += [for_tv(tv_id, keep_disabled_loop), for_tv(tv_id, media_watch_loop)]
+            app["loops"].append(for_tv(tv_id, bedtime_loop))
 
     async def on_cleanup(_):
         if finder._session and not finder._session.closed:

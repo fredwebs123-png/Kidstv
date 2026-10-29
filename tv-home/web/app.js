@@ -49,14 +49,15 @@
     try { if (TV && TV.keep) TV.keep(PFX + key, j); } catch (e) {}
   }
 
-  // Default order: YouTube, then Netflix, then the rest the way a household reaches for them.
-  var APP_ORDER = [
-    "com.google.android.youtube.tv", "com.netflix.ninja", "au.net.abc.iview", "com.disney.disneyplus",
+  // Default order: the kids' apps (kids.js, home.kids.home_apps), then YouTube, then Netflix, then
+  // the rest the way a household reaches for them.
+  var APP_ORDER = (window.KIDS ? window.KIDS.homeOrder() : []).concat([
+    "com.google.android.youtube.tvkids", "com.google.android.youtube.tv", "com.netflix.ninja", "au.net.abc.iview", "com.disney.disneyplus",
     "au.com.stan.and", "au.com.streamotion.ares.tv", "com.amazon.amazonvideo.livingroom",
     "com.sbs.ondemand.tv", "com.apple.atve.androidtv.appletv", "com.cbs.ca", "au.com.ninenow.ctv",
     "com.swm.live", "au.com.tenplay", "au.com.kayosports.tv", "au.com.foxtel.atv", "com.wbd.stream",
     "com.spotify.tv.android", "com.google.android.youtube.tvmusic"
-  ];
+  ]).filter(function (p, i, a) { return a.indexOf(p) === i; });
   // The TV's own tools go last, in this order, just before the screens.
   var APP_LAST = ["com.mediatek.wwtv.tvcenter", "com.android.vending", "com.android.tv.settings"];
   // Kept behind the "More apps" tile on every TV (apps most people rarely open).
@@ -138,6 +139,7 @@
     if (NOBODY) PEOPLE = [{ id: "both", name: t("everyone") }];
     PEOPLE.forEach(function (p) { if (!data.showsBy[p.id]) data.showsBy[p.id] = []; });
     if (!PEOPLE.some(function (p) { return p.id === who; })) who = PEOPLE[0].id;
+    if (window.KIDS) window.KIDS.setPeople(PEOPLE);
   }
   // An order made on this TV with no bridge to keep it (or before the bridge heard about it).
   function localPeopleOrder(list, always) {
@@ -184,7 +186,8 @@
     SCENES = st.order.filter(function (id) { return st.off.indexOf(id) < 0; }).map(sceneById).filter(Boolean);
     if (!SCENES.length) SCENES = [SCENE_LIB[0]];
     SCENE_MS = Math.max(5, parseInt(ST.scene_seconds || HOME.scene_seconds, 10) || 20) * 1000;
-    var people = CFG.people || [{ id: "person1", name: "Person 1" }, { id: "person2", name: "Person 2" }];
+    var people = CFG.people || [{ id: "blake", name: "Blake", colour: "#8e5cff" }, { id: "lucy", name: "Lucy", colour: "#ff5fa8" },
+      { id: "sora", name: "Sora", colour: "#2fc4b2" }];
     // people added, renamed or removed in Home settings with no bridge to keep them
     var lst = kept("tvhome.people.list");
     if (lst && Array.isArray(lst.people) && (lst.pending || ALONE)) people = lst.people;
@@ -349,7 +352,11 @@
     { id: "golden", photo: "scene-golden", fg: true, glass: true },
     { id: "water", photo: "scene-water", fg: false, glass: true, water: 0.55 },   // the underside of the surface
     { id: "fog", photo: "scene-fog", fg: true, glass: true },
-    { id: "dawn", photo: "scene-dawn", fg: true, glass: true }
+    { id: "dawn", photo: "scene-dawn", fg: true, glass: true },
+    // Kidstv's own three, drawn by tools/make-kids-scenes.py (their clocks are in kids.css)
+    { id: "rainbow", photo: "scene-rainbow", fg: true, glass: true },
+    { id: "candy", photo: "scene-candy", fg: true, glass: true },
+    { id: "stars", photo: "scene-stars", fg: true, glass: true }
   ];
   var BUILT_IN = SCENE_LIB.slice();   // readConfig() adds your own scenes to SCENE_LIB
   var SCENES = SCENE_LIB.slice(), SCENE_MS = 20000;
@@ -408,6 +415,8 @@
       // are listed, otherwise after the built-in ones
       var lib = SCENE_LIB.map(function (x) { return x.id; }), builtIn = BUILT_IN.map(function (x) { return x.id; });
       var pick = (HOME.scenes || []).filter(function (id, i, a) { return lib.indexOf(id) >= 0 && a.indexOf(id) === i; });
+      // Kidstv: with nothing listed, only the kid scenes take turns
+      if (!pick.length && window.KIDS && window.KIDS.on) pick = window.KIDS.scenes.filter(function (id) { return lib.indexOf(id) >= 0; });
       if (!pick.length) pick = builtIn;
       order = pick.concat(ids.filter(function (id) { return pick.indexOf(id) < 0; }));
       off = builtIn.filter(function (id) { return pick.indexOf(id) < 0; });
@@ -735,12 +744,15 @@
     return PALETTE[h % PALETTE.length];
   }
   function avatarHTML(p) {
-    return '<span class="avatar" style="background:' + esc(colourOf(p)) + '">' + esc((p.name || "?").trim().charAt(0).toUpperCase()) + "</span>";
+    var emoji = window.KIDS ? window.KIDS.emoji(p) : "";   // Kidstv: each girl's own emoji
+    return '<span class="avatar' + (emoji ? " emoji" : "") + '" style="background:' + esc(colourOf(p)) + '">' +
+      esc(emoji || (p.name || "?").trim().charAt(0).toUpperCase()) + "</span>";
   }
   function whoIndex() { return Math.max(0, PEOPLE.map(function (p) { return p.id; }).indexOf(who)); }
 
   function renderPeople() {
     var el = $("people"), n = peopleCount();
+    if (window.KIDS && !NOBODY) window.KIDS.accent(colourOf(PEOPLE[whoIndex()]));   // her colour on the focus ring
     el.classList.toggle("none", n < 2);
     el.classList.toggle("head", n >= 3);
     if (n >= 3) {
@@ -839,6 +851,7 @@
 
   // ---------------- apps ----------------
   function tucked(a) {
+    if (window.KIDS && !window.KIDS.homeApp(a.package)) return true;   // Kidstv: only the kids' apps on the home row
     return TUCKED.indexOf(a.package) >= 0 || TUCKED_NAMES.test(a.name || "");
   }
   function isNew(pkg) { return newApps.indexOf(pkg) >= 0; }
@@ -1232,6 +1245,7 @@
   }
 
   function goHome() {
+    if (window.KIDS && window.KIDS.back()) return;   // the bedtime screen or the grown-up PIN is up
     if (zone === "settings") { setBack(); return; }
     if (zone === "smart") { closeSmart(); paintFocus(); return; }
     if (zone === "gear") { closeGear(); paintFocus(); return; }
@@ -1302,8 +1316,9 @@
     }
     var a = gridItems[g], el = gridEls[g];
     if (!a) return;
-    if (a.kind === "more") { expanded = true; renderGrid(); paintFocus(); return; }
-    if (a.kind === "gear") { openGear(); return; }
+    // Kidstv: More apps and Settings are for grown-ups (the PIN in kids.js)
+    if (a.kind === "more") { grownUp(function () { expanded = true; renderGrid(); paintFocus(); }); return; }
+    if (a.kind === "gear") { grownUp(openGear); return; }
     if (a.kind === "smart") { openSmart(); return; }
     if (a.kind === "screen") {
       if (!a.ready) { status(a.note || t("screen_not_set")); return; }
@@ -1321,6 +1336,8 @@
     if (TV && TV.launch(a.package)) return;
     api("POST", "/api/launch", { app: a.id || a.package }).catch(function (e) { status(e.message); });
   }
+
+  function grownUp(go) { if (window.KIDS) window.KIDS.grownUp(go); else go(); }
 
   // ---------------- Smart home: the rooms and scenes screen (smarthome.js) ----------------
   function openSmart() { zone = "smart"; clearFocus(); window.smartHome.open(); }
@@ -2231,12 +2248,14 @@
   // the native side calls these
   // Home on the remote also re-reads the lists, so an order arranged on the phone shows straight away
   window.tv = { back: goHome, home: function () { if (zone === "settings") closeSettings(); else goHome(); refresh(); },
-    resume: function () { okReset(); refresh(); if (!OFFLINE) refreshQuick(); refreshWeather(); },
+    resume: function () { okReset(); if (window.KIDS) window.KIDS.check(); refresh(); if (!OFFLINE) refreshQuick(); refreshWeather(); },
     // the launcher's file picker has copied the chosen photos into its own storage (Home settings)
     photosAdded: function (names) { photosAdded(names); } };
 
   function start() {
     readConfig();
+    // a grown-up gave extra time at bedtime: tell the bridge, so it does not send the TV home early
+    if (window.KIDS) window.KIDS.onExtra = function (until) { if (!OFFLINE) api("POST", "/api/bedtime", { extra_until: until }).catch(function () {}); };
     staticText();
     initSettings();
     mark("app-start");

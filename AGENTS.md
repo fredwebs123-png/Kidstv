@@ -172,6 +172,19 @@ recommend C (A if they only want the home screen). Write the choice down; the re
   [bridge/IMPORT.md](bridge/IMPORT.md) later. They download their own files. You never sign in to
   their accounts.
 
+### 2.2.1 Kidstv (this repo is the kids' version)
+
+This fork is set up for three girls, Blake, Lucy and Sora, with `home.kids` in
+`config.example.json` ([docs/KIDS.md](docs/KIDS.md)). Keep their people, colours and emoji. Ask:
+
+- "What 4 digit PIN should grown-ups use for More apps, Settings and extra time at bedtime?"
+  Never leave it at 1234. It goes in `home.kids.pin`.
+- "What time is bedtime, school nights and Friday and Saturday nights, and when may the TV wake up?"
+  (`home.kids.bedtime`: `from`, `weekend_from`, `until`).
+- "Do Blake, Lucy and Sora have Kids profiles in Netflix, Disney+ and Prime Video? What are they
+  called?" They go in each girl's `app_profiles`.
+- Check YouTube Kids is installed on the TV; if not, they install it from the Play Store first.
+
 ### 2.3 How the home looks
 
 - Show them the pictures at the top of the README. "Do you want the five scenes taking turns, just

@@ -149,6 +149,11 @@ Home settings saves to the same `bridge/data/people.json` the phone uses.
 | `dock_size` [10] | How many apps sit in the Night dock before Settings and More apps. 1 to 10. Everything else is behind More apps. The phone's Arrange apps keeps to the same number. |
 | `language` ["en"] | The TV home's language until someone picks one in Home settings: `en` (English), `es` (Spanish) or `es-MX` (Mexican Spanish). The phone remote has its own choice, "Same as the TV" by default. |
 
+## Kidstv (`home.kids`)
+
+The girls' emoji, the kids' apps on the home row, the grown-up PIN and bedtime. Every key, with
+the defaults: [KIDS.md](KIDS.md).
+
 ## Apps on the home
 
 Nothing to set in `config.json`. Arrange them from the phone (TV, Arrange apps) or with the TV

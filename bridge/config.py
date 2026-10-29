@@ -12,6 +12,8 @@ import re
 import shutil
 import tempfile
 
+import kids
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 
@@ -181,7 +183,7 @@ def person_name(pid):
 
 
 # ---------- the home's look ----------
-SCENE_IDS = ["night", "golden", "water", "fog", "dawn"]
+SCENE_IDS = ["night", "golden", "water", "fog", "dawn", "rainbow", "candy", "stars"]
 DOCK_LIMIT = 10   # apps in the dock before Settings and More apps; 10 fills a 1080p screen
 
 
@@ -242,6 +244,8 @@ def _home(h):
         "language": h.get("language") if h.get("language") in ("en", "es", "es-MX") else "en",
         # your own scenes, in backgrounds/mine/ (docs/MAKE-A-SCENE.md)
         "my_scenes": mine,
+        # Kidstv: the girls' emoji, home row, grown-up PIN and bedtime (docs/KIDS.md)
+        "kids": kids.clean(h.get("kids")),
     }
 
 

@@ -1,0 +1,86 @@
+/* Kidstv: the girls' colours, the kid scenes, the bedtime screen and the grown-up PIN (kids.js).
+   --kid is the colour of whoever is watching (people[].colour in config.json). */
+:root { --kid: #ff7ac0; }
+
+/* ---------- whoever is watching: her colour on the focus ring, the head icon and the list ---------- */
+.kids.theme-night .app.focus .face { box-shadow: 0 0 0 0.3125rem var(--kid), 0 1.125rem 2.5rem rgba(0, 0, 0, 0.4); }
+.kids .person.on { background: var(--kid); color: #fff; }
+.kids .people.head { box-shadow: 0 0 0 0.25rem var(--kid); }
+.kids .people.head.focus { box-shadow: 0 0 0 0.375rem var(--kid), 0 0.75rem 1.75rem rgba(0, 0, 0, 0.4); }
+.kids .avatar.emoji { font-weight: 400; text-shadow: none; }
+.kids .people.head .avatar.emoji { font-size: 2.875rem; }
+.kids .prow .avatar.emoji { font-size: 1.75rem; }
+.kids .shelf-head h2 { font-weight: 700; }
+
+/* ---------- the kid scenes: a rounder clock, the hills cross the bottom of the digits ---------- */
+.s-rainbow .gclock, .s-candy .gclock, .s-stars .gclock { top: 8.5rem; font-size: 24rem; filter: drop-shadow(0 0.5rem 1.5rem rgba(60, 20, 80, 0.25)); }
+.s-rainbow .gclock .fill { filter: brightness(1.25) saturate(1.3); opacity: 0.95; }
+.s-rainbow .gclock .rim { color: rgba(255, 255, 255, 0.18); -webkit-text-stroke-color: rgba(255, 255, 255, 0.85); }
+.s-candy .gclock .fill { filter: brightness(1.2) saturate(1.2); opacity: 0.92; }
+.s-candy .gclock .rim { color: rgba(255, 240, 248, 0.14); -webkit-text-stroke-color: rgba(255, 240, 250, 0.8); }
+.s-stars .gclock .fill { filter: brightness(1.6) saturate(1.2); opacity: 0.9; }
+.s-stars .gclock .rim { color: rgba(230, 210, 255, 0.08); -webkit-text-stroke-color: rgba(240, 225, 255, 0.6); }
+.s-rainbow .shade { background: linear-gradient(180deg, rgba(0, 40, 90, 0.18) 0%, rgba(0, 0, 0, 0) 30%); }
+.s-candy .shade { background: linear-gradient(180deg, rgba(120, 20, 70, 0.18) 0%, rgba(0, 0, 0, 0) 30%); }
+.scene-rainbow .date, .scene-candy .date, .scene-stars .date { top: 5.25rem; font-weight: 700; }
+.scene-rainbow .date { text-shadow: 0 0.125rem 0.75rem rgba(0, 60, 120, 0.45); }
+.scene-candy .date { text-shadow: 0 0.125rem 0.75rem rgba(140, 30, 90, 0.45); }
+
+/* ---------- bedtime ---------- */
+.kids-bedtime .home, .kids-bedtime .top, .kids-bedtime .scenes { visibility: hidden; }
+.kbed {
+  display: none; position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50;
+  background: #241a54 url(backgrounds/scene-stars.jpg) center / cover no-repeat;
+  align-items: center; justify-content: center; text-align: center; color: #fff;
+}
+.kbed.on { display: flex; }
+.kbed-text { margin-top: -4rem; text-shadow: 0 0.25rem 1.5rem rgba(20, 10, 60, 0.6); }
+.kbed-moon { display: flex; justify-content: center; gap: 3rem; font-size: 6rem; line-height: 1; margin-bottom: 2rem; min-height: 1rem; }
+.kbed-moon span { display: block; animation: kfloat 4s ease-in-out infinite alternate; }
+.kbed-moon span:nth-child(2) { animation-delay: 1.3s; }
+.kbed-moon span:nth-child(3) { animation-delay: 2.6s; }
+.kbed h1 { font-size: 5rem; line-height: 5.75rem; font-weight: 750; letter-spacing: -0.02em; max-width: 90rem; margin: 0 auto; }
+.kbed p#kbed-sub { margin-top: 1.5rem; font-size: 2.5rem; line-height: 3rem; font-weight: 500; color: rgba(240, 230, 255, 0.9); }
+.kbed-hint { position: absolute; bottom: 3rem; left: 0; right: 0; font-size: 1.375rem; color: rgba(230, 220, 255, 0.55); }
+.ktwinkle i {
+  position: absolute; width: 0.75rem; height: 0.75rem; border-radius: 50%; background: #fff6c8;
+  box-shadow: 0 0 1rem 0.375rem rgba(255, 246, 200, 0.7); animation: ktwinkle 2.6s ease-in-out infinite alternate;
+}
+.ktwinkle i:nth-child(1) { top: 14%; left: 22%; }
+.ktwinkle i:nth-child(2) { top: 9%; left: 58%; animation-delay: 0.8s; }
+.ktwinkle i:nth-child(3) { top: 30%; left: 8%; animation-delay: 1.6s; }
+.ktwinkle i:nth-child(4) { top: 34%; left: 92%; animation-delay: 0.4s; }
+.ktwinkle i:nth-child(5) { top: 18%; left: 36%; animation-delay: 2s; }
+.ktwinkle i:nth-child(6) { top: 12%; left: 76%; animation-delay: 1.2s; }
+@keyframes ktwinkle { from { opacity: 0.15; transform: scale(0.6); } to { opacity: 1; transform: scale(1.1); } }
+@keyframes kfloat { from { transform: translateY(-0.5rem) rotate(-6deg); } to { transform: translateY(0.5rem) rotate(6deg); } }
+@media (prefers-reduced-motion: reduce) { .kbed-moon, .ktwinkle i { animation: none; } }
+
+/* ---------- the grown-up PIN pad ---------- */
+.kpad {
+  display: none; position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 60;
+  align-items: center; justify-content: center; background: rgba(16, 10, 30, 0.62);
+  -webkit-backdrop-filter: blur(1.25rem); backdrop-filter: blur(1.25rem);
+}
+.kpad.on { display: flex; }
+.kpad-box {
+  padding: 3rem 3.5rem; border-radius: 3rem; text-align: center; color: #fff;
+  background: rgba(40, 30, 64, 0.85); box-shadow: inset 0 0 0 0.0625rem rgba(255, 255, 255, 0.16), 0 2rem 5rem rgba(0, 0, 0, 0.5);
+}
+.kpad h2 { font-size: 2.5rem; line-height: 3rem; font-weight: 700; margin-bottom: 1.75rem; }
+.kdots { display: flex; justify-content: center; gap: 1.25rem; margin-bottom: 2rem; }
+.kdots i { width: 1.5rem; height: 1.5rem; border-radius: 50%; box-shadow: inset 0 0 0 0.1875rem rgba(255, 255, 255, 0.7); }
+.kdots i.on { background: #fff; }
+.kdots.wrong { animation: kshake 0.4s ease-in-out; }
+@keyframes kshake { 25% { transform: translateX(-1rem); } 75% { transform: translateX(1rem); } }
+.kkeys { display: grid; grid-template-columns: repeat(3, 6.5rem); gap: 1rem; justify-content: center; }
+.kkey {
+  display: flex; align-items: center; justify-content: center; height: 6.5rem; border-radius: 50%;
+  font-size: 2.75rem; font-weight: 600; background: rgba(255, 255, 255, 0.12); transition: transform 150ms, background 150ms;
+}
+.kkey.small { font-size: 2.25rem; }
+.kkey.focus { background: #fff; color: #1c1430; transform: scale(1.1); }
+.kextra { display: flex; gap: 1.25rem; justify-content: center; }
+.kextra:empty { display: none; }
+.kopt { padding: 1.25rem 2rem; border-radius: 2rem; font-size: 1.875rem; font-weight: 650; background: rgba(255, 255, 255, 0.12); transition: transform 150ms, background 150ms; }
+.kopt.focus { background: #fff; color: #1c1430; transform: scale(1.06); }

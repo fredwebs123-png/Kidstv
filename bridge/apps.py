@@ -18,6 +18,9 @@ APPS = [
      "cold": "background", "verify": True},
     {"id": "youtube", "name": "YouTube", "package": "com.google.android.youtube.tv", "colour": "#FF0000",
      "jw": ["youtubered", "youtube"], "deeplink": "jw"},
+    # Kidstv: the girls' YouTube. Shows found on YouTube still open in the main app (above).
+    {"id": "youtube-kids", "name": "YouTube Kids", "package": "com.google.android.youtube.tvkids", "colour": "#FF3D33",
+     "jw": [], "deeplink": "app"},
     {"id": "stan", "name": "Stan", "package": "au.com.stan.and", "colour": "#0072F5",
      "jw": ["stan"], "deeplink": "jw"},
     {"id": "binge", "name": "Binge", "package": "au.com.streamotion.ares.tv", "colour": "#1E1EFF",
