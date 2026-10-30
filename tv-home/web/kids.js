@@ -6,7 +6,14 @@
 //     (and changed from the Settings tile), kept on the TV only, never in git
 //   - the bedtime screen: from bedtime until morning the home shows "Goodnight" and opens nothing,
 //     until a grown-up types the PIN and gives some extra time
+//   - the wind-down before bedtime (a moon counting down the last 15 minutes, the home dims at 5),
+//     a sunrise on the Goodnight screen in the hour before wake-up, and a "Good morning" burst
+//   - stars: a grown-up gives one from the grown-ups screen (grownups.js); five make a trophy and
+//     confetti falls over her home
+//   - little mode (Sora): huge picture tiles only, left and right and OK, nothing else to bump into
 // Settings are home.kids in config.json (docs/KIDS.md); anything left out uses DEFAULTS below.
+// Bedtime times changed on the grown-ups screen, stars, trophies and little mode are kept on the
+// TV (get and set below) and win over config.json.
 (function () {
   "use strict";
 
@@ -23,8 +30,13 @@
     pin: null,
     // 24 hour times. weekend_from is Friday and Saturday nights (leave it out for the same every night)
     bedtime: { from: "19:30", until: "07:00", weekend_from: "20:00" },
-    // how long a right PIN keeps More apps and Settings open
-    unlock_minutes: 5
+    // how long a right PIN keeps the grown-ups screen open
+    unlock_minutes: 15,
+    // little mode, by person id: huge picture tiles only (the Sora mockup)
+    little: ["sora"],
+    // how many minutes before bedtime the moon starts counting down, and when the home dims
+    wind_down: 15,
+    dim_at: 5
   };
   var KID_SCENES = ["rainbow", "candy", "stars"];
   // Each girl's badge (the same drawings as design/mockups), by person id. Anyone else: her emoji.
@@ -51,7 +63,7 @@
   var ON = C.enabled !== false;
   var LOCK = C.pin !== false && C.pin !== "";
   var CFG_PIN = /^\d{4}$/.test(String(C.pin)) ? String(C.pin) : "";
-  var BED = parseBedtime(C.bedtime);
+  var BED = null;   // set below, once the TV's own saved bedtime can be read
   var APPS = Array.isArray(C.home_apps) ? C.home_apps.filter(function (p) { return typeof p === "string"; }) : [];
   var EMOJI = C.emoji && typeof C.emoji === "object" ? C.emoji : {};
 
@@ -104,6 +116,15 @@
   // the PIN made on this TV wins over one from config.json
   function pin() { var p = get("pin"); return typeof p === "string" && /^\d{4}$/.test(p) ? p : CFG_PIN; }
   var unlockedUntil = 0;
+  // bedtime times changed on the grown-ups screen win over config.json
+  function bedtimeCfg() { var b = get("bedtime"); return parseBedtime(b) ? b : C.bedtime; }
+  BED = parseBedtime(bedtimeCfg());
+  function hm(minutes) { var h = Math.floor(minutes / 60), m = minutes % 60; return (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m; }
+  // stars and trophies, by person id
+  function starsOf(id) { var s = get("stars") || {}; var r = s[id] || {}; return { stars: +r.stars || 0, trophies: +r.trophies || 0 }; }
+  // little mode: the list saved on this TV, else config.json
+  function littleIds() { var l = get("little"); return Array.isArray(l) ? l : (Array.isArray(C.little) ? C.little : []); }
+  function isLittle(p) { return !!(ON && p && littleIds().indexOf(p.id) >= 0); }
 
   // ---------- what the screen is showing ----------
   var people = [], ui = null, mode = null;   // mode: null, "bed", "pad", "extra"
@@ -129,13 +150,21 @@
       '<p class="kbed-hint">Grown-ups: press OK</p></div>' +
       '<div class="kpad" id="kpad" role="dialog" aria-modal="true"><div class="kpad-box">' +
       '<h2 id="kpad-title"></h2><p class="kpad-sub" id="kpad-sub"></p><div class="kdots" id="kdots"></div><div class="kkeys" id="kkeys"></div>' +
-      '<div class="kextra" id="kextra"></div></div></div>';
+      '<div class="kextra" id="kextra"></div></div></div>' +
+      // the last minutes before bedtime: a moon counting down, top right
+      '<div class="kcount" id="kcount" aria-live="polite"><span class="kmoon">🌙</span><span id="kcount-text"></span></div>' +
+      // the first look at the home after wake-up
+      '<div class="kmorning" id="kmorning"><span class="ksun"></span><h1 id="kmorning-title"></h1></div>' +
+      // five stars: confetti over her home
+      '<div class="kconfetti" id="kconfetti" aria-hidden="true"></div>';
     document.body.appendChild(ui);
   }
 
   function renderBed() {
-    $("kbed-title").textContent = people.length ? "Goodnight, " + names() : "Goodnight";
-    $("kbed-sub").textContent = "Sweet dreams. The TV wakes up at " + clockText(BED.until) + ".";
+    var sunrise = sunriseNow();
+    $("kbed").classList.toggle("sunrise", sunrise);
+    $("kbed-title").textContent = sunrise ? "Almost morning!" : people.length ? "Goodnight, " + names() : "Goodnight";
+    $("kbed-sub").textContent = (sunrise ? "The TV wakes up at " : "Sweet dreams. The TV wakes up at ") + clockText(BED.until) + ".";
     $("kbed-time").innerHTML = clockNow ? esc(clockNow.hm) + (clockNow.ampm ? "<small>" + esc(clockNow.ampm) + "</small>" : "") : "";
     // each girl's badge (or emoji), gently bobbing (the moon is already in the picture)
     $("kbed-moon").innerHTML = people.map(function (p) {
@@ -182,7 +211,9 @@
     var el = document.createElement("div");
     el.className = "klook";
     el.innerHTML = '<div class="kbg" id="kbg"><img alt=""><img alt=""></div>' +
-      '<div class="kclock"><p class="kdate" id="kdate"></p><p class="ktime" id="ktime"></p><p class="khello" id="khello"></p></div>';
+      '<div class="kclock"><p class="kdate" id="kdate"></p><p class="ktime" id="ktime"></p><p class="khello" id="khello"></p></div>' +
+      // her stars, under her name at the top left
+      '<div class="kstars" id="kstars" aria-label="Stars"></div>';
     document.body.insertBefore(el, document.body.firstChild);
   }
   function showBg(name) {
@@ -273,11 +304,82 @@
     if (extra && now.getTime() < extra) return false;
     return bedtimeAt(now);
   }
+  // minutes until tonight's bedtime, or null when it is not coming up within wind_down minutes
+  function minutesToBed() {
+    if (!BED) return null;
+    var now = new Date(), t = now.getHours() * 60 + now.getMinutes(), day = now.getDay();
+    var from = day === 5 || day === 6 ? BED.weekend : BED.from;
+    var left = from - t;
+    var extra = get("extra");
+    if (extra && now.getTime() < extra) left = Math.ceil((extra - now.getTime()) / 60000);   // extra time runs out instead
+    return left > 0 && left <= Math.max(1, +C.wind_down || 15) ? left : null;
+  }
+  // the hour before wake-up: the Goodnight screen turns to sunrise colours
+  function sunriseNow() {
+    if (!BED) return false;
+    var now = new Date(), t = now.getHours() * 60 + now.getMinutes();
+    return t < BED.until && t >= BED.until - 60;
+  }
+  var wasBed = null;
   function tick() {
     var bed = isBedtime();
     if (bed && !mode) show("bed");
     else if (!bed && mode === "bed") hide();
     else if (bed && mode === "bed") renderBed();
+    // the morning: the first home after the Goodnight screen goes, once a day
+    if (wasBed === true && !bed) morning();
+    wasBed = bed;
+    windDown(bed ? null : minutesToBed());
+  }
+  function windDown(left) {
+    build();
+    var dim = left != null && left <= Math.max(1, +C.dim_at || 5);
+    $("kcount").classList.toggle("on", left != null);
+    $("kcount").classList.toggle("soon", dim);
+    $("kcount-text").textContent = left == null ? "" : dim ? "Nearly bedtime" : "Bedtime in " + left + " min";
+    document.documentElement.classList.toggle("kids-dim", dim);
+  }
+  function morning() {
+    var today = new Date().toDateString();
+    if (get("morning") === today || !look) return;
+    set("morning", today);
+    build();
+    $("kmorning-title").textContent = "Good morning" + (whoNow && whoNow.name ? ", " + whoNow.name : "") + "!";
+    $("kmorning").classList.add("on");
+    setTimeout(function () { $("kmorning").classList.remove("on"); }, 5000);
+  }
+
+  // ---------- stars: five make a trophy, and confetti the next time her home shows ----------
+  function giveStar(id, d) {
+    var all = get("stars") || {}, r = starsOf(id);
+    r.stars += d;
+    if (r.stars >= 5) { r.stars = 0; r.trophies += 1; set("party", id); }
+    if (r.stars < 0) { r.stars = 0; }
+    all[id] = r;
+    set("stars", all);
+    drawStars();
+    return r;
+  }
+  function drawStars() {
+    var el = $("kstars");
+    if (!el || !whoNow) return;
+    var r = starsOf(whoNow.id), s = "";
+    for (var i = 0; i < 5; i++) s += '<i class="' + (i < r.stars ? "on" : "") + '">★</i>';
+    el.innerHTML = s + (r.trophies ? '<b class="ktrophy">🏆 ' + r.trophies + "</b>" : "");
+  }
+  var COLOURS = ["#ff5fa8", "#8e5cff", "#2fc4b2", "#ffd84d", "#ff8a3d", "#6fe6d4", "#fff"];
+  function party() {
+    if (!whoNow || get("party") !== whoNow.id || mode) return;
+    set("party", null);
+    build();
+    var box = $("kconfetti"), bits = "";
+    for (var i = 0; i < 90; i++) {
+      bits += '<i style="left:' + (Math.random() * 100) + '%;background:' + COLOURS[i % COLOURS.length] + ";animation-delay:" + (Math.random() * 1.2) +
+        "s;animation-duration:" + (2.6 + Math.random() * 1.6) + "s;transform:rotate(" + Math.floor(Math.random() * 360) + 'deg)"></i>';
+    }
+    box.innerHTML = bits;
+    box.classList.add("on");
+    setTimeout(function () { box.classList.remove("on"); box.innerHTML = ""; }, 4500);
   }
 
   // ---------- keys: while anything of ours is up, the home underneath gets none ----------
@@ -345,8 +447,39 @@
       showBg(whoNow && SCENE_OF[whoNow.id] ? SCENE_OF[whoNow.id] : "blake");
       var title = $("shelf-title");
       if (look && title && whoNow) title.textContent = whoNow.name + "'s shows";
+      document.documentElement.classList.toggle("kids-little", isLittle(whoNow));
       drawClock();
+      drawStars();
+      party();
     },
+    // little mode for whoever is watching now (app.js: up and down stay on the tiles, a long OK
+    // opens the people list)
+    littleNow: function () { return isLittle(whoNow); },
+    little: function (id, on) {   // the grown-ups screen: switch it for one girl
+      if (id === undefined) return littleIds();
+      var l = littleIds().filter(function (x) { return x !== id; });
+      if (on) l.push(id);
+      set("little", l);
+      document.documentElement.classList.toggle("kids-little", isLittle(whoNow));
+      return l;
+    },
+    // stars and trophies (the grown-ups screen gives and takes them)
+    stars: starsOf,
+    giveStar: giveStar,
+    // bedtime, as config.json has it ({from, until, weekend_from}), and changing it from the grown-ups screen
+    bedtimeCfg: function () { var b = bedtimeCfg(); return { from: hm(BED.from), until: hm(BED.until), weekend_from: hm(BED.weekend) }; },
+    setBedtime: function (b) {
+      var parsed = parseBedtime(b);
+      if (!parsed) return false;
+      set("bedtime", { from: b.from, until: b.until, weekend_from: b.weekend_from });
+      BED = parsed;
+      tick();
+      return true;
+    },
+    people: function () { return people.slice(); },
+    // the grown-ups screen: how long the PIN still holds, and locking straight away
+    unlockedUntil: function () { return unlockedUntil; },
+    lock: function () { unlockedUntil = 0; },
     // app.js's clock, every 15 seconds: the time, am or pm, the day and the weather (markup)
     clock: function (hm, ampm, day, wx) {
       clockNow = { hm: hm, ampm: ampm, day: day, wx: wx };

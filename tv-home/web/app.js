@@ -792,7 +792,7 @@
     $("people-pop").classList.remove("on");
     $("people-pop").innerHTML = "";
     plift = false;
-    zone = "people";
+    zone = littleNow() ? "grid" : "people";   // little mode has no pill to go back to
   }
   function pickWho(id) {
     if (id === who) return;
@@ -800,6 +800,7 @@
     try { localStorage.setItem("tvhome.who", who); } catch (e) {}
     if (!NOBODY) api("POST", "/api/who", { who: who }).catch(function () {});
     renderShelf();
+    g = 0; renderGrid();   // Kidstv: little mode changes what the dock holds
   }
   // The order of the names: kept by the bridge (the phone's People sheet uses the same list), or on
   // this TV when there is no bridge. "pending" means the bridge has not heard about it yet.
@@ -917,6 +918,8 @@
     var store = data.apps.filter(function (a) { return a.package === STORE_PKG; })[0];
     var arr = arrangeItems();
     var list = expanded ? arr.items.slice() : arr.items.slice(0, arr.line);
+    // Kidstv little mode: her apps and nothing else, no Settings or More apps to land on
+    if (littleNow() && !expanded) return list.filter(function (a) { return a.kind === "app"; });
     if (expanded && store) list.unshift({ kind: "app", store: true, name: t("app_store"), package: STORE_PKG, id: store.id });
     list = list.concat(toolItems());
     if (!expanded) list.push(moreItem());
@@ -1070,6 +1073,8 @@
     else if (it.kind === "more") face = '<div class="face tool">' + ICONS.more + "</div>";
     else if (it.kind === "gear") face = '<div class="face tool">' + ICONS.gear + "</div>";
     else if (it.kind === "smart") face = '<div class="face tool">' + window.smartHome.icon + "</div>";
+    // Kidstv little mode: the app's wide picture (its TV banner) on a huge tile
+    else if (littleNow() && it.banner) face = '<div class="face"><img src="' + esc(it.banner) + '" alt="" decoding="async" onerror="this.src=this.getAttribute(\'data-icon\')" data-icon="' + esc(iconUrl(it.package) || "") + '"></div>';
     else if (iconUrl(it.package)) face = '<div class="face"><img src="' + esc(iconUrl(it.package)) + '" alt="" decoding="async" onerror="this.parentNode.className=\'face word\';this.parentNode.textContent=this.getAttribute(\'data-name\')" data-name="' + esc(it.name) + '"></div>';
     else if (it.store) face = '<div class="face tool">' + ICONS.store + "</div>";
     else face = '<div class="face word">' + esc(it.name) + "</div>";
@@ -1130,6 +1135,7 @@
   function paintFocus() {
     if (zone === "settings") { renderSettings(); return; }
     if (zone === "smart") { window.smartHome.paint(); return; }
+    if (zone === "grown") { window.grownUps.update(grownLists()); window.grownUps.paint(); return; }
     clearFocus();
     renderHint();
     if (zone === "gear") { if (gridEls[g]) gridEls[g].classList.add("focus"); renderGear(); return; }
@@ -1182,8 +1188,11 @@
     touched = true;
     if (zone === "settings") { setMove(dx, dy); return; }
     if (zone === "smart") { window.smartHome.move(dx, dy); return; }
+    if (zone === "grown") { window.grownUps.move(dx, dy); return; }
     if (zone === "gear") { if (dy) { gi = Math.max(0, Math.min(gearItems().length - 1, gi + dy)); renderGear(); } return; }
     if (lift) { moveLift(dx, dy); return; }
+    // Kidstv little mode: up and down stay on the tiles, so nothing else can be bumped into
+    if (zone === "grid" && dy && littleNow()) return;
     // Night with More apps open: the cards step aside, so up and down skip them
     var cards = NIGHT && expanded ? [] : shelfEls;
     if (zone === "menu") {
@@ -1248,6 +1257,7 @@
   // Start on the people switch, so the first press picks who is watching.
   function startFocus() {
     s = 0; g = 0;
+    if (littleNow()) { zone = "grid"; return; }   // Kidstv little mode: the tiles are all there is
     if (peopleOn()) toPeople();
     else zone = shelfEls.length ? "shelf" : "grid";
   }
@@ -1256,6 +1266,7 @@
     if (window.KIDS && window.KIDS.back()) return;   // the bedtime screen or the grown-up PIN is up
     if (zone === "settings") { setBack(); return; }
     if (zone === "smart") { closeSmart(); paintFocus(); return; }
+    if (zone === "grown") { window.grownUps.back(); return; }
     if (zone === "gear") { closeGear(); paintFocus(); return; }
     if (lift) { dropLift(); return; }   // BACK puts a picked-up app down where it is
     if (zone === "pmenu") { if (plift) dropPeople(); else closePop(); paintFocus(); return; }
@@ -1271,8 +1282,10 @@
   function hold() {
     touched = true;
     if (zone === "settings") return setHold();
-    if (zone === "gear" || zone === "smart") return false;
+    if (zone === "gear" || zone === "smart" || zone === "grown") return false;
     if (lift) { dropLift(); return true; }
+    // Kidstv little mode: a long OK on a tile opens the people list (the pill itself is hidden)
+    if (zone === "grid" && littleNow() && peopleCount() >= 2) { openPop(); paintFocus(); return true; }
     if (zone === "pmenu") {
       if (plift) dropPeople();
       else if (PEOPLE.length > 1) { plift = true; renderPop(); }
@@ -1286,6 +1299,7 @@
     touched = true;
     if (zone === "settings") { setActivate(); return; }
     if (zone === "smart") { window.smartHome.ok(); return; }
+    if (zone === "grown") { window.grownUps.ok(); return; }
     if (zone === "gear") {
       if (gi === 0) openSettings();
       else if (gi === 1) openTvSettings();
@@ -1309,29 +1323,13 @@
       paintFocus();
       return;
     }
-    if (zone === "shelf") {
-      var it = data.shows[s];
-      if (!it) return;
-      status(it.app ? t("opening_in", { title: it.title, app: it.app.name }) : t("opening", { title: it.title }), true);
-      if (it.wn && TV && TV.openWatchNext) {
-        if (!TV.openWatchNext(String(it.id)) && it.app) TV.launch(it.app.package);
-        status("");
-        return;
-      }
-      api("POST", "/api/continue/open", { id: it.id, who: NOBODY ? "both" : who }, 60000)
-        .then(function (res) { status(res.note || ""); })
-        .catch(function (e) {
-          // the bridge can't help: at least open the app it was in
-          if (TV && it.app && TV.launch(it.app.package)) { status(""); return; }
-          status(e.message);
-        });
-      return;
-    }
+    if (zone === "shelf") { openShow(data.shows[s]); return; }
     var a = gridItems[g], el = gridEls[g];
     if (!a) return;
-    // Kidstv: More apps and Settings are for grown-ups (the PIN in kids.js)
-    if (a.kind === "more") { grownUp(function () { expanded = true; renderGrid(); paintFocus(); }); return; }
-    if (a.kind === "gear") { grownUp(openGear); return; }
+    // Kidstv: More apps and Settings are for grown-ups (the PIN in kids.js), and both open the
+    // grown-ups screen (grownups.js); without Kidstv they are couch-tv's own
+    if (a.kind === "more") { grownUp(kidsOn() ? openGrown : function () { expanded = true; renderGrid(); paintFocus(); }); return; }
+    if (a.kind === "gear") { grownUp(kidsOn() ? openGrown : openGear); return; }
     if (a.kind === "smart") { openSmart(); return; }
     if (a.kind === "screen") {
       if (!a.ready) { status(a.note || t("screen_not_set")); return; }
@@ -1351,6 +1349,53 @@
   }
 
   function grownUp(go) { if (window.KIDS) window.KIDS.grownUp(go); else go(); }
+  function kidsOn() { return !!(window.KIDS && window.KIDS.on && window.grownUps); }
+  function littleNow() { return !!(window.KIDS && window.KIDS.littleNow && window.KIDS.littleNow()); }
+
+  // open a Keep watching item: Android's Watch Next entry, or through the bridge
+  function openShow(it) {
+    if (!it) return;
+    status(it.app ? t("opening_in", { title: it.title, app: it.app.name }) : t("opening", { title: it.title }), true);
+    if (it.wn && TV && TV.openWatchNext) {
+      if (!TV.openWatchNext(String(it.id)) && it.app) TV.launch(it.app.package);
+      status("");
+      return;
+    }
+    api("POST", "/api/continue/open", { id: it.id, who: NOBODY ? "both" : who }, 60000)
+      .then(function (res) { status(res.note || ""); })
+      .catch(function (e) {
+        // the bridge can't help: at least open the app it was in
+        if (TV && it.app && TV.launch(it.app.package)) { status(""); return; }
+        status(e.message);
+      });
+  }
+
+  // ---------------- Kidstv: the grown-ups screen (grownups.js) ----------------
+  // Every app, Keep watching, the week's weather and Controls. It takes the keys while it is up.
+  function grownLists() {
+    var seen = {}, shows = [];
+    PEOPLE.forEach(function (p) {
+      (data.showsBy[p.id] || []).forEach(function (it) { if (!seen[it.id]) { seen[it.id] = true; shows.push(it); } });
+    });
+    return { apps: shownApps(), shows: shows.slice(0, 12) };
+  }
+  function openGrown() {
+    var lists = grownLists();
+    zone = "grown";
+    expanded = false;
+    clearFocus();
+    closeGear();
+    window.grownUps.open({
+      apps: lists.apps, shows: lists.shows, iconUrl: iconUrl,
+      launch: function (a) { opened(a.package); if (TV && TV.launch(a.package)) return; api("POST", "/api/launch", { app: a.id || a.package }).catch(function (e) { status(e.message); }); },
+      openShow: openShow,
+      wx: WXCFG, temp: tempText, wxIcon: wxIcon,
+      homeSettings: openSettings, tvSettings: openTvSettings,
+      changePin: function () { window.KIDS.changePin(); },
+      // back to her home: her stars may have changed (and five of them bring confetti)
+      onClose: function () { if (zone === "grown") { zone = "grid"; renderShelf(); renderGrid(); startFocus(); paintFocus(); } }
+    });
+  }
 
   // ---------------- Smart home: the rooms and scenes screen (smarthome.js) ----------------
   function openSmart() { zone = "smart"; clearFocus(); window.smartHome.open(); }
@@ -2266,7 +2311,7 @@
 
   // the native side calls these
   // Home on the remote also re-reads the lists, so an order arranged on the phone shows straight away
-  window.tv = { back: goHome, home: function () { if (zone === "settings") closeSettings(); else goHome(); refresh(); },
+  window.tv = { back: goHome, home: function () { if (zone === "settings") closeSettings(); else if (zone === "grown") window.grownUps.lock(); else goHome(); refresh(); },
     resume: function () { okReset(); if (window.KIDS) window.KIDS.check(); refresh(); if (!OFFLINE) refreshQuick(); refreshWeather(); },
     // the launcher's file picker has copied the chosen photos into its own storage (Home settings)
     photosAdded: function (names) { photosAdded(names); } };

@@ -41,7 +41,10 @@ All of it lives in `config.json` (copy `config.example.json`), under `people` an
     "home_apps": ["com.google.android.youtube.tv", "com.disney.disneyplus", "com.netflix.ninja", "com.amazon.amazonvideo.livingroom"],
     "pin": null,
     "bedtime": { "from": "19:30", "until": "07:00", "weekend_from": "20:00" },
-    "unlock_minutes": 5
+    "unlock_minutes": 15,
+    "little": ["sora"],
+    "wind_down": 15,
+    "dim_at": 5
   }
 }
 ```
@@ -60,13 +63,49 @@ All of it lives in `config.json` (copy `config.example.json`), under `people` an
   home's other settings too).
 - **`bedtime`**: 24 hour times. `weekend_from` is Friday and Saturday nights; leave it out for the
   same time every night. `"bedtime": null` turns bedtime off.
-- **`unlock_minutes`**: how long a right PIN keeps More apps and Settings open (1 to 120).
+- **`unlock_minutes`**: how long a right PIN keeps the grown-ups screen open (1 to 120). It counts
+  down on that screen.
+- **`little`**: person ids in little mode (below). Switched per girl from the grown-ups screen too.
+- **`wind_down`** and **`dim_at`**: minutes before bedtime when the moon starts counting down at
+  the top right, and when the home dims and says "Nearly bedtime".
 - **`enabled`**: `false` turns all of Kidstv off and you are back to plain couch-tv.
 
 Without a `config.json` (option C, the app that lives on the TV), the same values are built into
 `tv-home/web/kids.js` (`DEFAULTS`), so change them there too if you use option C. People you add
 in Home settings on the TV get an id from their name ("Blake" becomes `blake`), so the emoji still
 match.
+
+## The grown-ups screen
+
+The right PIN (on **More apps** or **Settings**) opens the grown-ups screen instead of the girls'
+home: every app on the TV, Keep watching from Android's Watch Next list (the show under focus big
+at the top), this week's weather and "locks again in 14:52". Its buttons: **Controls**, **Home
+settings** (couch-tv's own), **TV settings** (Android's) and **Lock now**. Back or Home locks it
+too. The screen is `tv-home/web/grownups.js`; the design is `design/mockups/Grownups.dc.html`.
+
+**Controls** (the first button): bedtime for school nights, Friday and Saturday and the wake-up
+time, in 15 minute steps (left and right); a star for each girl (left takes one, right gives one;
+five make a trophy, and confetti falls the next time her home shows); little mode on or off per
+girl; and the grown-ups PIN. What is changed here is kept on the TV and wins over `config.json`.
+
+## Little mode (Sora)
+
+With little mode on for whoever is picked, the home is only her apps as huge picture tiles (each
+app's own TV banner), a small clock at the top right and nothing else: no shows, no name pill, no
+Settings or More apps to land on. Left and right move, OK opens, up and down do nothing. A **long
+press on OK** opens the people list, which is how a grown-up switches to Blake or Lucy. Default:
+Sora (`little` above).
+
+## Stars, the wind-down and the morning
+
+- **Stars** show under her name on her home (★★★☆☆, then 🏆 and a count). Grown-ups give them from
+  Controls. Kept on the TV only.
+- **Wind-down:** a small moon at the top right counts down the last 15 minutes before bedtime
+  ("Bedtime in 12 min"); at 5 minutes the home dims and says "Nearly bedtime". Extra time counts
+  down the same way.
+- **Morning:** in the hour before wake-up, the Goodnight screen turns to sunrise colours ("Almost
+  morning!"). The first time the home shows after wake-up it says "Good morning, Blake!" over a
+  sunrise for five seconds, once a day.
 
 ## Bedtime when a show is already on
 

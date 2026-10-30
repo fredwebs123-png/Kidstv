@@ -145,3 +145,66 @@
 .kbed h1 { font-family: "Fredoka", sans-serif; font-weight: 600; }
 .kbed p#kbed-sub { font-family: "Nunito", sans-serif; font-weight: 700; }
 .kpad h2, .kkey, .kopt { font-family: "Fredoka", sans-serif; }
+
+/* ---------- the wind-down: a moon counting down the last minutes, then the home dims ---------- */
+.kcount {
+  display: none; position: fixed; top: 9.25rem; right: 5rem; z-index: 40; align-items: center; gap: 0.875rem;
+  padding: 0.75rem 1.5rem 0.75rem 1rem; border-radius: 2.5rem; color: #fff; font-family: "Fredoka", sans-serif; font-weight: 500; font-size: 1.875rem;
+  background: rgba(40, 30, 80, 0.55); box-shadow: inset 0 0 0 0.125rem rgba(255, 255, 255, 0.22), 0 0.75rem 2rem rgba(20, 6, 50, 0.35);
+  -webkit-backdrop-filter: blur(1rem); backdrop-filter: blur(1rem);
+}
+.kcount.on { display: flex; }
+.kcount .kmoon { font-size: 2.25rem; line-height: 1; animation: kfloat 4s ease-in-out infinite alternate; }
+.kcount.soon { background: rgba(60, 30, 90, 0.8); font-size: 2.25rem; }
+.kcount.soon .kmoon { animation-duration: 1.6s; }
+.kids-dim .klook, .kids-dim .home, .kids-dim .top { filter: brightness(0.62) saturate(0.8); transition: filter 1.5s ease; }
+.kids-dim .kcount { filter: none; }
+
+/* ---------- the hour before wake-up: sunrise colours on the Goodnight screen ---------- */
+.kids-look .kbed.sunrise { background-image: linear-gradient(180deg, rgba(255, 150, 90, 0.55) 0%, rgba(255, 200, 120, 0.35) 45%, rgba(40, 20, 80, 0) 100%), url(backgrounds/kid-bedtime.jpg); }
+.kbed.sunrise .ktwinkle { opacity: 0.35; }
+.kbed.sunrise .kbed-time { color: #fff4d6; }
+
+/* ---------- the first home of the day ---------- */
+.kmorning {
+  display: none; position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 55; align-items: center; justify-content: center; flex-direction: column;
+  color: #fff; text-align: center; background: linear-gradient(180deg, #ff9a5c 0%, #ffd27a 55%, #8fe3ff 100%);
+}
+.kmorning.on { display: flex; animation: kmorning-out 5s ease forwards; }
+.kmorning .ksun { width: 16rem; height: 16rem; border-radius: 50%; background: #fff6c8; box-shadow: 0 0 6rem 2rem rgba(255, 240, 180, 0.8); animation: ksun-up 1.4s ease-out; margin-bottom: 2.5rem; }
+.kmorning h1 { font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 6rem; line-height: 1.1; text-shadow: 0 0.375rem 1.5rem rgba(120, 60, 20, 0.35); }
+@keyframes ksun-up { from { transform: translateY(14rem) scale(0.6); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes kmorning-out { 0%, 80% { opacity: 1; } 100% { opacity: 0; } }
+
+/* ---------- stars under her name, and the confetti when she gets five ---------- */
+.kstars { display: none; position: absolute; top: 10.25rem; left: 5.5rem; align-items: center; gap: 0.25rem; font-size: 2rem; line-height: 1; z-index: 2;
+  text-shadow: 0 0.125rem 0.75rem rgba(20, 8, 60, 0.45); }
+.kids-look .kstars:not(:empty) { display: flex; }
+.kstars i { font-style: normal; color: rgba(255, 255, 255, 0.35); }
+.kstars i.on { color: #ffd84d; }
+.kstars .ktrophy { margin-left: 0.875rem; font-family: "Nunito", sans-serif; font-weight: 800; font-size: 1.5rem; color: #fff; }
+.kconfetti { display: none; position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 45; pointer-events: none; overflow: hidden; }
+.kconfetti.on { display: block; }
+.kconfetti i { position: absolute; top: -2rem; width: 0.875rem; height: 1.5rem; border-radius: 0.25rem; opacity: 0.95; animation: kfall linear forwards; }
+@keyframes kfall { to { transform: translateY(110vh) rotate(720deg); opacity: 0.8; } }
+
+/* ================= little mode (Sora): huge picture tiles, a small clock, nothing else ================= */
+.kids-little .shelf, .kids-little .people, .kids-little .quick, .kids-little .hint, .kids-little .kdate, .kids-little .khello, .kids-little .kstars,
+.kids-little .hero { display: none !important; }
+.kids-little .kclock { top: 2.75rem; left: auto; right: 5rem; align-items: flex-end; }
+.kids-little .ktime { font-size: 5.5rem; line-height: 1; }
+.kids-little .ktime small { font-size: 2rem; }
+.kids-little.theme-night .grid { display: flex; gap: 2.5rem; justify-content: center; padding: 2rem; width: max-content;
+  background: none; box-shadow: none; border: 0; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.kids-little.theme-night .app { width: 24rem; height: 14rem; }
+.kids-little.theme-night .app .face { border-radius: 2.5rem; }
+.kids-little.theme-night .app .face img { object-fit: cover; }
+.kids-little.theme-night .app:not(.focus) .face { opacity: 0.92; }
+.kids-little.theme-night .app.focus { transform: scale(1.1) translateY(-1rem); }
+.kids-little.theme-night .app.focus .face { box-shadow: 0 0 0 0.5rem #fff, 0 0 0 1.125rem var(--kid), 0 1.5rem 3rem rgba(0, 0, 0, 0.45); }
+.kids-little .app .label { display: none; }
+/* the tools (Settings, More apps) and anything past the kids' apps: not for little hands */
+.kids-little.theme-night .tile.app:has(.face.tool) { display: none; }
+.kids-little .people-pop.on { display: block; }
+.kids-little.theme-night .apps { bottom: auto; top: 50%; transform: translate(-50%, -50%); }
+.kids-little .people-pop { top: 4rem; left: 5rem; }

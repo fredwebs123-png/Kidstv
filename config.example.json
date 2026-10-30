@@ -16,18 +16,50 @@
       "wake_on_lan": true,
       "paired": false,
       "keep_disabled": "data/keep-disabled.json",
-      "quick": ["sleep"]
+      "quick": [
+        "sleep"
+      ]
     }
   ],
   "people": [
-    { "id": "blake", "name": "Blake", "colour": "#8e5cff", "app_profiles": ["Blake"] },
-    { "id": "lucy", "name": "Lucy", "colour": "#ff5fa8", "app_profiles": ["Lucy", "Kids"] },
-    { "id": "sora", "name": "Sora", "colour": "#2fc4b2", "app_profiles": ["Sora", "Kids"] }
+    {
+      "id": "blake",
+      "name": "Blake",
+      "colour": "#8e5cff",
+      "app_profiles": [
+        "Blake"
+      ]
+    },
+    {
+      "id": "lucy",
+      "name": "Lucy",
+      "colour": "#ff5fa8",
+      "app_profiles": [
+        "Lucy",
+        "Kids"
+      ]
+    },
+    {
+      "id": "sora",
+      "name": "Sora",
+      "colour": "#2fc4b2",
+      "app_profiles": [
+        "Sora",
+        "Kids"
+      ]
+    }
   ],
-  "app_profile_fallback": ["Kids", "Children"],
+  "app_profile_fallback": [
+    "Kids",
+    "Children"
+  ],
   "home": {
     "look": "night",
-    "scenes": ["rainbow", "candy", "stars"],
+    "scenes": [
+      "rainbow",
+      "candy",
+      "stars"
+    ],
     "scene_seconds": 20,
     "clock": "12h",
     "dock_size": 10,
@@ -35,15 +67,35 @@
     "language": "en",
     "kids": {
       "enabled": true,
-      "emoji": { "blake": "🦋", "lucy": "🌈", "sora": "🐣" },
-      "home_apps": ["com.google.android.youtube.tv", "com.disney.disneyplus", "com.netflix.ninja", "com.amazon.amazonvideo.livingroom"],
+      "emoji": {
+        "blake": "🦋",
+        "lucy": "🌈",
+        "sora": "🐣"
+      },
+      "home_apps": [
+        "com.google.android.youtube.tv",
+        "com.disney.disneyplus",
+        "com.netflix.ninja",
+        "com.amazon.amazonvideo.livingroom"
+      ],
       "pin": null,
-      "bedtime": { "from": "19:30", "until": "07:00", "weekend_from": "20:00" },
-      "unlock_minutes": 5
+      "bedtime": {
+        "from": "19:30",
+        "until": "07:00",
+        "weekend_from": "20:00"
+      },
+      "unlock_minutes": 15,
+      "little": [
+        "sora"
+      ],
+      "wind_down": 15,
+      "dim_at": 5
     }
   },
   "phone_remote": true,
-  "ask": { "enabled": false },
+  "ask": {
+    "enabled": false
+  },
   "weather": {
     "lat": -33.8688,
     "lon": 151.2093,
@@ -55,8 +107,22 @@
   "home_assistant": {
     "enabled": false,
     "url": "http://homeassistant.local:8123",
-    "climate": [{ "entity": "climate.living_room", "name": "Living room" }],
-    "scenes": [{ "entity": "scene.movie_night", "name": "Movie night" }],
-    "doorbell": { "entity": "event.front_door_ding", "camera": "camera.front_door", "name": "Front door" }
+    "climate": [
+      {
+        "entity": "climate.living_room",
+        "name": "Living room"
+      }
+    ],
+    "scenes": [
+      {
+        "entity": "scene.movie_night",
+        "name": "Movie night"
+      }
+    ],
+    "doorbell": {
+      "entity": "event.front_door_ding",
+      "camera": "camera.front_door",
+      "name": "Front door"
+    }
   }
 }
