@@ -1109,6 +1109,8 @@
     $("grid").innerHTML = gridItems.map(appHTML).join("");
     gridEls = Array.prototype.slice.call($("grid").children);
     renderHint();
+    // Kidstv little mode: the apps' featured pictures take turns on her tiles
+    if (littleNow() && window.KIDS.littleTiles) window.KIDS.littleTiles(gridItems.map(function (it, i) { return { pkg: it.package, el: gridEls[i] }; }));
   }
 
   // ---------------- focus ----------------
@@ -1344,6 +1346,12 @@
       return;
     }
     opened(a.package);
+    // Kidstv little mode: OK plays the show on her tile, not just the app
+    if (littleNow() && TV && window.KIDS.littleCurrent) {
+      var pic = window.KIDS.littleCurrent(a.package);
+      if (pic && pic.wn && TV.openWatchNext && TV.openWatchNext(String(pic.id))) return;
+      if (pic && pic.pv && TV.openPreview && TV.openPreview(String(pic.id))) return;
+    }
     if (TV && TV.launch(a.package)) return;
     api("POST", "/api/launch", { app: a.id || a.package }).catch(function (e) { status(e.message); });
   }

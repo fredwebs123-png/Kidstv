@@ -462,7 +462,16 @@ class MainActivity : Activity() {
 
         /** Opens one Watch Next item (its row id) in the app that owns it. */
         @JavascriptInterface
-        fun openWatchNext(id: String): Boolean = openWatchNextItem(id)
+        fun openWatchNext(id: String): Boolean = openProgram(WATCH_NEXT, id)
+
+        /** The rows the apps publish to the home (featured, trending, new), as JSON. Kidstv little mode
+         *  cycles their pictures on each app's tile and opens the one showing. */
+        @JavascriptInterface
+        fun previews(): String = readPreviews().toString()
+
+        /** Opens one of those (its row id) in the app that owns it. */
+        @JavascriptInterface
+        fun openPreview(id: String): Boolean = openProgram(PREVIEW, id)
 
         @JavascriptInterface
         fun openSettings(): Boolean = start(Intent(Settings.ACTION_SETTINGS))
@@ -682,11 +691,46 @@ class MainActivity : Activity() {
         return out
     }
 
-    private fun openWatchNextItem(id: String): Boolean {
+    // The apps' own rows on the home (TvContract preview programs): what each app features right
+    // now, with its pictures. Only browsable ones, a few per app, never our own.
+    private val PREVIEW = android.net.Uri.parse("content://android.media.tv/preview_program")
+    private fun readPreviews(): JSONArray {
+        val out = JSONArray()
+        if (checkSelfPermission(READ_TV) != PackageManager.PERMISSION_GRANTED) return out
+        try {
+            val cols = arrayOf("_id", "package_name", "title", "poster_art_uri", "thumbnail_uri", "browsable")
+            contentResolver.query(PREVIEW, cols, null, null, "_id DESC")?.use { c ->
+                val perApp = HashMap<String, Int>()
+                while (c.moveToNext() && out.length() < 80) {
+                    val pkg = c.getString(1) ?: continue
+                    if (pkg == packageName || c.getInt(5) == 0) continue
+                    val art = c.getString(3)?.takeIf { it.isNotBlank() } ?: c.getString(4)?.takeIf { it.isNotBlank() } ?: continue
+                    val n = (perApp[pkg] ?: 0) + 1
+                    if (n > 10) continue
+                    perApp[pkg] = n
+                    watchNextArtSeen.add(art)
+                    out.put(JSONObject().apply {
+                        put("id", c.getLong(0).toString())
+                        put("pv", true)
+                        put("title", c.getString(2) ?: "")
+                        put("backdrop", "http://tvos.invalid/art/" + android.util.Base64.encodeToString(
+                            art.toByteArray(), android.util.Base64.URL_SAFE or android.util.Base64.NO_WRAP or android.util.Base64.NO_PADDING))
+                        put("app", JSONObject().put("package", pkg))
+                    })
+                }
+            }
+        } catch (e: Exception) {
+            // no provider or no permission: an empty list, never a crash
+        }
+        return out
+    }
+
+    /** Opens one Watch Next or preview item (its row id) in the app that owns it. */
+    private fun openProgram(base: android.net.Uri, id: String): Boolean {
         if (!Regex("[0-9]{1,18}").matches(id)) return false
         try {
             val cols = arrayOf("package_name", "intent_uri")
-            val uri = android.content.ContentUris.withAppendedId(WATCH_NEXT, id.toLong())
+            val uri = android.content.ContentUris.withAppendedId(base, id.toLong())
             contentResolver.query(uri, cols, null, null, null)?.use { c ->
                 if (!c.moveToFirst()) return false
                 val pkg = c.getString(0) ?: return false

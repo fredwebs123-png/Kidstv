@@ -429,6 +429,74 @@
   window.addEventListener("keydown", onKey, true);
   window.addEventListener("keyup", onKey, true);
 
+  // ---------- little mode: the apps' own featured pictures on her tiles ----------
+  // From Android's Watch Next list (what she is part way through) and the rows each app publishes
+  // to the home (featured, new). Grouped by app; each tile cycles through its app's pictures and OK
+  // opens the one showing. No TV (the browser mock): the app logos stay.
+  var PICS = {}, picAt = {}, picsRead = 0, tiles = [], picTimer = null;
+  var PIC_MS = 20000;
+  function readPics() {
+    if (!TV || Date.now() - picsRead < 10 * 60000) return;
+    picsRead = Date.now();
+    var by = {};
+    var add = function (list, first) {
+      list.forEach(function (it) {
+        var pkg = it.app && it.app.package;
+        if (!pkg || !it.backdrop || (APPS.length && APPS.indexOf(pkg) < 0)) return;
+        (by[pkg] = by[pkg] || []).push(it);
+      });
+    };
+    try { if (TV.watchNext) add(JSON.parse(TV.watchNext()) || []); } catch (e) {}
+    try { if (TV.previews) add(JSON.parse(TV.previews()) || []); } catch (e) {}
+    PICS = by;
+  }
+  // app.js, after it draws the dock in little mode: the tiles and which app each one is
+  function littleTiles(list) {
+    tiles = list.filter(function (t) { return t.pkg && t.el; });
+    readPics();
+    tiles.forEach(function (t, i) {
+      var pics = PICS[t.pkg];
+      if (!pics || !pics.length) return;
+      if (picAt[t.pkg] == null) picAt[t.pkg] = i % pics.length;
+      var face = t.el.querySelector(".face");
+      if (!face) return;
+      face.classList.add("kpics");
+      if (!face.querySelector(".kpic")) face.insertAdjacentHTML("beforeend", '<img class="kpic" alt=""><img class="kpic" alt="">');
+      showPic(t, true);
+    });
+    clearInterval(picTimer);
+    picTimer = setInterval(nextPics, PIC_MS);
+  }
+  function showPic(t, now) {
+    var pics = PICS[t.pkg], it = pics && pics[picAt[t.pkg] % pics.length];
+    var imgs = t.el.querySelectorAll(".kpic");
+    if (!it || imgs.length < 2) return;
+    var on = imgs[0].classList.contains("on") ? imgs[0] : imgs[1], next = on === imgs[0] ? imgs[1] : imgs[0];
+    if (now && !imgs[0].classList.contains("on") && !imgs[1].classList.contains("on")) next = imgs[0];
+    var pre = new Image();
+    pre.onload = function () {
+      if (!document.body.contains(next)) return;
+      next.src = it.backdrop;
+      next.classList.add("on");
+      if (on !== next) on.classList.remove("on");
+    };
+    pre.src = it.backdrop;
+  }
+  function nextPics() {
+    if (!isLittle(whoNow) || mode) return;
+    // one tile at a time, so the whole row never changes at once
+    var live = tiles.filter(function (t) { return PICS[t.pkg] && PICS[t.pkg].length > 1 && document.body.contains(t.el); });
+    if (!live.length) return;
+    var t = live[Math.floor(Date.now() / PIC_MS) % live.length];
+    picAt[t.pkg] = (picAt[t.pkg] + 1) % PICS[t.pkg].length;
+    showPic(t);
+  }
+  // the show on her tile right now (app.js opens it with OK), or null for the app itself
+  function littleCurrent(pkg) {
+    var pics = PICS[pkg];
+    return pics && pics.length ? pics[(picAt[pkg] || 0) % pics.length] : null;
+  }
+
   var KIDS = window.KIDS = {
     on: ON,
     scenes: KID_SCENES,
@@ -455,6 +523,8 @@
     // little mode for whoever is watching now (app.js: up and down stay on the tiles, a long OK
     // opens the people list)
     littleNow: function () { return isLittle(whoNow); },
+    littleTiles: littleTiles,
+    littleCurrent: littleCurrent,
     little: function (id, on) {   // the grown-ups screen: switch it for one girl
       if (id === undefined) return littleIds();
       var l = littleIds().filter(function (x) { return x !== id; });
