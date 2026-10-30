@@ -186,7 +186,7 @@
     SCENES = st.order.filter(function (id) { return st.off.indexOf(id) < 0; }).map(sceneById).filter(Boolean);
     if (!SCENES.length) SCENES = [SCENE_LIB[0]];
     SCENE_MS = Math.max(5, parseInt(ST.scene_seconds || HOME.scene_seconds, 10) || 20) * 1000;
-    var people = CFG.people || [{ id: "blake", name: "Blake", colour: "#8e5cff" }, { id: "lucy", name: "Lucy", colour: "#ff5fa8" },
+    var people = CFG.people || [{ id: "lucy", name: "Lucy", colour: "#ff5fa8" }, { id: "blake", name: "Blake", colour: "#8e5cff" },
       { id: "sora", name: "Sora", colour: "#2fc4b2" }];
     // people added, renamed or removed in Home settings with no bridge to keep them
     var lst = kept("tvhome.people.list");
@@ -1074,7 +1074,9 @@
     else if (it.kind === "gear") face = '<div class="face tool">' + ICONS.gear + "</div>";
     else if (it.kind === "smart") face = '<div class="face tool">' + window.smartHome.icon + "</div>";
     // Kidstv little mode: the app's wide picture (its TV banner) on a huge tile
-    else if (littleNow() && it.banner) face = '<div class="face"><img src="' + esc(it.banner) + '" alt="" decoding="async" onerror="this.src=this.getAttribute(\'data-icon\')" data-icon="' + esc(iconUrl(it.package) || "") + '"></div>';
+    else if (littleNow() && it.banner && it.hasBanner) face = '<div class="face"><img src="' + esc(it.banner) + '" alt="" decoding="async" onerror="this.src=this.getAttribute(\'data-icon\')" data-icon="' + esc(iconUrl(it.package) || "") + '"></div>';
+    // Kidstv little mode, an app with no TV banner: its icon, whole, on a soft tile
+    else if (littleNow() && iconUrl(it.package)) face = '<div class="face icon"><img src="' + esc(iconUrl(it.package)) + '" alt="" decoding="async"></div>';
     else if (iconUrl(it.package)) face = '<div class="face"><img src="' + esc(iconUrl(it.package)) + '" alt="" decoding="async" onerror="this.parentNode.className=\'face word\';this.parentNode.textContent=this.getAttribute(\'data-name\')" data-name="' + esc(it.name) + '"></div>';
     else if (it.store) face = '<div class="face tool">' + ICONS.store + "</div>";
     else face = '<div class="face word">' + esc(it.name) + "</div>";
@@ -2208,7 +2210,7 @@
     var list;
     try { list = JSON.parse(TV.apps()); } catch (e) { return null; }
     return list.map(function (a) {
-      return { kind: "app", name: RENAME[a.package] ? t(RENAME[a.package]) : a.label, package: a.package,
+      return { kind: "app", name: RENAME[a.package] ? t(RENAME[a.package]) : a.label, package: a.package, hasBanner: !!a.hasBanner,
         banner: TV.bannerUrl ? TV.bannerUrl(a.package) : "http://tvos.invalid/banner/" + a.package };   // the launcher makes one when the app has none
     });
   }

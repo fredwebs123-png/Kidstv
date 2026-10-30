@@ -28,8 +28,8 @@ All of it lives in `config.json` (copy `config.example.json`), under `people` an
 
 ```json
 "people": [
-  { "id": "blake", "name": "Blake", "colour": "#8e5cff", "app_profiles": ["Blake"] },
   { "id": "lucy", "name": "Lucy", "colour": "#ff5fa8", "app_profiles": ["Lucy", "Kids"] },
+  { "id": "blake", "name": "Blake", "colour": "#8e5cff", "app_profiles": ["Blake"] },
   { "id": "sora", "name": "Sora", "colour": "#2fc4b2", "app_profiles": ["Sora", "Kids"] }
 ],
 "app_profile_fallback": ["Kids", "Children"],

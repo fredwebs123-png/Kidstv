@@ -23,20 +23,20 @@
   ],
   "people": [
     {
-      "id": "blake",
-      "name": "Blake",
-      "colour": "#8e5cff",
-      "app_profiles": [
-        "Blake"
-      ]
-    },
-    {
       "id": "lucy",
       "name": "Lucy",
       "colour": "#ff5fa8",
       "app_profiles": [
         "Lucy",
         "Kids"
+      ]
+    },
+    {
+      "id": "blake",
+      "name": "Blake",
+      "colour": "#8e5cff",
+      "app_profiles": [
+        "Blake"
       ]
     },
     {

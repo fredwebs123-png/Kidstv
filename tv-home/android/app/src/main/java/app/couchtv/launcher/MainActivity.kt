@@ -294,7 +294,9 @@ class MainActivity : Activity() {
                 val isIcon = u.pathSegments.firstOrNull() == "icon"
                 val img = (if (isIcon) iconImage(pkg) else bannerImage(pkg)) ?: return null
                 return WebResourceResponse(if (isIcon) "image/png" else "image/jpeg", null, ByteArrayInputStream(img)).apply {
-                    responseHeaders = mapOf("Cache-Control" to "max-age=86400")
+                    // the page reads the icon's colours (the grown-ups screen tints each app tile), which
+                    // a canvas only allows for a picture that says it may be read
+                    responseHeaders = mapOf("Cache-Control" to "max-age=86400", "Access-Control-Allow-Origin" to "*")
                 }
             }
 

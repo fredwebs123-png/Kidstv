@@ -73,9 +73,45 @@
   function rowKind(i) { var r = rows(); return i === 0 ? "btns" : r[i] === ctx.shows ? "shows" : "apps"; }
   function current() { var r = rows(); return r[G.row] ? r[G.row][G.col[G.row]] : null; }
 
+  // ---------- each app's colour, read from its icon, for the glass behind it ----------
+  // A few well known ones first (icons that are mostly white or black give no colour of their own).
+  var KNOWN = { "com.netflix.ninja": "229,9,20", "com.google.android.youtube.tv": "255,0,0", "com.disney.disneyplus": "17,60,207",
+    "com.amazon.amazonvideo.livingroom": "0,168,225", "com.hulu.livingroomplus": "28,231,131", "com.spotify.tv.android": "30,215,96",
+    "com.wbd.stream": "0,46,255", "com.apple.atve.androidtv.appletv": "140,140,150", "com.cbs.ott": "0,100,255", "com.plexapp.android": "229,160,13",
+    "com.peacocktv.peacockandroid": "255,200,0", "com.tubitv": "250,56,42", "com.espn.score_center": "210,0,0", "com.crunchyroll.crunchyroid": "244,117,33",
+    "com.google.android.youtube.tvmusic": "255,0,0", "com.google.android.videos": "0,120,255", "com.android.vending": "0,200,120" };
+  var tints = {};
+  try { tints = JSON.parse(localStorage.getItem("gu.tints") || "{}") || {}; } catch (e) {}
+  function tintOf(pkg) { return tints[pkg] || KNOWN[pkg] || null; }
+  // the icon's own colour: the average of its colourful pixels, read through a small canvas
+  function learnTint(pkg, img) {
+    if (!pkg || tints[pkg] || KNOWN[pkg]) return;
+    try {
+      var cv = document.createElement("canvas"), n = 24;
+      cv.width = n; cv.height = n;
+      var cx = cv.getContext("2d");
+      cx.drawImage(img, 0, 0, n, n);
+      var d = cx.getImageData(0, 0, n, n).data, r = 0, g = 0, b = 0, k = 0, ra = 0, ga = 0, ba = 0, ka = 0;
+      for (var i = 0; i < d.length; i += 4) {
+        if (d[i + 3] < 128) continue;
+        var mx = Math.max(d[i], d[i + 1], d[i + 2]), mn = Math.min(d[i], d[i + 1], d[i + 2]);
+        ra += d[i]; ga += d[i + 1]; ba += d[i + 2]; ka++;
+        if (mx - mn < 40 || mx < 60) continue;   // grey, white or near black: not a colour
+        r += d[i]; g += d[i + 1]; b += d[i + 2]; k++;
+      }
+      if (!k && !ka) return;
+      var t = k ? [r / k, g / k, b / k] : [ra / ka, ga / ka, ba / ka];
+      tints[pkg] = t.map(Math.round).join(",");
+      try { localStorage.setItem("gu.tints", JSON.stringify(tints)); } catch (e) {}
+      if (G.open && G.view === "home") render();
+    } catch (e) {
+      // a picture the canvas may not read: the glass stays plain
+    }
+  }
+  window.__guTint = function (img) { learnTint(img.getAttribute("data-pkg"), img); };
   function appFace(a) {
     var pic = ctx.iconUrl && ctx.iconUrl(a.package);
-    if (pic) return '<img src="' + esc(pic) + '" alt="" decoding="async" onerror="this.parentNode.className=\'gu-face word\';this.parentNode.textContent=this.getAttribute(\'data-name\')" data-name="' + esc(a.name) + '">';
+    if (pic) return '<img src="' + esc(pic) + '" alt="" crossorigin="anonymous" decoding="async" data-pkg="' + esc(a.package) + '" onload="window.__guTint(this)" onerror="this.parentNode.className=\'gu-face word\';this.parentNode.textContent=this.getAttribute(\'data-name\')" data-name="' + esc(a.name) + '">';
     return esc(a.name);
   }
   function render() {
@@ -111,7 +147,8 @@
     var ai = rows().length - 1;
     $("gu-apps-track").innerHTML = ctx.apps.map(function (a, i) {
       var on = kind === "apps" && i === G.col[ai];
-      return '<div class="gu-tile' + (on ? " focus" : "") + '"><div class="gu-face">' + appFace(a) + '</div><span class="gu-label">' + esc(a.name) + "</span></div>";
+      var tint = tintOf(a.package);
+      return '<div class="gu-tile' + (on ? " focus" : "") + '"' + (tint ? ' style="--tint:' + tint + '"' : "") + '><div class="gu-face">' + appFace(a) + '</div><span class="gu-label">' + esc(a.name) + "</span></div>";
     }).join("");
     scrollTracks();
     renderWeek();
