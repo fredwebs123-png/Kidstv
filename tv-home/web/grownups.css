@@ -1,75 +1,79 @@
 /* Kidstv: the grown-ups screen and Controls (grownups.js; design/mockups/Grownups.dc.html,
-   Controls.dc.html). Dark, calm, every app, this week's weather. 1rem is 16 px on a 1920 screen. */
+   Controls.dc.html). A sunset over hills, the show on the go big on the left, the clock and the
+   week's weather on the right, round app tiles along the bottom. 1rem is 16 px on a 1920 screen. */
 .grownups .home, .grownups .top, .grownups .klook, .grownups .scenes, .grownups .kcount { visibility: hidden; }
 .grownups .kstars { display: none !important; }
 
 .gu {
   display: none; position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 30; color: #f2f4f8; font-family: "Nunito", "Inter", sans-serif;
-  background: #0b0d12 radial-gradient(60rem 40rem at 62% 56%, rgba(255, 210, 166, 0.28), rgba(255, 210, 166, 0) 70%),
-    linear-gradient(180deg, #1b2140 0%, #4a3e6e 36%, #7a4e6c 54%, #2a2440 66%, #11131f 100%);
-  padding: 5.25rem 7rem 3rem;
+  background: #0b0d12 url(backgrounds/grownups-scene.svg) center / cover no-repeat;
 }
 .gu.on { display: block; }
-.gu::before { content: ""; position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: linear-gradient(90deg, rgba(5, 6, 10, 0.55), rgba(5, 6, 10, 0.1) 55%, rgba(5, 6, 10, 0)),
-  linear-gradient(180deg, rgba(5, 6, 10, 0.35), rgba(5, 6, 10, 0) 28%, rgba(5, 6, 10, 0) 50%, rgba(5, 6, 10, 0.7) 100%); }
-.gu > * { position: relative; }
+.gu > * { position: absolute; }
 
-/* the top: the greeting and the lock on the left, the buttons on the right */
-.gu-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 3rem; }
-.gu-head h1 { margin: 0; font-weight: 400; font-size: 4.5rem; line-height: 1; letter-spacing: -0.02em; text-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.45); }
-.gu-lock { display: inline-flex; align-items: center; margin-top: 1.125rem; height: 2.75rem; padding: 0 1.25rem; border-radius: 1.375rem; font-size: 1.25rem; font-weight: 700;
+/* left: the greeting, the lock, the show on the go */
+.gu-left { left: 7rem; top: 5.25rem; width: 62rem; display: flex; flex-direction: column; align-items: flex-start; gap: 1.125rem; }
+.gu-left h1 { margin: 0; font-weight: 400; font-size: 4.5rem; line-height: 1; letter-spacing: -0.02em; text-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.45); }
+.gu-lock { display: inline-flex; align-items: center; height: 2.75rem; padding: 0 1.25rem; border-radius: 1.375rem; font-size: 1.25rem; font-weight: 700;
   color: rgba(242, 244, 248, 0.78); background: rgba(255, 255, 255, 0.12); box-shadow: inset 0 0 0 0.09375rem rgba(255, 255, 255, 0.18); white-space: pre; }
-.gu-btns { display: flex; gap: 1rem; }
-.gu-btn { display: flex; flex-direction: column; justify-content: center; min-width: 11rem; height: 5rem; padding: 0 1.5rem; border-radius: 1.5rem; background: rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 0 0 0.09375rem rgba(255, 255, 255, 0.16); transition: transform 150ms, background 150ms; }
-.gu-btn b { font-size: 1.375rem; font-weight: 800; }
-.gu-btn small { font-size: 0.9375rem; font-weight: 600; color: rgba(242, 244, 248, 0.6); white-space: nowrap; }
-.gu-btn.focus { background: #fff; color: #11131f; transform: scale(1.06); box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.45); }
-.gu-btn.focus small { color: rgba(17, 19, 31, 0.6); }
-
-/* the show under focus, big */
-.gu-hero { margin-top: 2.5rem; min-height: 11rem; display: none; flex-direction: column; gap: 1rem; }
-.gu-hero.on { display: flex; }
-.gu-title { font-family: "Antonio", "Fredoka", sans-serif; font-weight: 600; font-size: 7.5rem; line-height: 0.95; letter-spacing: 0.01em; color: #f5efe6; text-shadow: 0 0.625rem 2.5rem rgba(0, 0, 0, 0.5);
-  max-width: 70rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.gu-title.gu-none { font-size: 4rem; color: rgba(245, 239, 230, 0.7); }
-.gu-sub { display: flex; align-items: center; gap: 1rem; font-size: 1.625rem; font-weight: 700; color: rgba(242, 244, 248, 0.85); }
-.gu-app { height: 2.5rem; padding: 0 0.875rem; border-radius: 0.625rem; background: #000; display: inline-flex; align-items: center; font-size: 1.25rem; font-weight: 800; box-shadow: inset 0 0 0 0.0625rem rgba(255, 255, 255, 0.2); }
+.gu-hero { margin-top: 7.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+.gu-title { font-family: "Antonio", "Fredoka", sans-serif; font-weight: 600; font-size: 9.5rem; line-height: 0.9; letter-spacing: 0.01em; color: #f5efe6; text-shadow: 0 0.625rem 2.5rem rgba(0, 0, 0, 0.5);
+  max-width: 62rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gu-title.gu-none { font-size: 4.5rem; color: rgba(245, 239, 230, 0.75); }
+.gu-sub { display: flex; align-items: center; gap: 1rem; font-size: 1.625rem; font-weight: 700; color: rgba(242, 244, 248, 0.85); text-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.5); }
+.gu-app { height: 2.5rem; padding: 0 0.875rem; border-radius: 0.625rem; background: #000; display: inline-flex; align-items: center; font-size: 1.25rem; font-weight: 800; box-shadow: inset 0 0 0 0.0625rem rgba(255, 255, 255, 0.2); text-shadow: none; }
 .gu-bar { width: 26rem; height: 0.3125rem; border-radius: 0.1875rem; background: rgba(255, 255, 255, 0.22); }
 .gu-bar i { display: block; height: 100%; border-radius: 0.1875rem; background: #fff; }
 
-/* the rows: Keep watching cards and app tiles, sliding sideways */
-.gu-row { margin-top: 2rem; }
+/* right: round buttons, the clock, today and the week */
+.gu-right { right: 7rem; top: 5.25rem; display: flex; flex-direction: column; align-items: flex-end; gap: 0.875rem; text-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.5); }
+.gu-btnrow { display: flex; align-items: center; gap: 1.375rem; }
+.gu-btns { display: flex; gap: 1.375rem; }
+.gu-btn { position: relative; width: 4.875rem; height: 4.875rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff;
+  background: rgba(255, 255, 255, 0.14); box-shadow: inset 0 0 0 0.0625rem rgba(255, 255, 255, 0.18); transition: transform 150ms, background 150ms; }
+.gu-btn svg { width: 2.125rem; height: 2.125rem; }
+.gu-dots { display: flex; }
+.gu-dots i { width: 1.375rem; height: 1.375rem; border-radius: 50%; box-shadow: 0 0 0 0.125rem #fff; }
+.gu-dots i + i { margin-left: -0.375rem; }
+.gu-btn small { position: absolute; top: calc(100% + 0.5rem); left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 1.0625rem; font-weight: 700; opacity: 0; transition: opacity 150ms; }
+.gu-btn.focus { background: #fff; color: #11131f; transform: scale(1.1); box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.35), 0 0.75rem 2rem rgba(0, 0, 0, 0.45); }
+.gu-btn.focus small { opacity: 1; color: #fff; }
+.gu-time { font-weight: 400; font-size: 8rem; line-height: 0.9; letter-spacing: -0.03em; margin-left: 1rem; }
+.gu-time small { font-size: 2.25rem; letter-spacing: 0; margin-left: 0.5rem; }
+.gu-date, .gu-now { font-size: 1.75rem; font-weight: 600; color: rgba(242, 244, 248, 0.9); white-space: pre; display: flex; align-items: center; gap: 0.5rem; }
+.gu-now:empty { display: none; }
+.gu-wi svg { width: 1.875rem; height: 1.875rem; fill: none; stroke: #ffd36b; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; }
+.gu-week { display: grid; grid-template-columns: repeat(7, 4.75rem); gap: 0.5rem; margin-top: 0.625rem; text-align: center; font-size: 1.1875rem; font-weight: 600; }
+.gu-week:empty { display: none; }
+.gu-day { display: flex; flex-direction: column; align-items: center; gap: 0.375rem; }
+.gu-day b { font-weight: 600; color: rgba(242, 244, 248, 0.7); }
+.gu-day .gu-wi svg { width: 1.75rem; height: 1.75rem; }
+.gu-day i { font-style: normal; color: rgba(242, 244, 248, 0.55); }
+
+/* the rows: Keep watching cards above the round app tiles, sliding sideways */
+.gu-row { left: 7rem; right: 7rem; }
+.gu-row > div { overflow: hidden; margin: -1.25rem; padding: 1.25rem; }
 .gu-row.off { display: none; }
-.gu-row h2 { margin: 0 0 0.875rem; font-size: 1.375rem; font-weight: 800; color: rgba(242, 244, 248, 0.7); letter-spacing: 0.02em; }
-.gu-row > div { overflow: hidden; margin: -1rem; padding: 1rem; }
+.gu-row h2 { margin: 0 0 0.75rem; font-size: 1.25rem; font-weight: 800; color: rgba(242, 244, 248, 0.7); letter-spacing: 0.02em; text-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.5); }
+.gu-shows { bottom: 19.5rem; }
+.gu-apps { bottom: 6.25rem; }
+.gu-apps > div { padding-bottom: 3.25rem; margin-bottom: -3.25rem; }
 .gu-track { display: flex; column-gap: 1.25rem; transition: transform 220ms ease; will-change: transform; }
-.gu-card { position: relative; flex: none; width: 19rem; height: 10.75rem; border-radius: 1.125rem; overflow: hidden; background: #1c1e2c; box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.35); transition: transform 150ms; }
+.gu-card { position: relative; flex: none; width: 15rem; height: 8.5rem; border-radius: 1rem; overflow: hidden; background: #1c1e2c; box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.35); transition: transform 150ms; }
 .gu-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.gu-noart { display: flex; align-items: center; justify-content: center; height: 100%; padding: 1rem; font-weight: 800; font-size: 1.375rem; text-align: center; }
-.gu-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.5rem 1rem 0.875rem; background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)); display: flex; flex-direction: column; }
-.gu-cap b { font-size: 1.25rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.gu-cap span { font-size: 0.9375rem; font-weight: 700; color: rgba(242, 244, 248, 0.7); }
+.gu-noart { display: flex; align-items: center; justify-content: center; height: 100%; padding: 1rem; font-weight: 800; font-size: 1.25rem; text-align: center; }
 .gu-prog { position: absolute; left: 0; right: 0; bottom: 0; height: 0.25rem; background: rgba(255, 255, 255, 0.25); }
 .gu-prog i { display: block; height: 100%; background: #fff; }
-.gu-card.focus { transform: scale(1.06); box-shadow: 0 0 0 0.25rem #fff, 0 1rem 2.5rem rgba(0, 0, 0, 0.5); }
-.gu-tile { flex: none; width: 11.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.625rem; transition: transform 150ms; }
-.gu-face { width: 11.5rem; height: 6.5rem; border-radius: 1rem; overflow: hidden; background: #1c1e2c; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.125rem; text-align: center; padding: 0 0.5rem; box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.35); }
+.gu-card.focus { transform: scale(1.08); box-shadow: 0 0 0 0.25rem #fff, 0 1rem 2.5rem rgba(0, 0, 0, 0.5); }
+.gu-apps .gu-track { column-gap: 2rem; align-items: center; height: 11rem; }
+.gu-tile { position: relative; flex: none; width: 9.25rem; height: 9.25rem; transition: transform 150ms; }
+.gu-face { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background: rgba(255, 255, 255, 0.86); display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 1.125rem; text-align: center; padding: 0 0.75rem; color: #11131f; box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.4); }
 .gu-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.gu-label { font-size: 1.0625rem; font-weight: 700; color: rgba(242, 244, 248, 0.75); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 11.5rem; }
-.gu-tile.focus { transform: scale(1.08) translateY(-0.25rem); }
-.gu-tile.focus .gu-face { box-shadow: 0 0 0 0.25rem #fff, 0 1rem 2.5rem rgba(0, 0, 0, 0.5); }
-.gu-tile.focus .gu-label { color: #fff; }
-
-/* this week */
-.gu-week { position: absolute; left: 7rem; right: 7rem; bottom: 2.5rem; display: flex; gap: 0.75rem; }
-.gu-week:empty { display: none; }
-.gu-day { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; height: 4rem; padding: 0 1.125rem; border-radius: 1rem; background: rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 0 0 0.0625rem rgba(255, 255, 255, 0.12); font-size: 1.125rem; font-weight: 700; }
-.gu-day.today { background: rgba(255, 255, 255, 0.16); }
-.gu-day b { font-weight: 800; }
-.gu-day .gu-wi svg { width: 1.75rem; height: 1.75rem; fill: none; stroke: #ffe08a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; }
-.gu-day i { font-style: normal; color: rgba(242, 244, 248, 0.55); }
+.gu-label { position: absolute; top: calc(100% + 0.625rem); left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 1.125rem; font-weight: 700; opacity: 0; transition: opacity 150ms; text-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.6); }
+.gu-tile.focus { transform: scale(1.17); }
+.gu-tile.focus .gu-face { box-shadow: 0 0 0 0.375rem #fff, 0 1.375rem 3.375rem rgba(0, 0, 0, 0.55); }
+.gu-tile.focus .gu-label { opacity: 1; }
 
 /* ---------- Controls ---------- */
 .gu-ctl { display: none; position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 35; color: #f2f4f8; font-family: "Nunito", "Inter", sans-serif;

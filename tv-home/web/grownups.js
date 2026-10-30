@@ -10,18 +10,24 @@
   "use strict";
   var K = window.KIDS;
   var ctx = null;   // what app.js hands over on open: apps, shows, weather, what to run
-  var G = { open: false, view: "home", row: 0, col: [0, 0, 0], ci: 0, timer: null, week: null, weekAt: 0, weekFor: "" };
+  var G = { open: false, view: "home", row: 0, col: [0, 0, 0], timer: null, week: null, now: null, weekAt: 0, weekFor: "" };
   var ui = null;
 
   function $(id) { return document.getElementById(id); }
   function esc(v) { return String(v == null ? "" : v).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
-  // ---------- the top buttons ----------
+  // ---------- the round buttons, top right ----------
+  var I = {
+    girls: '<span class="gu-dots"><i style="background:#8e5cff"></i><i style="background:#ff5fa8"></i><i style="background:#2fc4b2"></i></span>',
+    controls: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>',
+    home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/></svg>',
+    tv: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4"/></svg>'
+  };
   var BTNS = [
-    { id: "controls", label: "Controls", sub: "Bedtime, stars, little mode, PIN" },
-    { id: "home", label: "Home settings", sub: "Look, weather, apps, people" },
-    { id: "tv", label: "TV settings", sub: "Android's own settings" },
-    { id: "lock", label: "Lock now", sub: "Back to the girls' home" }
+    { id: "lock", label: "Back to the girls", icon: I.girls },
+    { id: "controls", label: "Controls", icon: I.controls },
+    { id: "home", label: "Home settings", icon: I.home },
+    { id: "tv", label: "TV settings", icon: I.tv }
   ];
 
   function build() {
@@ -30,12 +36,11 @@
     ui.className = "gu-layer";
     ui.innerHTML =
       '<div class="gu" id="gu" role="dialog" aria-modal="true" aria-label="Grown-ups">' +
-      '<header class="gu-top"><div class="gu-head"><h1 id="gu-hello">Good evening</h1><span class="gu-lock" id="gu-lock"></span></div>' +
-      '<div class="gu-btns" id="gu-btns"></div></header>' +
-      '<section class="gu-hero" id="gu-hero"></section>' +
-      '<section class="gu-row gu-shows" id="gu-shows"><h2>Keep watching</h2><div class="gu-track" id="gu-shows-track"></div></section>' +
-      '<section class="gu-row gu-apps" id="gu-apps"><h2>Apps</h2><div class="gu-track" id="gu-apps-track"></div></section>' +
-      '<footer class="gu-week" id="gu-week"></footer></div>' +
+      '<div class="gu-left"><h1 id="gu-hello">Good evening</h1><span class="gu-lock" id="gu-lock"></span><section class="gu-hero" id="gu-hero"></section></div>' +
+      '<div class="gu-right"><div class="gu-btnrow"><div class="gu-btns" id="gu-btns"></div><span class="gu-time" id="gu-time"></span></div>' +
+      '<span class="gu-date" id="gu-date"></span><span class="gu-now" id="gu-now"></span><div class="gu-week" id="gu-week"></div></div>' +
+      '<section class="gu-row gu-shows" id="gu-shows"><h2>Keep watching</h2><div><div class="gu-track" id="gu-shows-track"></div></div></section>' +
+      '<section class="gu-row gu-apps" id="gu-apps"><div><div class="gu-track" id="gu-apps-track"></div></div></section></div>' +
       '<div class="gu-ctl" id="gu-ctl" role="dialog" aria-modal="true" aria-label="Controls">' +
       '<div class="gu-ctl-side"><h1>Controls</h1><p>Left and right change a time or a star. OK switches. Back returns.</p></div>' +
       '<div class="gu-ctl-rows" id="gu-ctl-rows"></div></div>';
@@ -51,7 +56,13 @@
     var until = K.unlockedUntil ? K.unlockedUntil() : 0;
     if (!until) return "Grown-ups";
     var s = Math.max(0, Math.round((until - Date.now()) / 1000));
-    return "Grown-ups  ·  locks again in " + Math.floor(s / 60) + ":" + (s % 60 < 10 ? "0" : "") + (s % 60);
+    return "Grown-ups  \u00b7  locks again in " + Math.floor(s / 60) + ":" + (s % 60 < 10 ? "0" : "") + (s % 60);
+  }
+  function drawClock() {
+    var d = new Date(), h = d.getHours(), m = d.getMinutes();
+    var hm = ctx.clock24 ? (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m : (h % 12 || 12) + ":" + (m < 10 ? "0" : "") + m;
+    $("gu-time").innerHTML = esc(hm) + (ctx.clock24 ? "" : "<small>" + (h < 12 ? "am" : "pm") + "</small>");
+    $("gu-date").textContent = d.toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" });
   }
   function rows() {   // the rows that can take focus, top to bottom
     var r = [BTNS];
@@ -63,7 +74,7 @@
   function current() { var r = rows(); return r[G.row] ? r[G.row][G.col[G.row]] : null; }
 
   function appFace(a) {
-    var pic = a.banner || (ctx.iconUrl && ctx.iconUrl(a.package));
+    var pic = ctx.iconUrl && ctx.iconUrl(a.package);
     if (pic) return '<img src="' + esc(pic) + '" alt="" decoding="async" onerror="this.parentNode.className=\'gu-face word\';this.parentNode.textContent=this.getAttribute(\'data-name\')" data-name="' + esc(a.name) + '">';
     return esc(a.name);
   }
@@ -71,52 +82,53 @@
     build();
     $("gu-hello").textContent = hello();
     $("gu-lock").textContent = lockText();
+    drawClock();
     var kind = rowKind(G.row);
     $("gu-btns").innerHTML = BTNS.map(function (b, i) {
-      return '<div class="gu-btn' + (kind === "btns" && i === G.col[0] ? " focus" : "") + '"><b>' + esc(b.label) + "</b><small>" + esc(b.sub) + "</small></div>";
+      var on = kind === "btns" && i === G.col[0];
+      return '<div class="gu-btn' + (on ? " focus" : "") + '">' + b.icon + "<small>" + esc(b.label) + "</small></div>";
     }).join("");
-    // the show under focus, big, as the mockup has it
+    // the show under focus, big, as the mockup has it; on the app row, the app's name
     var it = kind === "shows" ? current() : ctx.shows[0];
     var hero = $("gu-hero");
-    if (it) {
+    if (kind === "apps" && current()) {
+      hero.innerHTML = '<span class="gu-title">' + esc(current().name) + '</span><div class="gu-sub"><span>Press OK to open</span></div>';
+    } else if (it) {
       var ep = it.season && it.episode ? "S" + it.season + " E" + it.episode : (it.episode_title || "");
-      hero.innerHTML = '<span class="gu-title">' + esc(it.title) + "</span><div class=\"gu-sub\"><span>" + (ep ? "Continue " + esc(ep) : "Continue") +
-        (it.app ? " on</span><span class=\"gu-app\">" + esc(it.app.name) : "") + "</span></div>" +
+      hero.innerHTML = '<span class="gu-title">' + esc(it.title) + '</span><div class="gu-sub"><span>' + (ep ? "Continue " + esc(ep) : "Continue") +
+        (it.app ? ' on</span><span class="gu-app">' + esc(it.app.name) : "") + "</span></div>" +
         (it.progress ? '<div class="gu-bar"><i style="width:' + Math.round(it.progress * 100) + '%"></i></div>' : "");
-      hero.classList.add("on");
     } else {
       hero.innerHTML = '<span class="gu-title gu-none">Nothing on the go</span><div class="gu-sub"><span>Keep watching fills from what the apps say you are part way through.</span></div>';
-      hero.classList.add("on");
     }
     $("gu-shows").classList.toggle("off", !ctx.shows.length);
     $("gu-shows-track").innerHTML = ctx.shows.map(function (s, i) {
       var art = s.backdrop || s.poster;
       return '<div class="gu-card' + (kind === "shows" && i === G.col[rows().indexOf(ctx.shows)] ? " focus" : "") + '">' +
         (art ? '<img src="' + esc(art) + '" alt="" decoding="async">' : '<span class="gu-noart">' + esc(s.title) + "</span>") +
-        '<div class="gu-cap"><b>' + esc(s.title) + "</b><span>" + esc(s.app ? s.app.name : "") + "</span></div>" +
         (s.progress ? '<span class="gu-prog"><i style="width:' + Math.round(s.progress * 100) + '%"></i></span>' : "") + "</div>";
     }).join("");
     var ai = rows().length - 1;
     $("gu-apps-track").innerHTML = ctx.apps.map(function (a, i) {
-      return '<div class="gu-tile' + (kind === "apps" && i === G.col[ai] ? " focus" : "") + '"><div class="gu-face">' + appFace(a) + '</div><span class="gu-label">' + esc(a.name) + "</span></div>";
+      var on = kind === "apps" && i === G.col[ai];
+      return '<div class="gu-tile' + (on ? " focus" : "") + '"><div class="gu-face">' + appFace(a) + '</div><span class="gu-label">' + esc(a.name) + "</span></div>";
     }).join("");
     scrollTracks();
     renderWeek();
   }
-  // keep the focused card in view: slide the track left as the focus moves right
+  // keep the focused card in view: centre it, never past either end of the row
   function scrollTracks() {
     [["gu-shows-track", ctx.shows], ["gu-apps-track", ctx.apps]].forEach(function (pair) {
       var track = $(pair[0]), i = G.col[rows().indexOf(pair[1])] || 0;
-      var el = track.children[i];
+      var el = track.children[i], box = track.parentNode;
       if (!el) { track.style.transform = ""; return; }
-      var step = el.offsetWidth + parseFloat(getComputedStyle(track).columnGap || 0);
-      var fit = Math.max(1, Math.floor(track.parentNode.offsetWidth / step));
-      var first = Math.max(0, Math.min(i - Math.floor(fit / 2), pair[1].length - fit));
-      track.style.transform = "translateX(" + (-first * step) + "px)";
+      var most = Math.max(0, track.scrollWidth - box.clientWidth);
+      var want = el.offsetLeft + el.offsetWidth / 2 - box.clientWidth / 2;
+      track.style.transform = "translateX(" + (-Math.max(0, Math.min(most, want))) + "px)";
     });
   }
 
-  // ---------- this week's weather ----------
+  // ---------- the weather: now, and this week ----------
   var DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   function fetchWeek() {
     var w = ctx.wx;
@@ -124,22 +136,25 @@
     var key = w.lat + "," + w.lon;
     if (G.week && G.weekFor === key && Date.now() - G.weekAt < 30 * 60000) return;
     var url = "https://api.open-meteo.com/v1/forecast?latitude=" + w.lat + "&longitude=" + w.lon +
-      "&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=" + encodeURIComponent(w.timezone || "auto") + "&forecast_days=7";
+      "&current=temperature_2m,weather_code,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=" + encodeURIComponent(w.timezone || "auto") + "&forecast_days=7";
     fetch(url).then(function (r) { return r.json(); }).then(function (j) {
-      var d = j.daily;
+      var d = j.daily, c = j.current || {};
       G.week = d.time.map(function (t, i) { return { date: t, code: Math.round(d.weather_code[i]), max: Math.round(d.temperature_2m_max[i]), min: Math.round(d.temperature_2m_min[i]) }; });
+      G.now = c.temperature_2m != null ? { temp: Math.round(c.temperature_2m), code: Math.round(c.weather_code), is_day: !!c.is_day } : null;
       G.weekAt = Date.now(); G.weekFor = key;
       if (G.open) renderWeek();
     }).catch(function () {});
   }
   function renderWeek() {
-    var el = $("gu-week");
-    if (!G.week) { el.innerHTML = ""; return; }
+    var el = $("gu-week"), now = $("gu-now");
+    if (!G.week) { el.innerHTML = ""; now.innerHTML = ""; return; }
+    now.innerHTML = G.now ? '<span class="gu-wi">' + (ctx.wxIcon ? ctx.wxIcon(G.now) : "") + "</span>" + esc(ctx.temp(G.now.temp)) +
+      (ctx.wxText ? "  \u00b7  " + esc(ctx.wxText(G.now)) : "") + (ctx.wx.place ? "  \u00b7  " + esc(ctx.wx.place) : "") : "";
     el.innerHTML = G.week.map(function (d, i) {
       var day = new Date(d.date + "T12:00:00");
-      return '<div class="gu-day' + (i === 0 ? " today" : "") + '"><b>' + (i === 0 ? "Today" : DAYS[day.getDay()]) + "</b>" +
+      return '<div class="gu-day"><b>' + (i === 0 ? "Today" : DAYS[day.getDay()]) + "</b>" +
         '<span class="gu-wi">' + (ctx.wxIcon ? ctx.wxIcon({ code: d.code, is_day: true }) : "") + "</span>" +
-        "<span>" + esc(ctx.temp(d.max)) + " <i>" + esc(ctx.temp(d.min)) + "</i></span></div>";
+        "<span>" + esc(ctx.temp(d.max)) + "</span><i>" + esc(ctx.temp(d.min)) + "</i></div>";
     }).join("");
   }
 
@@ -217,7 +232,7 @@
     if (!G.open) return;
     var until = K.unlockedUntil ? K.unlockedUntil() : 0;
     if (until && Date.now() >= until) { lockNow(); return; }
-    if (G.view === "home") $("gu-lock").textContent = lockText();
+    if (G.view === "home") { $("gu-lock").textContent = lockText(); if (new Date().getSeconds() === 0) drawClock(); }
   }
   function open(c) {
     ctx = c;

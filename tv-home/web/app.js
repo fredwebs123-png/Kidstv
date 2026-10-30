@@ -1389,7 +1389,7 @@
       apps: lists.apps, shows: lists.shows, iconUrl: iconUrl,
       launch: function (a) { opened(a.package); if (TV && TV.launch(a.package)) return; api("POST", "/api/launch", { app: a.id || a.package }).catch(function (e) { status(e.message); }); },
       openShow: openShow,
-      wx: WXCFG, temp: tempText, wxIcon: wxIcon,
+      wx: WXCFG, temp: tempText, wxIcon: wxIcon, wxText: wxText, clock24: CLOCK24,
       homeSettings: openSettings, tvSettings: openTvSettings,
       changePin: function () { window.KIDS.changePin(); },
       // back to her home: her stars may have changed (and five of them bring confetti)

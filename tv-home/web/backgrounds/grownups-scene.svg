@@ -1,0 +1,33 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="hsky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#1b2140"></stop>
+        <stop offset="0.35" stop-color="#4a3e6e"></stop>
+        <stop offset="0.55" stop-color="#c0778a"></stop>
+        <stop offset="0.66" stop-color="#f0a986"></stop>
+      </linearGradient>
+      <radialGradient id="hglow" cx="1180" cy="600" r="620" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffd2a6" stop-opacity="0.8"></stop><stop offset="1" stop-color="#ffd2a6" stop-opacity="0"></stop></radialGradient>
+      <linearGradient id="hwater" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d58f8e"></stop><stop offset="0.4" stop-color="#4a3e6e"></stop><stop offset="1" stop-color="#11131f"></stop></linearGradient>
+      <linearGradient id="hleft" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#05060a" stop-opacity="0.85"></stop><stop offset="0.5" stop-color="#05060a" stop-opacity="0.2"></stop><stop offset="1" stop-color="#05060a" stop-opacity="0"></stop></linearGradient>
+      <linearGradient id="hbottom" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05060a" stop-opacity="0"></stop><stop offset="1" stop-color="#05060a" stop-opacity="0.8"></stop></linearGradient>
+      <linearGradient id="htop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05060a" stop-opacity="0.55"></stop><stop offset="1" stop-color="#05060a" stop-opacity="0"></stop></linearGradient>
+      <filter id="hblur"><feGaussianBlur stdDeviation="3"></feGaussianBlur></filter>
+      <filter id="hgrain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter>
+    </defs>
+    <rect width="1920" height="1080" fill="url(#hsky)"></rect>
+    <rect width="1920" height="1080" fill="url(#hglow)"></rect>
+    <g fill="#2a2440" opacity="0.55">
+      <ellipse cx="1500" cy="300" rx="320" ry="30"></ellipse><ellipse cx="900" cy="360" rx="260" ry="22"></ellipse>
+    </g>
+    <path d="M0 650 L 180 560 L 300 600 L 470 470 L 620 590 L 760 540 L 900 620 L 1000 600 L 1080 520 L 1180 360 L 1290 520 L 1380 580 L 1520 500 L 1680 590 L 1800 560 L 1920 600 L 1920 700 L 0 700 Z" fill="#2a2742"></path>
+    <path d="M1180 360 L 1215 420 L 1195 440 L 1240 470 L 1290 520 L 1180 470 L 1120 500 L 1150 430 Z" fill="#4a4566" opacity="0.7"></path>
+    <path d="M0 680 L 60 620 L 90 650 L 140 590 L 190 660 L 240 610 L 300 680 L 360 620 L 420 690 L 1500 690 L 1560 630 L 1610 670 L 1660 600 L 1720 670 L 1780 620 L 1840 680 L 1920 640 L 1920 710 L 0 710 Z" fill="#141626"></path>
+    <rect y="700" width="1920" height="380" fill="url(#hwater)"></rect>
+    <g opacity="0.45" filter="url(#hblur)" transform="translate(0 1400) scale(1 -1)">
+      <path d="M0 650 L 180 560 L 300 600 L 470 470 L 620 590 L 760 540 L 900 620 L 1000 600 L 1080 520 L 1180 360 L 1290 520 L 1380 580 L 1520 500 L 1680 590 L 1800 560 L 1920 600 L 1920 700 L 0 700 Z" fill="#2a2742"></path>
+    </g>
+    <rect width="1920" height="1080" fill="url(#hleft)"></rect>
+    <rect y="560" width="1920" height="520" fill="url(#hbottom)"></rect>
+    <rect width="1920" height="300" fill="url(#htop)"></rect>
+    <rect width="1920" height="1080" filter="url(#hgrain)" opacity="0.06"></rect>
+  </svg>
