@@ -103,7 +103,7 @@
       var t = k ? [r / k, g / k, b / k] : [ra / ka, ga / ka, ba / ka];
       tints[pkg] = t.map(Math.round).join(",");
       try { localStorage.setItem("gu.tints", JSON.stringify(tints)); } catch (e) {}
-      if (G.open && G.view === "home") render();
+      if (G.open && G.view === "home") { var tile = img.parentNode && img.parentNode.parentNode; if (tile) tile.style.setProperty("--tint", tints[pkg]); }
     } catch (e) {
       // a picture the canvas may not read: the glass stays plain
     }
@@ -119,12 +119,46 @@
     $("gu-hello").textContent = hello();
     $("gu-lock").textContent = lockText();
     drawClock();
-    var kind = rowKind(G.row);
     $("gu-btns").innerHTML = BTNS.map(function (b, i) {
-      var on = kind === "btns" && i === G.col[0];
-      return '<div class="gu-btn' + (on ? " focus" : "") + '">' + b.icon + "<small>" + esc(b.label) + "</small></div>";
+      return '<div class="gu-btn">' + b.icon + "<small>" + esc(b.label) + "</small></div>";
     }).join("");
-    // the show under focus, big, as the mockup has it; on the app row, the app's name
+    $("gu-shows").classList.toggle("off", !ctx.shows.length);
+    $("gu-shows-track").innerHTML = ctx.shows.map(function (s, i) {
+      var art = s.backdrop || s.poster;
+      return '<div class="gu-card">' +
+        (art ? '<img src="' + esc(art) + '" alt="" decoding="async">' : '<span class="gu-noart">' + esc(s.title) + "</span>") +
+        (s.progress ? '<span class="gu-prog"><i style="width:' + Math.round(s.progress * 100) + '%"></i></span>' : "") + "</div>";
+    }).join("");
+    $("gu-apps-track").innerHTML = ctx.apps.map(function (a, i) {
+      var tint = tintOf(a.package);
+      return '<div class="gu-tile"' + (tint ? ' style="--tint:' + tint + '"' : "") + '><div class="gu-face">' + appFace(a) + '</div><span class="gu-label">' + esc(a.name) + "</span></div>";
+    }).join("");
+    paintHome();
+    renderWeek();
+  }
+  // the carousel: the one in focus grows, its neighbours a little, the rest stay small
+  function near(i, at) { var d = Math.abs(i - at); return d === 0 ? " focus" : d === 1 ? " near" : ""; }
+  function markRow(track, at) {
+    var kids = track.children;
+    for (var i = 0; i < kids.length; i++) {
+      var d = at == null ? 9 : Math.abs(i - at);
+      kids[i].classList.toggle("focus", d === 0);
+      kids[i].classList.toggle("near", d === 1);
+      kids[i].classList.toggle("left", at != null && i < at);
+      kids[i].classList.toggle("right", at != null && i > at);
+    }
+  }
+  // a move: only the focus marks, the big title and the slide change; nothing is rebuilt
+  function paintHome() {
+    var kind = rowKind(G.row);
+    var b = $("gu-btns").children;
+    for (var i = 0; i < b.length; i++) b[i].classList.toggle("focus", kind === "btns" && i === G.col[0]);
+    markRow($("gu-shows-track"), kind === "shows" ? G.col[rows().indexOf(ctx.shows)] || 0 : null);
+    markRow($("gu-apps-track"), kind === "apps" ? G.col[rows().length - 1] || 0 : null);
+    drawHero(kind);
+    scrollTracks();
+  }
+  function drawHero(kind) {
     var it = kind === "shows" ? current() : ctx.shows[0];
     var hero = $("gu-hero");
     if (kind === "apps" && current()) {
@@ -137,24 +171,7 @@
     } else {
       hero.innerHTML = '<span class="gu-title gu-none">Nothing on the go</span><div class="gu-sub"><span>Keep watching fills from what the apps say you are part way through.</span></div>';
     }
-    $("gu-shows").classList.toggle("off", !ctx.shows.length);
-    var si = G.col[rows().indexOf(ctx.shows)] || 0;
-    $("gu-shows-track").innerHTML = ctx.shows.map(function (s, i) {
-      var art = s.backdrop || s.poster;
-      return '<div class="gu-card' + (kind === "shows" ? near(i, si) : "") + '">' +
-        (art ? '<img src="' + esc(art) + '" alt="" decoding="async">' : '<span class="gu-noart">' + esc(s.title) + "</span>") +
-        (s.progress ? '<span class="gu-prog"><i style="width:' + Math.round(s.progress * 100) + '%"></i></span>' : "") + "</div>";
-    }).join("");
-    var ai = rows().length - 1;
-    $("gu-apps-track").innerHTML = ctx.apps.map(function (a, i) {
-      var tint = tintOf(a.package);
-      return '<div class="gu-tile' + (kind === "apps" ? near(i, G.col[ai] || 0) : "") + '"' + (tint ? ' style="--tint:' + tint + '"' : "") + '><div class="gu-face">' + appFace(a) + '</div><span class="gu-label">' + esc(a.name) + "</span></div>";
-    }).join("");
-    scrollTracks();
-    renderWeek();
   }
-  // the carousel: the one in focus grows, its neighbours a little, the rest stay small
-  function near(i, at) { var d = Math.abs(i - at); return d === 0 ? " focus" : d === 1 ? " near" : ""; }
   // keep the focused card in view: centre it, never past either end of the row
   function scrollTracks() {
     [["gu-shows-track", ctx.shows], ["gu-apps-track", ctx.apps]].forEach(function (pair) {
@@ -320,7 +337,7 @@
     var r = rows();
     if (dy) G.row = Math.max(0, Math.min(r.length - 1, G.row + dy));
     if (dx) G.col[G.row] = Math.max(0, Math.min(r[G.row].length - 1, (G.col[G.row] || 0) + dx));
-    render();
+    paintHome();
   }
   function ok() {
     if (!G.open) return;

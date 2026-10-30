@@ -23,11 +23,11 @@
     <path d="M1180 360 L 1215 420 L 1195 440 L 1240 470 L 1290 520 L 1180 470 L 1120 500 L 1150 430 Z" fill="#4a4566" opacity="0.7"></path>
     <path d="M0 680 L 60 620 L 90 650 L 140 590 L 190 660 L 240 610 L 300 680 L 360 620 L 420 690 L 1500 690 L 1560 630 L 1610 670 L 1660 600 L 1720 670 L 1780 620 L 1840 680 L 1920 640 L 1920 710 L 0 710 Z" fill="#141626"></path>
     <rect y="700" width="1920" height="380" fill="url(#hwater)"></rect>
-    <g opacity="0.45" filter="url(#hblur)" transform="translate(0 1400) scale(1 -1)">
+    <g opacity="0.45" transform="translate(0 1400) scale(1 -1)">
       <path d="M0 650 L 180 560 L 300 600 L 470 470 L 620 590 L 760 540 L 900 620 L 1000 600 L 1080 520 L 1180 360 L 1290 520 L 1380 580 L 1520 500 L 1680 590 L 1800 560 L 1920 600 L 1920 700 L 0 700 Z" fill="#2a2742"></path>
     </g>
     <rect width="1920" height="1080" fill="url(#hleft)"></rect>
     <rect y="560" width="1920" height="520" fill="url(#hbottom)"></rect>
     <rect width="1920" height="300" fill="url(#htop)"></rect>
-    <rect width="1920" height="1080" filter="url(#hgrain)" opacity="0.06"></rect>
+    
   </svg>
