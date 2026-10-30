@@ -52,23 +52,25 @@
 
 /* the rows: Keep watching cards above the round app tiles, sliding sideways */
 .gu-row { left: 7rem; right: 7rem; }
-.gu-row > div { overflow: hidden; margin: -1.25rem; padding: 1.25rem; }
+.gu-row > div { overflow: hidden; margin: -2rem; padding: 2rem; }
 .gu-row.off { display: none; }
 .gu-row h2 { margin: 0 0 0.75rem; font-size: 1.25rem; font-weight: 800; color: rgba(242, 244, 248, 0.7); letter-spacing: 0.02em; text-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.5); }
-.gu-shows { bottom: 19.5rem; }
-.gu-apps { bottom: 6.75rem; }
+.gu-shows { bottom: 18.5rem; }
+.gu-apps { bottom: 6rem; }
 .gu-apps > div { padding-bottom: 3.25rem; margin-bottom: -3.25rem; }
-.gu-track { display: flex; column-gap: 1.25rem; transition: transform 220ms ease; will-change: transform; }
-.gu-card { position: relative; flex: none; width: 15rem; height: 8.5rem; border-radius: 1rem; overflow: hidden; background: #1c1e2c; box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.35); transition: transform 150ms; }
+.gu-track { display: flex; column-gap: 1.25rem; transition: transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1); will-change: transform; }
+.gu-card { position: relative; flex: none; width: 13rem; height: 7.375rem; border-radius: 1rem; overflow: hidden; background: #1c1e2c; box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.35); transition: transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 320ms, margin 320ms cubic-bezier(0.2, 0.7, 0.2, 1); transform-origin: center; }
+.gu-card.near { transform: scale(1.08); }
 .gu-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .gu-noart { display: flex; align-items: center; justify-content: center; height: 100%; padding: 1rem; font-weight: 800; font-size: 1.25rem; text-align: center; }
 .gu-prog { position: absolute; left: 0; right: 0; bottom: 0; height: 0.25rem; background: rgba(255, 255, 255, 0.25); }
 .gu-prog i { display: block; height: 100%; background: #fff; }
-.gu-card.focus { transform: scale(1.08); box-shadow: 0 0 0 0.25rem #fff, 0 1rem 2.5rem rgba(0, 0, 0, 0.5); }
-.gu-apps .gu-track { column-gap: 1.75rem; align-items: center; height: 11.5rem; }
+.gu-card.focus { transform: scale(1.3); z-index: 1; margin: 0 2rem; box-shadow: 0 0 0 0.1875rem #fff, 0 1rem 2.5rem rgba(0, 0, 0, 0.5); }
+.gu-apps .gu-track { column-gap: 1.5rem; align-items: center; height: 11.5rem; padding: 0 1.5rem; }
 /* liquid glass, lightly tinted with the app's own colour, the icon whole inside */
-.gu-tile { --tint: 255, 255, 255; position: relative; flex: none; width: 8.75rem; height: 8.75rem; transition: transform 150ms; }
-.gu-face { width: 100%; height: 100%; border-radius: 2.375rem; overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 0 0.75rem; color: #fff;
+.gu-tile { --tint: 255, 255, 255; position: relative; flex: none; width: 6.75rem; height: 6.75rem; transition: transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1); transform-origin: center; }
+.gu-tile.near { transform: scale(1.12); }
+.gu-face { width: 100%; height: 100%; border-radius: 1.875rem; overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 0 0.75rem; color: #fff;
   font-weight: 800; font-size: 1.125rem; text-align: center;
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.04) 55%, rgba(var(--tint), 0.18)), rgba(var(--tint), 0.16);
   -webkit-backdrop-filter: blur(1.25rem) saturate(1.4); backdrop-filter: blur(1.25rem) saturate(1.4);
@@ -76,8 +78,9 @@
   transition: background 200ms, box-shadow 200ms; }
 .gu-face img { width: 62%; height: 62%; object-fit: contain; display: block; border-radius: 1.25rem; filter: drop-shadow(0 0.375rem 0.875rem rgba(0, 0, 0, 0.35)); }
 .gu-face.word { font-size: 1.25rem; }
-.gu-label { position: absolute; top: calc(100% + 0.625rem); left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 1.125rem; font-weight: 700; opacity: 0; transition: opacity 150ms; text-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.6); }
-.gu-tile.focus { transform: scale(1.12); }
+.gu-label { position: absolute; top: calc(100% + 0.5rem); left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 0.875rem; font-weight: 700; opacity: 0; transition: opacity 150ms; text-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.6); }
+.gu-tile.focus { transform: scale(1.45); z-index: 1; margin: 0 1.5rem; }
+.gu-tile { transition: transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1), margin 320ms cubic-bezier(0.2, 0.7, 0.2, 1); }
 .gu-tile.focus .gu-face { background: linear-gradient(160deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.1) 55%, rgba(var(--tint), 0.36)), rgba(var(--tint), 0.3);
   box-shadow: inset 0 0.0625rem 0 rgba(255, 255, 255, 0.6), 0 0 0 0.25rem #fff, 0 1.375rem 3.375rem rgba(0, 0, 0, 0.55); }
 .gu-tile.focus .gu-label { opacity: 1; }
